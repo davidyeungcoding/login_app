@@ -1,0 +1,37 @@
+<div class="container">
+  <form class="form-style"
+    #createAcountForm="ngForm">
+    <h4>Create an Account</h4>
+    <div class="form-group">
+      <label for="inputUsername">Username:</label>
+      <input type="text"
+        class="form-control"
+        id="inputUsername"
+        name="inputUsername"
+        ngModel>
+    </div>
+    <div class="form-group">
+      <label for="inputPassword">Password:</label>
+      <input type="password"
+        class="form-control"
+        id="inputPassword"
+        name="inputPassword"
+        ngModel>
+    </div>
+    <div class="form-group">
+      <label for="inputConfirmPassword">Confirm Password:</label>
+      <input type="password"
+        class="form-control"
+        id="inputConfirmPassword"
+        name="inputConfirmPassword"
+        ngModel>
+    </div>
+    <button type="submit"
+      class="btn btn-dark">Submit</button>
+  </form>
+</div>
+
+<!-- delete below -->
+<div class="container">
+  {{ createAcountForm.value | json }}
+</div>

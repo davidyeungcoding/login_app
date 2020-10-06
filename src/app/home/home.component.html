@@ -1,0 +1,29 @@
+<div class="container">
+  <form class="form-style"
+    #loginForm="ngForm">
+    <h4>Login</h4>
+    <div class="form-group">
+      <label for="loginUsername">Username:</label>
+      <input type="text"
+        class="form-control"
+        id="loginUsername"
+        name="loginUsername"
+        ngModel>
+    </div>
+    <div class="form-group">
+      <label for="loginPassword">Password:</label>
+      <input type="password"
+        class="form-control"
+        id="loginPassword"
+        name="loginPassword"
+        ngModel>
+    </div>
+    <button type="submit"
+      class="btn btn-dark">Sign In</button>
+  </form>
+</div>
+
+<!-- delete below -->
+<div class="container">
+  {{ loginForm.value | json }}
+</div>

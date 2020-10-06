@@ -1,0 +1,32 @@
+<nav class="navbar navbar-style navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand"
+    routerLink="/home"
+    routerLinkActive="active">Temp Name</a>
+  <button type="button"
+    class="navbar-toggler"
+    data-toggle="collapse"
+    data-target="#navbarCollapseMenu"
+    aria-controls="navbarCollapseMenu"
+    aria-expanded="false"
+    aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  
+  <div class="collapse navbar-collapse"
+    id="navbarCollapseMenu">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-link">
+        <a class="link-style"
+          routerLink="/home"
+          routerLinkActive="active">Home</a>
+      </li>
+      <li class="nav-link">
+        <a class="link-style"
+          routerLink="/create-account"
+          routerLinkActive="active">Create Account</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>
