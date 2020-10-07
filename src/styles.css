@@ -1,3 +1,7 @@
 .form-style {
   margin: 10%;
 }
+
+textarea {
+  resize: none;
+}

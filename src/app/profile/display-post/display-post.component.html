@@ -1,1 +1,11 @@
-<p>display-post works!</p>
+<div class="container test">
+  <div *ngIf="posts.length; else noContent">
+    <div *ngFor="let post of posts">
+      <p>{{ post.date }}</p>
+      <p>{{ post.content }}</p>
+    </div>
+  </div>
+  <ng-template #noContent>
+    <p>No Posts Found</p>
+  </ng-template>
+</div>

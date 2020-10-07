@@ -3,13 +3,15 @@
     #addContentForm="ngForm">
     <div class="form-group">
       <label for="addContent">Add Post:</label>
-      <input type="text"
-        class="form-control"
+      <textarea class="form-control"
         id="addContent"
+        rows="5"
         name="addContent"
-        ngModel>
+        [(ngModel)]="toAddContent"
+        required></textarea>
     </div>
     <button type="submit"
-      class="btn btn-dark">Submit</button>
+      class="btn btn-dark"
+      (click)="onAddPost()">Submit</button>
   </form>
 </div>
