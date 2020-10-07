@@ -1,17 +1,18 @@
 <div class="container">
   <form class="form-style"
+    (submit)="onAddPost(addContentForm)"
     #addContentForm="ngForm">
     <div class="form-group">
       <label for="addContent">Add Post:</label>
       <textarea class="form-control"
         id="addContent"
         rows="5"
+        maxlength="500"
         name="addContent"
-        [(ngModel)]="toAddContent"
+        ngModel
         required></textarea>
     </div>
     <button type="submit"
-      class="btn btn-dark"
-      (click)="onAddPost()">Submit</button>
+      class="btn btn-dark">Submit</button>
   </form>
 </div>

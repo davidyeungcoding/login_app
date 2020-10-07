@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import { Post } from '../../post';
 
@@ -8,25 +9,24 @@ import { Post } from '../../post';
   styleUrls: ['./create-post.component.css']
 })
 export class CreatePostComponent implements OnInit {
-  toAddContent: string = '';
-  @Output() postCreated = new EventEmitter();
+  @Output() postCreated = new EventEmitter<Post>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  onAddPost() {
-    this.toAddContent = this.toAddContent.trim();
+  onAddPost(form: NgForm) {
+    let content = form.value.addContent.trim();
     
-    if (this.toAddContent.length) {
+    if (content.length) {
       const post: Post = {
         date: new Date().toLocaleString(),
-        content: this.toAddContent
+        content: form.value.addContent
       };
       this.postCreated.emit(post);
     };
-    this.toAddContent = '';
+    $('#addContent').val('');
   }
 
 }
