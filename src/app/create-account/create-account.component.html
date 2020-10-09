@@ -2,7 +2,7 @@
   <form class="form-style"
     #createAcountForm="ngForm">
     <h4>Create an Account</h4>
-    <div class="form-group">
+    <div class="form-group col-sm-12 create-form-style">
       <label for="inputUsername">Username:</label>
       <input type="text"
         class="form-control"
@@ -10,7 +10,23 @@
         name="inputUsername"
         ngModel>
     </div>
-    <div class="form-group">
+    <div class="form-group col-sm-12 col-md-6 create-form-style">
+      <label for="inputFirst">First Name:</label>
+      <input type="text"
+        class="form-control"
+        id="inputFirst"
+        name="inputFirst"
+        ngModel>
+    </div>
+    <div class="form-group col-sm-12 col-md-6 create-form-style">
+      <label for="inputLast">Last Name:</label>
+      <input type="text"
+        class="form-control"
+        id="inputLast"
+        name="inputLast"
+        ngModel>
+    </div>
+    <div class="form-group col-sm-12 create-form-style">
       <label for="inputPassword">Password:</label>
       <input type="password"
         class="form-control"
@@ -18,7 +34,7 @@
         name="inputPassword"
         ngModel>
     </div>
-    <div class="form-group">
+    <div class="form-group col-sm-12 create-form-style">
       <label for="inputConfirmPassword">Confirm Password:</label>
       <input type="password"
         class="form-control"
@@ -26,8 +42,10 @@
         name="inputConfirmPassword"
         ngModel>
     </div>
-    <button type="submit"
-      class="btn btn-dark">Submit</button>
+    <div class="col-sm-12 col-md-4 form-btn-container">
+      <button type="submit"
+        class="btn btn-dark form-btn-style">Submit</button>
+    </div>
   </form>
 </div>
 
