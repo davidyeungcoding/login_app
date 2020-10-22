@@ -23,7 +23,7 @@ export class CreatePostComponent implements OnInit {
         date: new Date().toLocaleString(),
         content: toAddPost
       };
-      this.postsService.addPost(post);
+      this.postsService.changePosts(post);
     };
     $('#addContent').val('');
   }

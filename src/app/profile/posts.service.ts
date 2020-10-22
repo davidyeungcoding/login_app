@@ -13,10 +13,6 @@ export class PostsService {
 
   constructor() { }
 
-  addPost(post: Post) {
-    this.posts.push(post);
-  }
-
   changePosts(post: Post) {
     this.posts.push(post);
     this.postsSource.next([...this.posts]);

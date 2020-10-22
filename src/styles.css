@@ -1,3 +1,15 @@
+.form-style-box {
+  display: inline-block;
+}
+
+.form-btn-container {
+  margin: 0 auto;
+}
+
+.form-btn-style {
+  width: 100%;
+}
+
 .form-style {
   margin: 10%;
 }
