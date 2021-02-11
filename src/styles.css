@@ -2,8 +2,13 @@
   display: inline-block;
 }
 
+.btn-container-holder {
+  text-align: center;
+}
+
 .form-btn-container {
   margin: 0 auto;
+  display: inline-block;
 }
 
 .form-btn-style {

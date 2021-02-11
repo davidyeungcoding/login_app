@@ -1,7 +1,6 @@
 <nav class="navbar navbar-style navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand"
-    routerLink="/home"
-    routerLinkActive="active">Temp Name</a>
+    routerLink="/home">Temp Name</a>
   <button type="button"
     class="navbar-toggler"
     data-toggle="collapse"
@@ -12,21 +11,30 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   
-  <div class="collapse navbar-collapse"
+  <div class="collapse navbar-collapse text-right"
     id="navbarCollapseMenu">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-link">
-        <a class="link-style"
-          routerLink="/home"
-          routerLinkActive="active">Home</a>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item"
+        routerLinkActive="active">
+        <a class="nav-link"
+          (click)="test()"
+          routerLink="/home">Home</a>
       </li>
-      <li class="nav-link">
-        <a class="link-style"
-          routerLink="/create-account"
-          routerLinkActive="active">Create Account</a>
+      <li class="navbar-item"
+        routerLinkActive="active">
+        <a class="nav-link"
+          routerLink="/profile">My Profile</a>
+      </li>
+      <li class="nav-item"
+        routerLinkActive="active">
+        <a class="nav-link"
+          routerLink="/create-account">Create Account</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"
+        (click)="onLogoutClick()"
+        routerLink="/home">Logout</a>
       </li>
     </ul>
   </div>
 </nav>
-
-<router-outlet></router-outlet>

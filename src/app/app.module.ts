@@ -10,6 +10,8 @@ import { FormsModule } from '@angular/forms';
 import { CreatePostComponent } from './profile/create-post/create-post.component';
 import { DisplayPostComponent } from './profile/display-post/display-post.component';
 import { ProfileComponent } from './profile/profile/profile.component';
+import { HttpClientModule } from '@angular/common/http';
+import { FlashMessagesModule } from 'angular2-flash-messages';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { ProfileComponent } from './profile/profile/profile.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule,
+    FlashMessagesModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

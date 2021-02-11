@@ -1,13 +1,14 @@
 <div class="container">
   <form class="form-style"
-    #loginForm="ngForm">
+    #loginForm="ngForm"
+    (ngSubmit)="onLoginSubmit(loginForm)">
     <h4>Login</h4>
     <div class="form-group col-sm-12 form-style-box">
       <label for="loginUsername">Username:</label>
       <input type="text"
         class="form-control"
         id="loginUsername"
-        name="loginUsername"
+        name="username"
         ngModel>
     </div>
     <div class="form-group col-sm-12 form-style-box">
@@ -15,17 +16,19 @@
       <input type="password"
         class="form-control"
         id="loginPassword"
-        name="loginPassword"
+        name="password"
         ngModel>
     </div>
-    <div class="col-sm-12 col-md-4 form-btn-container">
-      <button type="submit"
-        class="btn btn-dark form-btn-style">Sign In</button>
+    <div class="btn-container-holder">
+      <div class="col-sm-12 col-md-4 form-btn-container">
+        <button type="submit"
+          class="btn btn-dark form-btn-style">Sign In</button>
+      </div>
+      <div class="col-sm-12 col-md-4 form-btn-container">
+        <button type="button"
+          class="btn btn-dark form-btn-style"
+          routerLink="/create-account">New User</button>
+      </div>
     </div>
   </form>
-</div>
-
-<!-- delete below -->
-<div class="container">
-  {{ loginForm.value | json }}
 </div>
