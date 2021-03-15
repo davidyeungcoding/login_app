@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { Post } from '../../post';
-import { PostsService } from '../posts.service';
+import { Post } from '../../interfaces/post';
+import { PostService } from '../../services/post.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-create-post',
@@ -10,22 +11,21 @@ import { PostsService } from '../posts.service';
   styleUrls: ['./create-post.component.css']
 })
 export class CreatePostComponent implements OnInit {
-  constructor(public postsService: PostsService) { }
+
+  constructor(
+    private postService: PostService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
   }
 
   onAddPost(form: NgForm) {
-    const toAddPost = form.value.addContent.trim();
-    
-    if (toAddPost.length) {
-      const post: Post = {
-        date: new Date().toLocaleString(),
-        content: toAddPost
-      };
-      this.postsService.changePosts(post);
-    };
-    $('#addContent').val('');
+    this.postService.addPost(form).subscribe(data => {
+      if (data.success) this.postService.changePost(data.msg.posts);
+    });
+    $('#content').val('');
+    form.value.content = '';
   }
 
 }

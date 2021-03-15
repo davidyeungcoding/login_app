@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { FlashMessagesService } from 'angular2-flash-messages';
+import { timestamp } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -10,6 +11,7 @@ import { FlashMessagesService } from 'angular2-flash-messages';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  currentUser: any = this.authService.currentUser;
 
   constructor(
     private authService: AuthService,
@@ -18,20 +20,24 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.authService.currentUser.subscribe(_currentUser => this.currentUser = _currentUser);
   }
 
   onLoginSubmit(loginForm: NgForm) {
     this.authService.authenticateUser(loginForm.value).subscribe(data => {
       if (data.success) {
         this.authService.storeUserData(data.token, data.user);
-        // add functionality to send user over to their profile page
-        this.router.navigate(['/profile']);
+        this.router.navigate([`/profile/${this.currentUser.username}`]);
       } else {
         this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 3000 });
         // (<HTMLFormElement>document.getElementById('loginForm')).reset();
         (<HTMLInputElement>document.getElementById('loginPassword')).value = '';
+        loginForm.value.password = '';
       };
     });
   }
 
+  expiredToken() {
+    return this.authService.isValid();
+  };
 }

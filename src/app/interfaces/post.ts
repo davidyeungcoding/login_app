@@ -1,4 +1,5 @@
 export interface Post {
-  date: string,
+  id: string,
+  timeStamp: string,
   content: string
 }

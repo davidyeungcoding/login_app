@@ -2,6 +2,19 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const config = require('../config/database');
 
+const PostSchema = mongoose.Schema({
+  timestamp: {
+    type: String,
+    required: true
+  },
+  content: {
+    type: String,
+    required: true
+  }
+})
+
+const Post = module.exports = mongoose.model('Post', PostSchema);
+
 const UserSchema = mongoose.Schema({
   username: {
     type: String,
@@ -18,7 +31,10 @@ const UserSchema = mongoose.Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  posts: [{
+    type: PostSchema
+  }]
 })
 
 const User = module.exports = mongoose.model('User', UserSchema);
@@ -47,4 +63,26 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
     if (err) throw err;
     callback(null, isMatch);
   });
+}
+
+// Test Below
+
+// module.exports.findUsers = function(term, callback) {
+//   const re = new RegExp(term);
+//   const query = {username: re};
+//   User.find(query, callback).select('username');
+// }
+
+module.exports.getSpecific = function(query, selection, callback) {
+  User.find(query, callback).select(selection);
+}
+
+module.exports.addPost = function(newPost, callback) {
+  const query = {
+    $push: {
+      posts: newPost.content
+    }
+  };
+  const options = {new: true};
+  User.findByIdAndUpdate(newPost.userId, query, options, callback);
 }

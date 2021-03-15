@@ -12,6 +12,8 @@ import { DisplayPostComponent } from './profile/display-post/display-post.compon
 import { ProfileComponent } from './profile/profile/profile.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FlashMessagesModule } from 'angular2-flash-messages';
+import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import { FlashMessagesModule } from 'angular2-flash-messages';
     CreatePostComponent,
     DisplayPostComponent,
     ProfileComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,6 +32,13 @@ import { FlashMessagesModule } from 'angular2-flash-messages';
     FormsModule,
     HttpClientModule,
     FlashMessagesModule.forRoot(),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('id_token');
+        }
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

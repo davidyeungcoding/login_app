@@ -5,13 +5,16 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 
 const User = require('../models/user');
+const user = require('../models/user');
+const Post = require('../models/user');
 
 router.post('/register', (req, res, next) => {
   let newUser = new User({
     username: req.body.username,
     name: req.body.name,
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
+    posts: []
   });
 
   User.addUser(newUser, (err, user) => {
@@ -40,7 +43,8 @@ router.post('/authenticate', (req, res, next) => {
             id: user._id,
             username: user.username,
             name: user.name,
-            email: user.email
+            email: user.email,
+            posts: user.posts
           }
         });
       } else {
@@ -50,8 +54,58 @@ router.post('/authenticate', (req, res, next) => {
   })
 })
 
-router.get('/profile', (req, res, next) => {
-  res.send('Profile');
-})
+// router.get('/profile', (req, res, next) => {
+//   res.send('Profile');
+// })
 
 module.exports = router;
+
+// Test Below
+
+router.get('/profile/:username', (req, res, next) => {
+  const username = req.params.username;
+  user.getUserByUsername(username, (err, user) => {
+    if (err) throw err;
+    return user ? res.json({
+      success: true,
+      user: {
+        id: user._id,
+        username: user.username,
+        name: user.name,
+        email: user.email,
+        posts: user.posts
+      }
+    })
+    : res.json({ success: false, msg: 'User not found' });
+  });
+});
+
+router.get('/profile/:username/post', (req, res, next) => {
+  const username = req.params.username;
+  const query = {username: username};
+  user.getSpecific(query, 'posts', (err, posts) => {
+    if (err) throw err;
+    posts ? res.json({ success: true, msg: posts })
+    : res.json({ success: false, msg: 'No posts found' });
+  });
+});
+
+// temp setup
+// consider changing back to GET request
+router.post('/search', (req, res, next) => {
+  const re = new RegExp(req.body.searchTerm);
+  const query = {username: re};
+  user.getSpecific(query, 'username', (err, doc) => {
+    if (err) throw err;
+    return doc.length ? res.json({ success: true, msg: doc })
+    : res.json({success : false, msg: 'No matching users'});
+  });
+});
+
+router.put('/profile/:username/post', (req, res, next) => {
+  user.addPost(req.body, (err, doc) => {
+    if (err) throw err;
+    return doc ? res.json({success: true, msg: doc})
+    : res.json({success: false, msg: "Faild to add post"})
+  });
+});

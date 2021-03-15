@@ -1,5 +1,6 @@
 <div class="container">
-  <form class="form-style"
+  <form *ngIf="this.expiredToken()"
+    class="form-style"
     #loginForm="ngForm"
     (ngSubmit)="onLoginSubmit(loginForm)">
     <h4>Login</h4>

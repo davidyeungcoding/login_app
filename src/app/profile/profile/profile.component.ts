@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+
 import { AuthService } from '../../services/auth.service';
+import { PostService } from '../../services/post.service';
 // import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { User } from '../../interfaces/user';
+import { BehaviorSubject } from 'rxjs';
+import { Post } from '../../interfaces/post';
 
 @Component({
   selector: 'app-profile',
@@ -8,25 +14,33 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  user: any;
+  private profileData: User;
+  profileFound: boolean;
 
   constructor(
     private authService: AuthService,
-    // private router: Router
+    private postService: PostService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.authService.currentUser.subscribe(_user => this.user = _user);
-    console.log(this.authService.currentUser)
-    console.log(this.user)
-    // || Below code used if there is autorization required to access
-    // this.authService.getProfile().subscribe(profile => {
-    //   this.user = profile.user;
-    // },
-    // err => {
-    //   console.log(err);
-    //   return false;
-    // });
+    this.authService.profileData.subscribe(user => this.profileData = user);
+    this.getProfileData();
   }
 
+  getProfileData(): void {
+    let username = this.route.snapshot.paramMap.get('username');
+    this.authService.getProfile(username).subscribe(_user => {
+      // data.success ? this.profileData = data.user
+      // : undefined;
+      // insert user not found handling in place of undefined
+      if (_user.success) {
+        this.profileFound = true;
+        // this.profileData = _user.user;
+        this.authService.changeProfileData(_user.user);
+        // do I need this? currently leaning no
+        this.postService.changePost(this.profileData.posts);
+      } else this.profileFound = false;
+    });
+  };
 }
