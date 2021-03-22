@@ -16,6 +16,7 @@ const httpOptions = {
 })
 export class SearchService {
   api = 'http://localhost:3000/users';
+  
   searchResultsSource = new BehaviorSubject([]);
   searchResults = this.searchResultsSource.asObservable();
   searchTermSource = new BehaviorSubject('');

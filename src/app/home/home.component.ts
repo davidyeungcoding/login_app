@@ -27,11 +27,11 @@ export class HomeComponent implements OnInit {
     this.authService.authenticateUser(loginForm.value).subscribe(data => {
       if (data.success) {
         this.authService.storeUserData(data.token, data.user);
+        this.authService.changeProfileData(data.user);
         this.router.navigate([`/profile/${this.currentUser.username}`]);
       } else {
         this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 3000 });
-        // (<HTMLFormElement>document.getElementById('loginForm')).reset();
-        (<HTMLInputElement>document.getElementById('loginPassword')).value = '';
+        $('#loginPassword').val('');
         loginForm.value.password = '';
       };
     });

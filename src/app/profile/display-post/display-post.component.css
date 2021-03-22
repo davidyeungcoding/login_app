@@ -1,5 +1,8 @@
-.test {
-  border: solid;
-  border-radius: 20px;
-  padding: 20px;
+.timestamp {
+  margin: 0;
+  font-size: .9em;
+}
+
+.post-user {
+  display: inline;
 }

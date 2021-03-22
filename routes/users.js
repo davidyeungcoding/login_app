@@ -43,8 +43,7 @@ router.post('/authenticate', (req, res, next) => {
             id: user._id,
             username: user.username,
             name: user.name,
-            email: user.email,
-            posts: user.posts
+            email: user.email
           }
         });
       } else {
@@ -53,10 +52,6 @@ router.post('/authenticate', (req, res, next) => {
     });
   })
 })
-
-// router.get('/profile', (req, res, next) => {
-//   res.send('Profile');
-// })
 
 module.exports = router;
 
@@ -83,22 +78,10 @@ router.get('/profile/:username', (req, res, next) => {
 router.get('/profile/:username/post', (req, res, next) => {
   const username = req.params.username;
   const query = {username: username};
-  user.getSpecific(query, 'posts', (err, posts) => {
+  user.getSpecific(query, 'name username posts', (err, doc) => {
     if (err) throw err;
-    posts ? res.json({ success: true, msg: posts })
+    doc ? res.json({ success: true, msg: doc})
     : res.json({ success: false, msg: 'No posts found' });
-  });
-});
-
-// temp setup
-// consider changing back to GET request
-router.post('/search', (req, res, next) => {
-  const re = new RegExp(req.body.searchTerm);
-  const query = {username: re};
-  user.getSpecific(query, 'username', (err, doc) => {
-    if (err) throw err;
-    return doc.length ? res.json({ success: true, msg: doc })
-    : res.json({success : false, msg: 'No matching users'});
   });
 });
 
@@ -107,5 +90,15 @@ router.put('/profile/:username/post', (req, res, next) => {
     if (err) throw err;
     return doc ? res.json({success: true, msg: doc})
     : res.json({success: false, msg: "Faild to add post"})
+  });
+});
+
+router.post('/search', (req, res, next) => {
+  const re = new RegExp(req.body.searchTerm);
+  const query = {username: re};
+  user.getSpecific(query, 'name username', (err, doc) => {
+    if (err) throw err;
+    return doc.length ? res.json({ success: true, msg: doc })
+    : res.json({success : false, msg: 'No matching users'});
   });
 });

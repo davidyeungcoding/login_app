@@ -2,19 +2,6 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const config = require('../config/database');
 
-const PostSchema = mongoose.Schema({
-  timestamp: {
-    type: String,
-    required: true
-  },
-  content: {
-    type: String,
-    required: true
-  }
-})
-
-const Post = module.exports = mongoose.model('Post', PostSchema);
-
 const UserSchema = mongoose.Schema({
   username: {
     type: String,
@@ -32,9 +19,26 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  posts: [{
-    type: PostSchema
-  }]
+  posts: [
+    mongoose.Schema({
+      timestamp: {
+        type: String,
+        required: true
+      },
+      content: {
+        type: String,
+        required: true
+      },
+      likes: {
+        type: Number,
+        default: 0
+      },
+      dislikes: {
+        type: Number,
+        default: 0
+      }
+    })
+  ]
 })
 
 const User = module.exports = mongoose.model('User', UserSchema);

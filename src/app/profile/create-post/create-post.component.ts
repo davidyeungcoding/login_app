@@ -26,6 +26,7 @@ export class CreatePostComponent implements OnInit {
     });
     $('#content').val('');
     form.value.content = '';
-  }
+    $('#postModal').modal('hide');
+  };
 
 }

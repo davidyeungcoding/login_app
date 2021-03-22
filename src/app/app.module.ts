@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FlashMessagesModule } from 'angular2-flash-messages';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import { SearchComponent } from './search/search.component';
+import * as bootstrap from "bootstrap";
 
 @NgModule({
   declarations: [

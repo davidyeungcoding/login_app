@@ -1,12 +1,16 @@
-<div class="container test">
+<div>
   <div *ngIf="posts.length; else noContent">
-    <div *ngFor="let post of posts">
-      <p>{{ post.timestamp }}</p>
+    <div class="main-content"
+      *ngFor="let post of posts">
+      <div>
+        <h4 class="post-user">{{ profileData.name }} </h4>
+        <p class="post-user">@{{ profileData.username }}</p>
+      </div>
+      <p class="timestamp">{{ post.timestamp }}</p>
       <p>{{ post.content }}</p>
-      <hr>
     </div>
   </div>
   <ng-template #noContent>
-    <p>No Posts Found</p>
+    <p class="main-content">No Posts Found</p>
   </ng-template>
 </div>

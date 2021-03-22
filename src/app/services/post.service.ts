@@ -17,9 +17,10 @@ const httpOptions = {
 })
 export class PostService {
   private localUser = JSON.parse(localStorage.getItem('user'));
+  api = 'http://localhost:3000/users';
+  
   postsSource = new BehaviorSubject<Post[]>([]);
   currentPosts = this.postsSource.asObservable();
-  api = 'http://localhost:3000/users';
 
   constructor(
     private http: HttpClient

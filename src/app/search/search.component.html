@@ -1,13 +1,15 @@
-<div *ngIf="searchResults.length; else no_results">
-  <div>
-    <ul>
-      <li *ngFor="let result of searchResults">
-        <a routerLink="/profile/{{ result.username }}">{{ result.username }}</a>
-      </li>
-    </ul>
+<div class="main-content-container">
+  <div *ngIf="searchResults.length; else no_results">
+    <div *ngFor="let result of searchResults"
+      class="main-content">
+      <a class="clear-link title-username"
+        (click)="changeProfileData(result.username)"
+        routerLink="/profile/{{ result.username }}">{{ result.name }}</a>
+      <p>@{{ result.username }}</p>
+    </div>
   </div>
+  
+  <ng-template #no_results>
+    <h5>No results found matching: "{{ searchTerm }}"</h5>
+  </ng-template>
 </div>
-
-<ng-template #no_results>
-  <h5>No results found matching: "{{ searchTerm }}"</h5>
-</ng-template>

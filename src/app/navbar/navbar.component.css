@@ -4,5 +4,22 @@
 }
 
 #navSearch {
-  width: 30vw;
+  width: 70vw;
+  border-radius: 5px 0 0 5px;
+}
+
+#navSearchBtn {
+  border-radius: 0 5px 5px 0;
+}
+
+@media only screen and (min-width: 540px) {
+  #navSearch {
+    width: 50vw;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  #navSearch {
+    width: 30vw;
+  }
 }

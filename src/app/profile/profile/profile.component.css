@@ -1,0 +1,21 @@
+.profile-details {
+  margin-bottom: 1em;
+}
+
+.profile-info {
+  padding-left: .6em;
+  margin: 0;
+}
+
+.profile-options-btn {
+  transition: .8s ease-out;
+  border-radius: 0;
+}
+
+.profile-options-btn:hover {
+  background-color: #A2A3A6;
+}
+
+.visible {
+  display: none;
+}

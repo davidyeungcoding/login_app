@@ -15,7 +15,9 @@ import { Post } from '../../interfaces/post';
 })
 export class ProfileComponent implements OnInit {
   private profileData: User;
+  private activeData: string = 'postList';
   profileFound: boolean;
+  profileCheck: boolean;
 
   constructor(
     private authService: AuthService,
@@ -25,22 +27,41 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.profileData.subscribe(user => this.profileData = user);
+    this.authService.profileCheck.subscribe(value => this.profileCheck = value);
     this.getProfileData();
   }
 
   getProfileData(): void {
     let username = this.route.snapshot.paramMap.get('username');
     this.authService.getProfile(username).subscribe(_user => {
-      // data.success ? this.profileData = data.user
-      // : undefined;
-      // insert user not found handling in place of undefined
       if (_user.success) {
         this.profileFound = true;
-        // this.profileData = _user.user;
         this.authService.changeProfileData(_user.user);
-        // do I need this? currently leaning no
         this.postService.changePost(this.profileData.posts);
+        this.personalProfile(_user.user.username);
       } else this.profileFound = false;
     });
+  };
+
+  onMakeActive(id: string): void {
+    const current = document.getElementById(id);
+    const previous = document.getElementById(this.activeData);
+
+    if (id !== this.activeData) {
+      previous.classList.add('visible');
+      current.classList.remove('visible');
+      this.activeData = id;
+    };
+  };
+
+  personalProfile(username: string): void {
+    if (localStorage.getItem('user')) {
+      const currentUser = JSON.parse(localStorage.getItem('user')).username;
+      this.authService.changeProfileCheck(
+        !this.authService.isValid() && username === currentUser ? true : false
+      );
+    } else {
+      this.authService.changeProfileCheck(false);
+    };
   };
 }

@@ -1,15 +1,87 @@
-<div *ngIf='profileFound; else profile_not_found'>
-  <div *ngIf="profileData">
-    <h2 class="page-header">{{ profileData.name }}</h2>
-    <ul class="list-group">
-      <li class="list-group-item">Username: {{ profileData.username }}</li>
-      <li class="list-group-item">Email: {{ profileData.email }}</li>
-    </ul>
-  </div>
-  <app-create-post></app-create-post>
-  <app-display-post></app-display-post>
-</div>
+<div class="main-content-container">
+  <div *ngIf='profileFound; else profileNotFound'>
+    <div class="container" *ngIf="profileData">
+      <div class="profile-details">
+        <h2 class="profile-header">{{ profileData.name }}</h2>
+        <p class="profile-info">@{{ profileData.username }}</p>
+        <p class="profile-info">{{ profileData.email }}</p>
+      </div>
+      
+      <div class="container">
+        <div *ngIf="profileCheck; else guestView"
+          class="row profile-options">
+          <button type="button"
+            class="btn profile-options-btn col"
+            data-toggle="modal"
+            data-target="#postModal">New Post</button>
+          <button type="button"
+            class="btn profile-options-btn col"
+            (click)="onMakeActive('postList')">My Posts</button>
+          <button type="button"
+            class="btn profile-options-btn col"
+            (click)="onMakeActive('followingList')">Follwing</button>
+          <button type="button"
+            class="btn profile-options-btn col"
+            (click)="onMakeActive('followerList')">Followers</button>
+          <button type="button"
+            class="btn profile-options-btn col"
+            (click)="onMakeActive('mentionsList')">Mentions</button>
+        </div>
 
-<ng-template #profile_not_found>
-  404
-</ng-template>
+        <!-- need to come back and update the follow/unfollow
+        feature to only display one or the other -->
+        <ng-template class="row profile-options" #guestView>
+          <div class="row profile-options">
+            <button type="button"
+              class="btn profile-options-btn col">
+              <i class="far fa-heart"></i> Follow</button>
+            <button type="button"
+              class="btn profile-options-btn col">
+              <i class="fas fa-heart"></i> Unfollow </button>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  
+    <div class="modal fade"
+      id="postModal"
+      tabindex="-1"
+      aria-labelledby="postModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">
+            <button type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <app-create-post></app-create-post>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div id="postList">
+      <app-display-post></app-display-post>
+    </div>
+    <div class="visible"
+      id="followingList">
+      <p>Following List</p>
+    </div>
+    <div class="visible"
+      id="followerList">
+      <p>Follower List</p>
+    </div>
+    <div class="visible"
+      id="mentionsList">
+      <p>Mentions List</p>
+    </div>
+  </div>
+  
+  <ng-template #profileNotFound>
+    <h3>No profile data found</h3>
+  </ng-template>
+</div>
+  

@@ -18,17 +18,20 @@ export class AuthService {
   authToken: any;
   // user: any;
   private localUser = JSON.parse(localStorage.getItem('user'));
-  private emptyUser = {
+  emptyUser = {
     id: false,
     username: false,
     name: false,
     email: false
   };
+  api = 'http://localhost:3000/users';
+
   private userSource = new BehaviorSubject<any>(this.localUser ? this.localUser : this.emptyUser);
   currentUser = this.userSource.asObservable();
   private profileDataSource = new BehaviorSubject<any>({});
   profileData = this.profileDataSource.asObservable();
-  api = 'http://localhost:3000/users';
+  private profileCheckSource = new BehaviorSubject<boolean>(false);
+  profileCheck = this.profileCheckSource.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -52,16 +55,6 @@ export class AuthService {
       catchError(err => of(err))
     );
   };
-
-  // getProfile() {
-  //   let headers = new HttpHeaders();
-  //   this.loadToken();
-  //   headers.append('Authorization', this.authToken);
-  //   headers.append('Content-Type', 'application/json');
-  //   return this.http.get(`${this.api}/profile`, { headers: headers }).pipe(
-  //     catchError(err => of(err))
-  //   );
-  // };
 
   storeUserData(token, user): void {
     localStorage.setItem('id_token', token);
@@ -90,6 +83,10 @@ export class AuthService {
 
   changeProfileData(user): void {
     this.profileDataSource.next(user);
+  };
+
+  changeProfileCheck(value: boolean): void {
+    this.profileCheckSource.next(value);
   };
 
   logout(): void {

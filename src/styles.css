@@ -19,6 +19,37 @@
   margin: 5% 10%;
 }
 
+.clear-link, .clear-link:hover {
+  text-decoration: none;
+  color: black;
+}
+
+.main-content {
+  border-top: solid;
+  border-width: 1px;
+  padding: 1% 2%;
+}
+
+.main-content-container {
+  border-left: solid;
+  border-right: solid;
+  border-width: 1px;
+}
+
+.align-right {
+  text-align: right;
+}
+
 textarea {
   resize: none;
+}
+
+@media only screen and (min-width: 540px) {
+  /* .main-content {
+    margin: 0 20%;
+  } */
+
+  .main-content-container {
+    margin: 0 30%;
+  }
 }

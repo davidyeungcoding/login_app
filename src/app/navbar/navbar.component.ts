@@ -41,6 +41,7 @@ export class NavbarComponent implements OnInit {
     let username = JSON.parse(localStorage.getItem('user')).username;
     this.authService.getProfile(username).subscribe(_user => {
       if (_user.success) {
+        this.authService.changeProfileCheck(true);
         this.authService.changeProfileData(_user.user);
         this.postService.changePost(_user.user.posts);
       } else {
