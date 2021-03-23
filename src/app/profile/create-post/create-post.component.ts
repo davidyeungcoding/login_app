@@ -21,12 +21,14 @@ export class CreatePostComponent implements OnInit {
   }
 
   onAddPost(form: NgForm) {
-    this.postService.addPost(form).subscribe(data => {
-      if (data.success) this.postService.changePost(data.msg.posts);
-    });
-    $('#content').val('');
-    form.value.content = '';
-    $('#postModal').modal('hide');
+    if (form.value.content) {
+      this.postService.addPost(form).subscribe(data => {
+        if (data.success) this.postService.changePost(data.msg.posts);
+      });
+      $('#content').val('');
+      form.value.content = '';
+      $('#postModal').modal('hide');
+    };
   };
 
 }

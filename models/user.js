@@ -84,7 +84,10 @@ module.exports.getSpecific = function(query, selection, callback) {
 module.exports.addPost = function(newPost, callback) {
   const query = {
     $push: {
-      posts: newPost.content
+      posts: {
+        $each: [newPost.content],
+        $position: 0
+      }
     }
   };
   const options = {new: true};

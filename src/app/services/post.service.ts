@@ -34,6 +34,7 @@ export class PostService {
         content: form.value.content.trim()
       }
     };
+    console.log(post)
     return this.http.put(`${this.api}/profile/${this.localUser.username}/post`, post, httpOptions).pipe(
       catchError(err => of(err))
     );
