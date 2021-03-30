@@ -36,7 +36,8 @@ const UserSchema = mongoose.Schema({
       dislikes: {
         type: Number,
         default: 0
-      }
+      },
+      opinions: {}
     })
   ]
 })
@@ -92,4 +93,23 @@ module.exports.addPost = function(newPost, callback) {
   };
   const options = {new: true};
   User.findByIdAndUpdate(newPost.userId, query, options, callback);
+}
+
+module.exports.postOpinion = function(post, callback) {
+  const filter = {
+    username: post.profileUsername,
+    "posts._id": post.postId
+  };
+
+  const query = {
+    $set: {
+      [`posts.$.opinions.${post.username}`]: post.opinion
+    },
+    $inc: {
+      [`posts.$.${post.toChange}`]: post.changeAmount,
+      [`posts.$.${post.toChangeOld}`]: post.changeAmountOld
+    }
+  };
+  const options = { new: true };
+  User.findOneAndUpdate(filter, query, options, callback);
 }

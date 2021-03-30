@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { Post } from '../../interfaces/post';
 import { PostService } from '../../services/post.service';
 import { AuthService } from '../../services/auth.service';
 
@@ -27,8 +26,8 @@ export class CreatePostComponent implements OnInit {
       });
       $('#content').val('');
       form.value.content = '';
-      $('#postModal').modal('hide');
     };
+    $('#postModal').modal('hide');
   };
 
 }

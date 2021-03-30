@@ -16,7 +16,6 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class PostService {
-  private localUser = JSON.parse(localStorage.getItem('user'));
   api = 'http://localhost:3000/users';
   
   postsSource = new BehaviorSubject<Post[]>([]);
@@ -27,24 +26,30 @@ export class PostService {
   ) { }
 
   addPost(form: NgForm) {
+    const localUser = JSON.parse(localStorage.getItem('user'));
     const post = {
-      userId: this.localUser.id,
+      userId: localUser.id,
       content: {
         timestamp: new Date().toLocaleString(),
         content: form.value.content.trim()
       }
     };
-    console.log(post)
-    return this.http.put(`${this.api}/profile/${this.localUser.username}/post`, post, httpOptions).pipe(
+    return this.http.put(`${this.api}/profile/${localUser.username}/post`, post, httpOptions).pipe(
       catchError(err => of(err))
     );
   };
 
-  getPosts(username) {
-    return this.http.get(`${this.api}/profile/${username}/post`).pipe(
+  updateLikes(payload: any) {
+    return this.http.put(`${this.api}/profile/${payload.profileUsername}/post/opinion`, payload, httpOptions).pipe(
       catchError(err => of(err))
     );
   };
+
+  // getPosts(username) {
+  //   return this.http.get(`${this.api}/profile/${username}/post`).pipe(
+  //     catchError(err => of(err))
+  //   );
+  // };
 
   changePost(post: Post[]): void {
     this.postsSource.next(post);

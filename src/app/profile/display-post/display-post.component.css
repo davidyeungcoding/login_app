@@ -1,3 +1,7 @@
+.post-main {
+  padding-top: 1em;
+}
+
 .timestamp {
   margin: 0;
   font-size: .9em;
@@ -5,4 +9,20 @@
 
 .post-user {
   display: inline;
+}
+
+/* .post-content {
+  padding: 0 .6em;
+} */
+
+.icon-size {
+  font-size: 1.6em;
+}
+
+.opinion-count {
+  margin: 0 .25em;
+}
+
+.opinion {
+  display: inline-block;
 }

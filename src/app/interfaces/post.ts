@@ -1,5 +1,8 @@
 export interface Post {
-  id: string,
+  _id: string,
   timeStamp: string,
-  content: string
+  content: string,
+  likes: number,
+  dislikes: number,
+  opinions: object
 }

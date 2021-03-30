@@ -6,7 +6,6 @@ import { PostService } from '../../services/post.service';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../interfaces/user';
 import { BehaviorSubject } from 'rxjs';
-import { Post } from '../../interfaces/post';
 
 @Component({
   selector: 'app-profile',
@@ -58,10 +57,8 @@ export class ProfileComponent implements OnInit {
     if (localStorage.getItem('user')) {
       const currentUser = JSON.parse(localStorage.getItem('user')).username;
       this.authService.changeProfileCheck(
-        !this.authService.isValid() && username === currentUser ? true : false
+        !this.authService.isExpired() && username === currentUser ? true : false
       );
-    } else {
-      this.authService.changeProfileCheck(false);
-    };
+    } else this.authService.changeProfileCheck(false);
   };
 }

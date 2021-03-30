@@ -16,6 +16,14 @@
   background-color: #A2A3A6;
 }
 
-.visible {
-  display: none;
+.profile {
+  display: block;
+}
+
+.profile-title {
+  display: inline-block;
+}
+
+.profile-content {
+  padding-left: 2em;
 }

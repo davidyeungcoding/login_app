@@ -34,7 +34,7 @@ export class NavbarComponent implements OnInit {
   };
 
   expiredToken() {
-    return this.authService.isValid();
+    return this.authService.isExpired();
   };
 
   onLoadProfile(): void {

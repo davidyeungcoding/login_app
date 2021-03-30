@@ -2,14 +2,42 @@
   <div *ngIf="posts.length; else noContent">
     <div class="main-content"
       *ngFor="let post of posts">
-      <div>
+      <div class="container post-main">
         <h4 class="post-user">{{ profileData.name }} </h4>
         <p class="post-user">@{{ profileData.username }}</p>
+        <p class="timestamp">{{ post.timestamp }}</p>
+        <p class="post-content">{{ post.content }}</p>
       </div>
-      <p class="timestamp">{{ post.timestamp }}</p>
-      <p>{{ post.content }}</p>
+      
+      <div class="container">
+        <div class="row justify-content-end">
+          <div>
+            <button type="button"
+              class="btn opinion"
+              (click)="onOpinionVoiced(post, 1)">
+              <i *ngIf="checkForOpinion(post, 1); else likeNotSelected"
+                class="opinion-button fas fa-arrow-alt-circle-up icon-size"></i>
+              <ng-template #likeNotSelected>
+                <i class="opinion-button far fa-arrow-alt-circle-up icon-size"></i>
+              </ng-template>
+            </button>
+            <p class="opinion opinion-count">{{ post.likes }}</p>
+            <button type="button"
+              class="btn opinion"
+              (click)="onOpinionVoiced(post, -1)">
+              <i *ngIf="checkForOpinion(post, -1); else dislikeNotSelected"
+                class="opinion-button fas fa-arrow-alt-circle-down icon-size"></i>
+              <ng-template #dislikeNotSelected>
+                <i class="opinion-button far fa-arrow-alt-circle-down icon-size"></i>
+              </ng-template>
+            </button>
+            <p class="opinion opinion-count">{{ post.dislikes }}</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+  
   <ng-template #noContent>
     <p class="main-content">No Posts Found</p>
   </ng-template>

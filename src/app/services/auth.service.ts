@@ -16,7 +16,6 @@ const httpOptions = {
 })
 export class AuthService {
   authToken: any;
-  // user: any;
   private localUser = JSON.parse(localStorage.getItem('user'));
   emptyUser = {
     id: false,
@@ -68,7 +67,7 @@ export class AuthService {
   //   this.authToken = token;
   // };
 
-  isValid() {
+  isExpired() {
     return this.jwtHelper.isTokenExpired();
   };
 

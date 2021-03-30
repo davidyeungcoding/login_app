@@ -40,8 +40,16 @@
   text-align: right;
 }
 
+.visible {
+  display: none;
+}
+
 textarea {
   resize: none;
+}
+
+body {
+  background-color: #41626F;
 }
 
 @media only screen and (min-width: 540px) {
