@@ -107,6 +107,14 @@ router.put('/profile/:username/post/opinion', (req, res, next) => {
   user.postOpinion(req.body, (err, doc) => {
     if (err) throw err;
     return doc ? res.json({success: true, msg: doc.posts})
-    : res.json({success : false, msg: "faild to update post opinion"});
+    : res.json({success: false, msg: "faild to update post opinion"});
+  });
+});
+
+router.put("/profile/:username/post/remove", (req, res, next) => {
+  user.removePost(req.body, (err, doc) => {
+    if (err) throw err;
+    return doc ? res.json({success: true, msg: doc})
+    : res.json({success: false, msg: 'failed to remove post'});
   });
 });

@@ -44,9 +44,7 @@ export class NavbarComponent implements OnInit {
         this.authService.changeProfileCheck(true);
         this.authService.changeProfileData(_user.user);
         this.postService.changePost(_user.user.posts);
-      } else {
-        this.authService.logout();
-      };
+      } else this.authService.logout();
     });
   };
 

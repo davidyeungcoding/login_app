@@ -113,3 +113,15 @@ module.exports.postOpinion = function(post, callback) {
   const options = { new: true };
   User.findOneAndUpdate(filter, query, options, callback);
 }
+
+module.exports.removePost = function(post, callback) {
+  const query = {
+    $pull: {
+      posts: {
+        _id: post.id
+      }
+    }
+  };
+  const options = {new: true};
+  User.findOneAndUpdate({username: post.username}, query, options, callback);
+}

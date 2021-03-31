@@ -1,10 +1,12 @@
 <div class="main-content-container">
   <div *ngIf='profileFound; else profileNotFound'>
     <div class="container" *ngIf="profileData">
-      <div class="profile-details row profile">
-        <div class="col">
-          <h2 class="profile-header profile-title">{{ profileData.name }}</h2>
-          <p class="profile-info profile-title">@{{ profileData.username }}</p>
+      <div class="profile-details row profile container">
+        <div class="row">
+          <div class="col">
+            <h2 class="profile-header profile-title">{{ profileData.name }}</h2>
+            <p class="profile-info profile-title">@{{ profileData.username }}</p>
+          </div>
         </div>
         <div class="row profile profile-content">
           <div class="col">

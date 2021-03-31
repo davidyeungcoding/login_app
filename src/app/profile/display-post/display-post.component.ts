@@ -69,7 +69,7 @@ export class DisplayPostComponent implements OnInit {
         post.opinions = updatedPost.opinions;
       })
     } else {
-      // handle expired token
-    }
-  }
+      if (this.authService.isExpired()) this.authService.logout();
+    };
+  };
 }
