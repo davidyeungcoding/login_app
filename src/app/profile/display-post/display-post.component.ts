@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Post } from '../../interfaces/post';
 import { PostService } from '../../services/post.service';
 import { AuthService } from '../../services/auth.service';
+import { User } from '../../interfaces/user';
 
 @Component({
   selector: 'app-display-post',
@@ -11,7 +12,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class DisplayPostComponent implements OnInit {
   posts: Post[];
-  profileData: any;
+  profileData: User;
   currentUser: any;
 
   constructor(
@@ -67,9 +68,28 @@ export class DisplayPostComponent implements OnInit {
         post.likes = updatedPost.likes;
         post.dislikes = updatedPost.dislikes;
         post.opinions = updatedPost.opinions;
-      })
+      });
     } else {
       if (this.authService.isExpired()) this.authService.logout();
     };
+  };
+
+  deletePost(post: Post) {
+    const payload = {
+      username: JSON.parse(localStorage.getItem('user')).username,
+      id: post._id
+    };
+
+    this.postService.deletePost(payload).subscribe(doc => {
+      if (doc.success) {
+        this.postService.changePost(doc.msg);
+      } else {
+        // handle error
+      };
+    });
+  };
+
+  personalProfile(): boolean {
+    return this.authService.personalProfile(this.currentUser, this.profileData);
   };
 }

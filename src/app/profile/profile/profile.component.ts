@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from '../../services/auth.service';
 import { PostService } from '../../services/post.service';
-// import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../interfaces/user';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -14,9 +12,9 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ProfileComponent implements OnInit {
   private profileData: User;
+  private currentUser: any;
   private activeData: string = 'postList';
   profileFound: boolean;
-  profileCheck: boolean;
 
   constructor(
     private authService: AuthService,
@@ -26,7 +24,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.profileData.subscribe(user => this.profileData = user);
-    this.authService.profileCheck.subscribe(value => this.profileCheck = value);
+    this.authService.currentUser.subscribe(_user => this.currentUser = _user);
     this.getProfileData();
   }
 
@@ -37,7 +35,6 @@ export class ProfileComponent implements OnInit {
         this.profileFound = true;
         this.authService.changeProfileData(_user.user);
         this.postService.changePost(this.profileData.posts);
-        this.personalProfile(_user.user.username);
       } else this.profileFound = false;
     });
   };
@@ -53,12 +50,7 @@ export class ProfileComponent implements OnInit {
     };
   };
 
-  personalProfile(username: string): void {
-    if (localStorage.getItem('user')) {
-      const currentUser = JSON.parse(localStorage.getItem('user')).username;
-      this.authService.changeProfileCheck(
-        !this.authService.isExpired() && username === currentUser ? true : false
-      );
-    } else this.authService.changeProfileCheck(false);
+  personalProfile(): boolean {
+    return this.authService.personalProfile(this.currentUser, this.profileData);
   };
 }

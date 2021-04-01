@@ -16,23 +16,23 @@
       </div>
       
       <div class="container">
-        <div *ngIf="profileCheck; else guestView"
+        <div *ngIf="personalProfile(); else guestView"
           class="row profile-options">
           <button type="button"
-            class="btn profile-options-btn col"
+            class="btn profile-options-btn col white-font"
             data-toggle="modal"
             data-target="#postModal">New Post</button>
           <button type="button"
-            class="btn profile-options-btn col"
+            class="btn profile-options-btn col white-font"
             (click)="onMakeActive('postList')">My Posts</button>
           <button type="button"
-            class="btn profile-options-btn col"
+            class="btn profile-options-btn col white-font"
             (click)="onMakeActive('followingList')">Follwing</button>
           <button type="button"
-            class="btn profile-options-btn col"
+            class="btn profile-options-btn col white-font"
             (click)="onMakeActive('followerList')">Followers</button>
           <button type="button"
-            class="btn profile-options-btn col"
+            class="btn profile-options-btn col white-font"
             (click)="onMakeActive('mentionsList')">Mentions</button>
         </div>
 
@@ -41,11 +41,11 @@
         <ng-template class="row profile-options" #guestView>
           <div class="row profile-options">
             <button type="button"
-              class="btn profile-options-btn col">
-              <i class="far fa-heart"></i> Follow</button>
+              class="btn profile-options-btn col white-font">
+              <i class="far fa-heart white-font"></i> Follow</button>
             <button type="button"
-              class="btn profile-options-btn col">
-              <i class="fas fa-heart"></i> Unfollow </button>
+              class="btn profile-options-btn col white-font">
+              <i class="fas fa-heart white-font"></i> Unfollow </button>
           </div>
         </ng-template>
       </div>

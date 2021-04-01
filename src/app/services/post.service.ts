@@ -45,6 +45,13 @@ export class PostService {
     );
   };
 
+  deletePost(payload: any) {
+    const username = JSON.parse(localStorage.getItem('user')).username;
+    return this.http.put(`${this.api}/profile/${username}/post/remove`, payload, httpOptions).pipe(
+      catchError(err => of(err))
+    );
+  };
+
   // getPosts(username) {
   //   return this.http.get(`${this.api}/profile/${username}/post`).pipe(
   //     catchError(err => of(err))

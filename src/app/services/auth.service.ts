@@ -29,8 +29,6 @@ export class AuthService {
   currentUser = this.userSource.asObservable();
   private profileDataSource = new BehaviorSubject<any>({});
   profileData = this.profileDataSource.asObservable();
-  private profileCheckSource = new BehaviorSubject<boolean>(false);
-  profileCheck = this.profileCheckSource.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -84,8 +82,9 @@ export class AuthService {
     this.profileDataSource.next(user);
   };
 
-  changeProfileCheck(value: boolean): void {
-    this.profileCheckSource.next(value);
+  personalProfile(currentUser, profileUser): boolean {
+    return currentUser.id && !this.isExpired()
+    && currentUser.username === profileUser.username ? true : false;
   };
 
   logout(): void {

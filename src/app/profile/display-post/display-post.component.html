@@ -12,13 +12,20 @@
       <div class="container">
         <div class="row justify-content-end">
           <div>
+            <button *ngIf="personalProfile()"
+              type="button"
+              class="btn opinion"
+              (click)="deletePost(post)">
+              <i class="far fa-trash-alt icon-size white-font"></i>
+              <!-- consider setting up a modal for confirmation of deletion -->
+            </button>
             <button type="button"
               class="btn opinion"
               (click)="onOpinionVoiced(post, 1)">
               <i *ngIf="checkForOpinion(post, 1); else likeNotSelected"
-                class="opinion-button fas fa-arrow-alt-circle-up icon-size"></i>
+                class="fas fa-arrow-alt-circle-up icon-size white-font"></i>
               <ng-template #likeNotSelected>
-                <i class="opinion-button far fa-arrow-alt-circle-up icon-size"></i>
+                <i class="far fa-arrow-alt-circle-up icon-size white-font"></i>
               </ng-template>
             </button>
             <p class="opinion opinion-count">{{ post.likes }}</p>
@@ -26,9 +33,9 @@
               class="btn opinion"
               (click)="onOpinionVoiced(post, -1)">
               <i *ngIf="checkForOpinion(post, -1); else dislikeNotSelected"
-                class="opinion-button fas fa-arrow-alt-circle-down icon-size"></i>
+                class="fas fa-arrow-alt-circle-down icon-size white-font"></i>
               <ng-template #dislikeNotSelected>
-                <i class="opinion-button far fa-arrow-alt-circle-down icon-size"></i>
+                <i class="far fa-arrow-alt-circle-down icon-size white-font"></i>
               </ng-template>
             </button>
             <p class="opinion opinion-count">{{ post.dislikes }}</p>
