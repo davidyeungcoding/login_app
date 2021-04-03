@@ -6,7 +6,6 @@ const config = require('../config/database');
 
 const User = require('../models/user');
 const user = require('../models/user');
-const Post = require('../models/user');
 
 router.post('/register', (req, res, next) => {
   let newUser = new User({
@@ -116,5 +115,49 @@ router.put("/profile/:username/post/remove", (req, res, next) => {
     if (err) throw err;
     return doc ? res.json({success: true, msg: doc.posts})
     : res.json({success: false, msg: 'failed to remove post'});
+  });
+});
+
+router.put('/profile/:username/follow', (req, res, next) => {
+  const follower = {
+    name: req.body.followerName,
+    username: req.body.followerUsername
+  };
+  const profile = {
+    name: req.body.profileName,
+    username: req.body.profileUsername
+  };
+
+  user.followed(follower, profile, (err, doc) => {
+    if (err) throw err;
+    if (doc) {
+      user.following(follower, profile, (err, nestedDoc) => {
+        if (err) throw err;
+        return nestedDoc ? res.json({success: true, msg: doc.followers})
+        : res.json({success: false, msg: 'Failed to update following information'});
+      });
+    } else res.json({success: false, msg: 'Failed to update follower information'});
+  });
+});
+
+router.put('/profile/:username/unfollow', (req, res, next) => {
+  const follower = {
+    name: req.body.followerName,
+    username: req.body.followerUsername
+  };
+  const profile = {
+    name: req.body.profileName,
+    username: req.body.profileUsername
+  };
+
+  user.unfollow(follower, profile, (err, profileDoc) => {
+    if (err) throw err;
+    if (profileDoc) {
+      user.removeFollowing(follower, profile, (err, followingDoc) => {
+        if (err) throw err;
+        return followingDoc ? res.json({success: true, msg: profileDoc})
+        : res.json({success: false, msg: 'Failed to remove followed user from following list'});
+      });
+    } else res.json({success: false, msg: 'Failed to unfollow profile'});
   });
 });

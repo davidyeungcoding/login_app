@@ -1,0 +1,11 @@
+.profile-block {
+  display: block;
+}
+
+.profile-title {
+  display: inline;
+}
+
+#profile-username {
+  margin-left: .6em;
+}

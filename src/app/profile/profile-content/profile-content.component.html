@@ -1,0 +1,31 @@
+<div class="container">
+  <div *ngIf="personalProfile(); else guestView" class="row">
+    <button type="button"
+      class="btn profile-options-btn col white-font"
+      data-toggle="modal"
+      data-target="#postModal">New Post</button>
+    <button type="button"
+      class="btn profile-options-btn col white-font"
+      (click)="onMakeActive('postList')">My Posts</button>
+    <button type="button"
+      class="btn profile-options-btn col white-font"
+      (click)="onMakeActive('followingList')">Follwing</button>
+    <button type="button"
+      class="btn profile-options-btn col white-font"
+      (click)="onMakeActive('followerList')">Followers</button>
+    <button type="button"
+      class="btn profile-options-btn col white-font"
+      (click)="onMakeActive('mentionsList')">Mentions</button>
+  </div>
+
+  <ng-template #guestView>
+    <div class="row">
+      <button type="button"
+        class="btn profile-options-btn col white-font">
+        <i class="far fa-heart white-font"></i> Follow</button>
+      <button type="button"
+        class="btn profile-options-btn col white-font">
+        <i class="fas fa-heart white-font"></i> Unfollow </button>
+    </div>
+  </ng-template>
+</div>

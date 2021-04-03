@@ -39,7 +39,13 @@ const UserSchema = mongoose.Schema({
       },
       opinions: {}
     })
-  ]
+  ],
+  followerCount: {
+    type: Number,
+    default: 0
+  },
+  followers: {},
+  following: {}
 })
 
 const User = module.exports = mongoose.model('User', UserSchema);
@@ -124,4 +130,56 @@ module.exports.removePost = function(post, callback) {
   };
   const options = {new: true};
   User.findOneAndUpdate({username: post.username}, query, options, callback);
+}
+
+module.exports.followed = function(currentUser, profileUser, callback) {
+  const query = {
+    $set: {
+      [`followers.${currentUser.username}`]: {
+        name: currentUser.name,
+        username: currentUser.username
+      }
+    },
+    $inc: {
+      followerCount: 1
+    }
+  };
+  const options = {new: true};
+  User.findOneAndUpdate({username: profileUser.username}, query, options, callback);
+}
+
+module.exports.following = function(currentUser, profileUser, callback) {
+  const query = {
+    $set: {
+      following: {
+        [`${profileUser.username}`] : {
+          name: profileUser.name,
+          username: profileUser.username
+        }
+      }
+    }
+  };
+  User.findOneAndUpdate({username: currentUser.username}, query, callback);
+}
+
+module.exports.unfollow = function(user, profile, callback) {
+  const query = {
+    $unset: {
+      [`followers.${user.username}`]: ""
+    },
+    $inc: {
+      followerCount: -1
+    }
+  };
+  const options = {new: true};
+  User.findOneAndUpdate({username: profile.username}, query, options, callback);
+}
+
+module.exports.removeFollowing = function(user, profile, callback) {
+  const query = {
+    $unset: {
+      [`following.${profile.username}`]: ""
+    }
+  };
+  User.findOneAndUpdate({username: user.username}, query, callback);
 }
