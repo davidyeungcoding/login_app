@@ -67,7 +67,10 @@ router.get('/profile/:username', (req, res, next) => {
         username: user.username,
         name: user.name,
         email: user.email,
-        posts: user.posts
+        posts: user.posts,
+        followerCount: user.followerCount,
+        followers: user.followers,
+        following: user.following
       }
     })
     : res.json({ success: false, msg: 'User not found' });
@@ -128,12 +131,12 @@ router.put('/profile/:username/follow', (req, res, next) => {
     username: req.body.profileUsername
   };
 
-  user.followed(follower, profile, (err, doc) => {
+  user.followed(follower, profile, (err, profileDoc) => {
     if (err) throw err;
-    if (doc) {
-      user.following(follower, profile, (err, nestedDoc) => {
+    if (profileDoc) {
+      user.following(follower, profile, (err, followerDoc) => {
         if (err) throw err;
-        return nestedDoc ? res.json({success: true, msg: doc.followers})
+        return followerDoc ? res.json({success: true, msg: profileDoc})
         : res.json({success: false, msg: 'Failed to update following information'});
       });
     } else res.json({success: false, msg: 'Failed to update follower information'});
@@ -153,9 +156,9 @@ router.put('/profile/:username/unfollow', (req, res, next) => {
   user.unfollow(follower, profile, (err, profileDoc) => {
     if (err) throw err;
     if (profileDoc) {
-      user.removeFollowing(follower, profile, (err, followingDoc) => {
+      user.removeFollowing(follower, profile, (err, followerDoc) => {
         if (err) throw err;
-        return followingDoc ? res.json({success: true, msg: profileDoc})
+        return followerDoc ? res.json({success: true, msg: profileDoc})
         : res.json({success: false, msg: 'Failed to remove followed user from following list'});
       });
     } else res.json({success: false, msg: 'Failed to unfollow profile'});

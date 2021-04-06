@@ -1,14 +1,29 @@
 <div class="container">
   <div class="row profile-block">
     <div class="col">
-      <h2 class="profile-title">{{ profileData.name }}</h2>
-      <p class="profile-title"
+      <h2 class="profile-inline">{{ profileData.name }}</h2>
+      <p class="profile-inline"
         id="profile-username">@{{ profileData.username }}</p>
     </div>
   </div>
   <div class="row profile-block">
     <div class="col">
-      <p># Followers</p>
+      <p class="profile-inline">{{ profileData.followerCount }} Followers</p>
+
+      <div *ngIf="displayFollowing(); else notFollowing"
+        class="profile-inline">
+        <button type="button"
+          class="btn profile-options-btn white-font"
+          (click)="onUnfollow()">
+          <i class="fas fa-heart white-font"></i></button>
+      </div>
+
+      <ng-template #notFollowing>
+        <button type="button"
+          class="btn profile-options-btn white-font"
+          (click)="onFollow()">
+          <i class="far fa-heart white-font"></i></button>
+      </ng-template>
     </div>
   </div>
 </div>

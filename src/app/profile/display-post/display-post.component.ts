@@ -33,8 +33,7 @@ export class DisplayPostComponent implements OnInit {
   };
 
   onOpinionVoiced(post: Post, value: number): void {
-    if (this.currentUser.id && !this.authService.isExpired()
-    && this.currentUser.username !== this.profileData.username) {
+    if (this.authService.visitingProfile(this.currentUser, this.profileData)) {
       const guest = this.currentUser.username;
       let payload;
       // consider moving everything to the service to handle the 'work'
@@ -64,12 +63,17 @@ export class DisplayPostComponent implements OnInit {
       };
       
       this.postService.updateLikes(payload).subscribe(doc => {
-        let updatedPost = doc.msg.find(_post => _post._id === post._id);
-        post.likes = updatedPost.likes;
-        post.dislikes = updatedPost.dislikes;
-        post.opinions = updatedPost.opinions;
+        if (doc.success) {
+          let updatedPost = doc.msg.find(_post => _post._id === post._id);
+          post.likes = updatedPost.likes;
+          post.dislikes = updatedPost.dislikes;
+          post.opinions = updatedPost.opinions;
+        } else {
+          // handle error
+        }
       });
     } else {
+      // handle isexpired
       if (this.authService.isExpired()) this.authService.logout();
     };
   };

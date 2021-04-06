@@ -53,6 +53,18 @@ export class AuthService {
     );
   };
 
+  followUser(payload) {
+    return this.http.put(`${this.api}/profile/${payload.profileUsername}/follow`, payload, httpOptions).pipe(
+      catchError(err => of(err))
+    );
+  };
+
+  unfollow(payload) {
+    return this.http.put(`${this.api}/profile/${payload.profileUsername}/unfollow`, payload, httpOptions).pipe(
+      catchError(err => of(err))
+    );
+  };
+
   storeUserData(token, user): void {
     localStorage.setItem('id_token', token);
     localStorage.setItem('user', JSON.stringify(user));
@@ -85,6 +97,11 @@ export class AuthService {
   personalProfile(currentUser, profileUser): boolean {
     return currentUser.id && !this.isExpired()
     && currentUser.username === profileUser.username ? true : false;
+  };
+
+  visitingProfile(currentUser, profileUser): boolean {
+    return currentUser.id && !this.isExpired()
+    && currentUser.username !== profileUser.username ? true : false;
   };
 
   logout(): void {

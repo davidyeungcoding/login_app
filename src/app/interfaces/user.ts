@@ -6,6 +6,7 @@ export interface User {
   name: string,
   email: string,
   posts: Post[],
-  // following: Array[],
-  // followers: Array[]
+  followerCount: number,
+  followers: object,
+  following: object
 }
