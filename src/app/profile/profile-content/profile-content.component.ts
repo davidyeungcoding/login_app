@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from '../../services/auth.service';
+import { ProfileService } from '../../services/profile.service';
 import { User } from '../../interfaces/user';
 
 @Component({
@@ -11,13 +12,17 @@ import { User } from '../../interfaces/user';
 export class ProfileContentComponent implements OnInit {
   private profileData: User;
   private currentUser: any;
-  private activeData: string = 'postList';
+  private activeTab: string;
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private profileService: ProfileService
+  ) { }
 
   ngOnInit(): void {
     this.authService.profileData.subscribe(_user => this.profileData = _user);
     this.authService.currentUser.subscribe(_user => this.currentUser = _user);
+    this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab);
   }
 
   personalProfile() {
@@ -26,16 +31,12 @@ export class ProfileContentComponent implements OnInit {
 
   onMakeActive(id: string): void {
     const current = document.getElementById(id);
-    const previous = document.getElementById(this.activeData);
+    const previous = document.getElementById(this.activeTab);
 
-    if (id !== this.activeData) {
+    if (id !== this.activeTab) {
       previous.classList.add('visible');
       current.classList.remove('visible');
-      this.activeData = id;
+      this.profileService.changeActiveTab(id);
     };
   };
-
-  onFollow() {
-    
-  }
 }

@@ -2,7 +2,7 @@
   <div *ngIf="posts.length; else noContent">
     <div class="main-content"
       *ngFor="let post of posts">
-      <div class="container post-main">
+      <div class="container content-box-main">
         <h4 class="post-user">{{ profileData.name }} </h4>
         <p class="post-user">@{{ profileData.username }}</p>
         <p class="timestamp">{{ post.timestamp }}</p>

@@ -6,7 +6,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
 import { HomeComponent } from './home/home.component';
 import { CreatePostComponent } from './profile/create-post/create-post.component';
-import { DisplayPostComponent } from './profile/display-post/display-post.component';
+import { DisplayPostComponent } from './profile/profile/display-post/display-post.component';
 import { ProfileComponent } from './profile/profile/profile.component';
 import { SearchComponent } from './search/search.component';
 import { ProfileDetailsComponent } from './profile/profile-details/profile-details.component';
@@ -18,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FlashMessagesModule } from 'angular2-flash-messages';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import * as bootstrap from "bootstrap";
+import { FollowingListComponent } from './profile/profile/following-list/following-list.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import * as bootstrap from "bootstrap";
     SearchComponent,
     ProfileDetailsComponent,
     ProfileContentComponent,
+    FollowingListComponent,
   ],
   imports: [
     BrowserModule,

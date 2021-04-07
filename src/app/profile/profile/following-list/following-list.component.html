@@ -1,0 +1,11 @@
+<div>
+  <div *ngFor="let user of profileData.following | keyvalue"
+    class="main-content">
+    <div class="container content-box-main"
+      (click)="changeProfileData(user.key)"
+      routerLink="/profile/{{ user.key }}">
+      <h4>{{ user.value.name }}</h4>
+      <p>@{{ user.value.username }}</p>
+    </div>
+  </div>
+</div>

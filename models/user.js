@@ -151,11 +151,9 @@ module.exports.followed = function(currentUser, profileUser, callback) {
 module.exports.following = function(currentUser, profileUser, callback) {
   const query = {
     $set: {
-      following: {
-        [`${profileUser.username}`] : {
-          name: profileUser.name,
-          username: profileUser.username
-        }
+      [`following.${profileUser.username}`] : {
+        name: profileUser.name,
+        username: profileUser.username
       }
     }
   };

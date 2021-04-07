@@ -2,10 +2,12 @@
   <div *ngIf="searchResults.length; else no_results">
     <div *ngFor="let result of searchResults"
       class="main-content">
-      <a class="clear-link title-username"
+      <div class="content-box-main"
         (click)="changeProfileData(result.username)"
-        routerLink="/profile/{{ result.username }}">{{ result.name }}</a>
-      <p>@{{ result.username }}</p>
+        routerLink="/profile/{{ result.username }}">
+        <h4>{{ result.name }}</h4>
+        <p>@{{ result.username }}</p>
+      </div>
     </div>
   </div>
   

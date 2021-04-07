@@ -30,6 +30,10 @@
   padding: 1% 2%;
 }
 
+.content-box-main {
+  padding-top: 1em;
+}
+
 .main-content-container {
   border-left: solid;
   border-right: solid;

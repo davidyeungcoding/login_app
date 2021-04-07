@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Post } from '../../interfaces/post';
-import { PostService } from '../../services/post.service';
-import { AuthService } from '../../services/auth.service';
-import { User } from '../../interfaces/user';
+import { Post } from '../../../interfaces/post';
+import { PostService } from '../../../services/post.service';
+import { AuthService } from '../../../services/auth.service';
+import { User } from '../../../interfaces/user';
 
 @Component({
   selector: 'app-display-post',

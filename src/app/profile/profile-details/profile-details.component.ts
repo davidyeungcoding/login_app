@@ -40,8 +40,15 @@ export class ProfileDetailsComponent implements OnInit {
           // handle error
         }
       })
+      // consider handling all below actions in a service function for all components
+    } else if (!!localStorage.getItem('id_token') && this.authService.isExpired()) {
+      // handle expired
+      this.authService.logout();
+      // redirect user to expired token page
+    } else if (!localStorage.getItem('id_token')) {
+      // handle not logged in condition
+      // modal informing user needs to log in before they can use feature
     }
-    // handle expired
   };
 
   onUnfollow() {
