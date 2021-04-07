@@ -13,6 +13,7 @@ export class ProfileService {
   resetVisible(add: string, remove: string): void {
     document.getElementById(add).classList.add('visible');
     document.getElementById(remove).classList.remove('visible');
+    this.changeActiveTab('postList');
   };
 
   changeActiveTab(tab: string): void {

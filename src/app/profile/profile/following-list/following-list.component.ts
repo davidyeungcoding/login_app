@@ -23,15 +23,20 @@ export class FollowingListComponent implements OnInit {
     this.authService.profileData.subscribe(_profile => this.profileData = _profile);
   };
 
+  followingList(): boolean {
+    return this.profileData.following ? !!Object.keys(this.profileData.following).length
+    : false;
+  };
+
   changeProfileData(username: string): void {
     this.authService.getProfile(username).subscribe(_profile => {
       if (_profile.success) {
         this.authService.changeProfileData(_profile.user);
         this.postService.changePost(_profile.user.posts);
-        this.profileService.changeActiveTab('postList');
         this.profileService.resetVisible('followingList', 'postList');
       } else {
-        // hadle proflie not found here
+        // handle proflie not found here
+        // redirect to profile not found page
       };
     });
   };

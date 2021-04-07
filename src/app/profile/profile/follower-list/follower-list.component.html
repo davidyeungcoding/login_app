@@ -1,0 +1,15 @@
+<div *ngIf="followersLength(); else noFollowers">
+  <div *ngFor="let user of profileData.followers | keyvalue"
+    class="main-content">
+    <div class="container content-box-main">
+      <h4>@{{ user.key }}</h4>
+      <p>{{ user.value.name }}</p>
+    </div>
+  </div>
+</div>
+
+<ng-template #noFollowers>
+  <div class="container content-box-main main-content">
+    <h5>You currently have no followers</h5>
+  </div>
+</ng-template>

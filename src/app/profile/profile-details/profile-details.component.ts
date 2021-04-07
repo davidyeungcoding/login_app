@@ -9,8 +9,8 @@ import { User } from '../../interfaces/user';
   styleUrls: ['./profile-details.component.css']
 })
 export class ProfileDetailsComponent implements OnInit {
-  profileData: User;
-  currentUser: any;
+  private profileData: User;
+  private currentUser: any;
 
   constructor(private authService: AuthService) { }
 
@@ -65,10 +65,13 @@ export class ProfileDetailsComponent implements OnInit {
           this.authService.changeProfileData(doc.msg);
         } else {
           // handle error
+          // redirect to profile not found for followed profile
         }
       });
     } else {
       // handle isexpired
+      // redirect to expired session page informing the problem
+      // redirect to home and logout / maybe logout and stay on page
     }
   };
 }

@@ -19,6 +19,7 @@ import { FlashMessagesModule } from 'angular2-flash-messages';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import * as bootstrap from "bootstrap";
 import { FollowingListComponent } from './profile/profile/following-list/following-list.component';
+import { FollowerListComponent } from './profile/profile/follower-list/follower-list.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { FollowingListComponent } from './profile/profile/following-list/followi
     ProfileDetailsComponent,
     ProfileContentComponent,
     FollowingListComponent,
+    FollowerListComponent,
   ],
   imports: [
     BrowserModule,

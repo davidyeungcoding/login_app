@@ -1,11 +1,17 @@
-<div>
+<div *ngIf="followingList(); else notFollowing">
   <div *ngFor="let user of profileData.following | keyvalue"
-    class="main-content">
+    class="main-content"
+      (click)="changeProfileData(user.key)">
     <div class="container content-box-main"
-      (click)="changeProfileData(user.key)"
       routerLink="/profile/{{ user.key }}">
-      <h4>{{ user.value.name }}</h4>
-      <p>@{{ user.value.username }}</p>
+      <h4>@{{ user.value.username }}</h4>
+      <p>{{ user.value.name }}</p>
     </div>
   </div>
 </div>
+
+<ng-template #notFollowing>
+  <div class="container content-box-main main-content">
+    <h5>Currently you are not following anyone</h5>
+  </div>
+</ng-template>

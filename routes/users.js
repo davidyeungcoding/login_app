@@ -153,14 +153,25 @@ router.put('/profile/:username/unfollow', (req, res, next) => {
     username: req.body.profileUsername
   };
 
-  user.unfollow(follower, profile, (err, profileDoc) => {
+  user.removeFollowing(follower, profile, (err, followerDoc) => {
     if (err) throw err;
-    if (profileDoc) {
-      user.removeFollowing(follower, profile, (err, followerDoc) => {
+    if (followerDoc) {
+      user.unfollow(follower, profile, (err, profileDoc) => {
         if (err) throw err;
-        return followerDoc ? res.json({success: true, msg: profileDoc})
-        : res.json({success: false, msg: 'Failed to remove followed user from following list'});
+        return profileDoc ? res.json({success: true, msg: profileDoc})
+        : res.json({success: false, msg: 'failed to find profile to unfollow'});
       });
-    } else res.json({success: false, msg: 'Failed to unfollow profile'});
+    } else res.json({success: false, msg: 'did not find profile in following list'});
   });
+
+  // user.unfollow(follower, profile, (err, profileDoc) => {
+  //   if (err) throw err;
+  //   if (profileDoc) {
+  //     user.removeFollowing(follower, profile, (err, followerDoc) => {
+  //       if (err) throw err;
+  //       return followerDoc ? res.json({success: true, msg: profileDoc})
+  //       : res.json({success: false, msg: 'Failed to remove followed user from following list'});
+  //     });
+  //   } else res.json({success: false, msg: 'Failed to unfollow profile'});
+  // });
 });
