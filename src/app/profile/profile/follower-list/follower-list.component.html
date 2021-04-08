@@ -1,6 +1,7 @@
 <div *ngIf="followersLength(); else noFollowers">
   <div *ngFor="let user of profileData.followers | keyvalue"
-    class="main-content">
+    class="main-content"
+    (click)="changeProfileData(user.key)">
     <div class="container content-box-main">
       <h4>@{{ user.key }}</h4>
       <p>{{ user.value.name }}</p>

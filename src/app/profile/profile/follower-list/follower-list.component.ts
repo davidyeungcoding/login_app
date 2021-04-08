@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from '../../../services/auth.service';
 import { ProfileService } from '../../../services/profile.service';
+import { PostService } from 'src/app/services/post.service';
 import { User } from 'src/app/interfaces/user';
 
 @Component({
@@ -14,7 +15,8 @@ export class FollowerListComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private postService: PostService
   ) { }
 
   ngOnInit(): void {
@@ -24,5 +26,18 @@ export class FollowerListComponent implements OnInit {
   followersLength(): boolean {
     return this.profileData.followers ? !!Object.keys(this.profileData.followers).length
     : false;
+  };
+
+  changeProfileData(username: string): void {
+    this.authService.getProfile(username).subscribe(_profile => {
+      if (_profile.success) {
+        this.authService.changeProfileData(_profile.user);
+        this.postService.changePost(_profile.user.posts);
+        this.profileService.resetVisible('followerList', 'postList');
+      } else {
+        // handle profile not found
+        // redirect to profile not found page
+      }
+    })
   };
 }

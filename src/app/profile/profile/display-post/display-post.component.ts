@@ -14,6 +14,7 @@ export class DisplayPostComponent implements OnInit {
   posts: Post[];
   profileData: User;
   currentUser: any;
+  toRemove: any = null;
 
   constructor(
     private postService: PostService,
@@ -78,10 +79,10 @@ export class DisplayPostComponent implements OnInit {
     };
   };
 
-  deletePost(post: Post) {
+  deletePost(): void {
     const payload = {
       username: JSON.parse(localStorage.getItem('user')).username,
-      id: post._id
+      id: this.toRemove._id
     };
 
     this.postService.deletePost(payload).subscribe(doc => {
@@ -91,6 +92,17 @@ export class DisplayPostComponent implements OnInit {
         // handle error
       };
     });
+    // may need to move based on how we deal with the error
+    this.clearDeleteRequest();
+  };
+
+  markForDeletion(post: Post): void {
+    this.toRemove = post;
+  };
+  
+  clearDeleteRequest(): void {
+    this.toRemove = null;
+    $('#deleteConfirmation').modal('hide');
   };
 
   personalProfile(): boolean {

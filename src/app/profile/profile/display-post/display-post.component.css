@@ -7,6 +7,19 @@
   display: inline;
 }
 
+.modal-text {
+  font-size: 20px;
+  color: black;
+}
+
+.modal-center {
+  text-align: center;
+}
+
+.modal-btn {
+  width: 30%;
+}
+
 /* .post-content {
   padding: 0 .6em;
 } */

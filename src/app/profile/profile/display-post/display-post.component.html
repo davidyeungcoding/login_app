@@ -15,7 +15,9 @@
             <button *ngIf="personalProfile()"
               type="button"
               class="btn opinion"
-              (click)="deletePost(post)">
+              (click)="markForDeletion(post)"
+              data-toggle="modal"
+              data-target="#deleteConfirmation">
               <i class="far fa-trash-alt icon-size white-font"></i>
               <!-- consider setting up a modal for confirmation of deletion -->
             </button>
@@ -48,4 +50,32 @@
   <ng-template #noContent>
     <p class="main-content">No Posts Found</p>
   </ng-template>
+
+  <div class="modal fade"
+    id="deleteConfirmation"
+    tabindex="-1"
+    aria-labelledby="deleteConfirmationLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="container">
+            <div class="row">
+              <div class="col modal-center">
+                <p class="modal-text">Are you sure you want to delete this post?</p>
+              </div>
+            </div>
+            <div class="row d-flex justify-content-around">
+              <button type="button"
+                class="btn btn-secondary modal-btn"
+                (click)="deletePost()">Yes</button>
+              <button type="button"
+                class="btn btn-secondary modal-btn"
+                (click)="clearDeleteRequest()">No</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
