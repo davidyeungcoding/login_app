@@ -139,9 +139,9 @@ router.put('/profile/:username/follow', (req, res, next) => {
       user.following(follower, profile, (err, followerDoc) => {
         if (err) throw err;
         return followerDoc ? res.json({success: true, msg: profileDoc})
-        : res.json({success: false, msg: 'Failed to update following information for the current user'});
+        : res.json({success: false, msg: `Failed to update following information for @${follower.username}, redirecting to profile page.`});
       });
-    } else res.json({success: false, msg: 'Failed to update follower information for followed profile'});
+    } else res.json({success: false, msg: `Unable to find profile informatoin for @${profile.username}, redirecting to profile page.`});
   });
 });
 

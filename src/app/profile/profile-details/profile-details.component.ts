@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from '../../services/auth.service';
+import { PostService } from 'src/app/services/post.service';
 import { User } from '../../interfaces/user';
 
 @Component({
@@ -11,8 +12,12 @@ import { User } from '../../interfaces/user';
 export class ProfileDetailsComponent implements OnInit {
   profileData: User;
   private currentUser: any;
+  followErrorMsg: string = '';
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private postService: PostService
+  ) { }
 
   ngOnInit(): void {
     this.authService.profileData.subscribe(_user => this.profileData = _user);
@@ -36,13 +41,20 @@ export class ProfileDetailsComponent implements OnInit {
         profileUsername: this.profileData.username
       };
 
-      this.authService.followUser(payload).subscribe(doc => {
-        if (doc.success) {
-          this.authService.changeProfileData(doc.msg);
+      this.authService.followUser(payload).subscribe(_user => {
+        if (_user.success) {
+          this.authService.changeProfileData(_user.msg);
         } else {
-          // handle error
-        }
-      })
+          this.followErrorMsg = _user.msg;
+          document.getElementById('followErrorMsg').classList.remove('visible');
+          
+          setTimeout(() => {
+            document.getElementById('followErrorMsg').classList.add('visible');
+            this.followErrorMsg = '';
+            this.authService.handleRedirectProfile(this.currentUser.username);
+          }, 5000);
+        };
+      });
       // consider handling all below actions in a service function for all components
     } else if (!!localStorage.getItem('id_token') && this.authService.isExpired()) {
       // handle expired

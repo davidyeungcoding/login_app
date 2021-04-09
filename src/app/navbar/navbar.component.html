@@ -44,8 +44,7 @@
           class="nav-item"
           routerLinkActive="active">
           <a class="nav-link"
-            (click)="onLoadProfile()"
-            routerLink="/profile/{{ this.currentUser.username }}">My Profile</a>
+            (click)="onLoadProfile()">My Profile</a>
         </li>
         <li *ngIf="this.expiredToken()"
           class="nav-item"

@@ -4,6 +4,8 @@ import { catchError } from 'rxjs/operators';
 import { Observable, throwError, of, BehaviorSubject } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from '../interfaces/user';
+import { PostService } from './post.service';
+import { Router } from '@angular/router';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -31,8 +33,10 @@ export class AuthService {
   profileData = this.profileDataSource.asObservable();
 
   constructor(
+    private postService: PostService,
+    private router: Router,
     private http: HttpClient,
-    private jwtHelper: JwtHelperService
+    private jwtHelper: JwtHelperService,
   ) { }
 
   registerUser(user) {
@@ -81,16 +85,16 @@ export class AuthService {
     return this.jwtHelper.isTokenExpired();
   };
 
-  changeUser(user: User): void {
+  changeUser(user: any): void {
     user ? this.userSource.next({
-      id: user._id,
+      id: user.id,
       username: user.username,
       name: user.name,
       email: user.email
     }) : this.userSource.next(this.emptyUser);
   };
 
-  changeProfileData(user): void {
+  changeProfileData(user: any): void {
     this.profileDataSource.next(user);
   };
 
@@ -108,5 +112,16 @@ export class AuthService {
     this.authToken = null;
     this.changeUser(null);
     localStorage.clear();
+  };
+
+  handleRedirectProfile(username: string): void {
+    this.getProfile(username).subscribe(_user => {
+      if (_user.success) {
+        this.changeProfileData(_user.user);
+        this.postService.changePost(_user.user.posts);
+        this.router.navigate([`/profile/${username}`]);
+      } else this.logout();
+      // convert logout to handleLogout function when ready
+    });
   };
 }

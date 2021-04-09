@@ -9,3 +9,8 @@
 #profile-username {
   margin-left: .6em;
 }
+
+#followErrorMsg {
+  color: red;
+  margin: 0;
+}
