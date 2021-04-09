@@ -5,7 +5,6 @@ import { SearchService } from '../services/search.service';
 import { PostService } from '../services/post.service';
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { User } from '../interfaces/user';
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +12,7 @@ import { User } from '../interfaces/user';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  private currentUser: User;
+  private currentUser: any;
   private searchResults: any[];
 
   constructor(

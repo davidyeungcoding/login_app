@@ -63,7 +63,7 @@ router.get('/profile/:username', (req, res, next) => {
     return user ? res.json({
       success: true,
       user: {
-        id: user._id,
+        _id: user._id,
         username: user.username,
         name: user.name,
         email: user.email,
@@ -123,10 +123,12 @@ router.put("/profile/:username/post/remove", (req, res, next) => {
 
 router.put('/profile/:username/follow', (req, res, next) => {
   const follower = {
+    userId: req.body.followerId,
     name: req.body.followerName,
     username: req.body.followerUsername
   };
   const profile = {
+    userId: req.body.profileId,
     name: req.body.profileName,
     username: req.body.profileUsername
   };
@@ -137,18 +139,20 @@ router.put('/profile/:username/follow', (req, res, next) => {
       user.following(follower, profile, (err, followerDoc) => {
         if (err) throw err;
         return followerDoc ? res.json({success: true, msg: profileDoc})
-        : res.json({success: false, msg: 'Failed to update following information'});
+        : res.json({success: false, msg: 'Failed to update following information for the current user'});
       });
-    } else res.json({success: false, msg: 'Failed to update follower information'});
+    } else res.json({success: false, msg: 'Failed to update follower information for followed profile'});
   });
 });
 
 router.put('/profile/:username/unfollow', (req, res, next) => {
   const follower = {
+    userId: req.body.followerId,
     name: req.body.followerName,
     username: req.body.followerUsername
   };
   const profile = {
+    userId: req.body.profileId,
     name: req.body.profileName,
     username: req.body.profileUsername
   };
@@ -163,15 +167,4 @@ router.put('/profile/:username/unfollow', (req, res, next) => {
       });
     } else res.json({success: false, msg: 'did not find profile in following list'});
   });
-
-  // user.unfollow(follower, profile, (err, profileDoc) => {
-  //   if (err) throw err;
-  //   if (profileDoc) {
-  //     user.removeFollowing(follower, profile, (err, followerDoc) => {
-  //       if (err) throw err;
-  //       return followerDoc ? res.json({success: true, msg: profileDoc})
-  //       : res.json({success: false, msg: 'Failed to remove followed user from following list'});
-  //     });
-  //   } else res.json({success: false, msg: 'Failed to unfollow profile'});
-  // });
 });

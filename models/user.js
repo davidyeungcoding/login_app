@@ -133,9 +133,15 @@ module.exports.removePost = function(post, callback) {
 }
 
 module.exports.followed = function(currentUser, profileUser, callback) {
+  const filter = {
+    _id: profileUser.userId,
+    username: profileUser.username
+  };
+
   const query = {
     $set: {
       [`followers.${currentUser.username}`]: {
+        userId: currentUser.userId,
         name: currentUser.name,
         username: currentUser.username
       }
@@ -145,22 +151,33 @@ module.exports.followed = function(currentUser, profileUser, callback) {
     }
   };
   const options = {new: true};
-  User.findOneAndUpdate({username: profileUser.username}, query, options, callback);
+  User.findOneAndUpdate(filter, query, options, callback);
 }
 
 module.exports.following = function(currentUser, profileUser, callback) {
+  const filter = {
+    _id: currentUser.userId,
+    username: currentUser.username
+  };
+
   const query = {
     $set: {
       [`following.${profileUser.username}`] : {
+        userId: profileUser.userId,
         name: profileUser.name,
         username: profileUser.username
       }
     }
   };
-  User.findOneAndUpdate({username: currentUser.username}, query, callback);
+  User.findOneAndUpdate(filter, query, callback);
 }
 
 module.exports.unfollow = function(user, profile, callback) {
+  const filter = {
+    _id: profile.userId,
+    username: profile.username
+  };
+
   const query = {
     $unset: {
       [`followers.${user.username}`]: ""
@@ -170,14 +187,19 @@ module.exports.unfollow = function(user, profile, callback) {
     }
   };
   const options = {new: true};
-  User.findOneAndUpdate({username: profile.username}, query, options, callback);
+  User.findOneAndUpdate(filter, query, options, callback);
 }
 
 module.exports.removeFollowing = function(user, profile, callback) {
+  const filter = {
+    _id: user.userId,
+    username: user.username,
+  };
+
   const query = {
     $unset: {
       [`following.${profile.username}`]: ""
     }
   };
-  User.findOneAndUpdate({username: user.username}, query, callback);
+  User.findOneAndUpdate(filter, query, callback);
 }

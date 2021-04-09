@@ -18,7 +18,7 @@ export class AuthService {
   authToken: any;
   private localUser = JSON.parse(localStorage.getItem('user'));
   emptyUser = {
-    id: false,
+    _id: false,
     username: false,
     name: false,
     email: false
@@ -83,7 +83,7 @@ export class AuthService {
 
   changeUser(user: User): void {
     user ? this.userSource.next({
-      id: user.id,
+      id: user._id,
       username: user.username,
       name: user.name,
       email: user.email

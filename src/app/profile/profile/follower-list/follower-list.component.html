@@ -2,7 +2,8 @@
   <div *ngFor="let user of profileData.followers | keyvalue"
     class="main-content"
     (click)="changeProfileData(user.key)">
-    <div class="container content-box-main">
+    <div class="container content-box-main"
+      routerLink="/profile/{{ user.key }}">
       <h4>@{{ user.key }}</h4>
       <p>{{ user.value.name }}</p>
     </div>
@@ -10,7 +11,9 @@
 </div>
 
 <ng-template #noFollowers>
-  <div class="container content-box-main main-content">
-    <h5>You currently have no followers</h5>
+  <div class="main-content">
+    <div class="container content-box-main">
+      <h5>You currently have no followers</h5>
+    </div>
   </div>
 </ng-template>

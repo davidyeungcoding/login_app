@@ -21,14 +21,17 @@ export class ProfileDetailsComponent implements OnInit {
 
   displayFollowing(): boolean {
     return this.profileData.followers ? !!this.profileData.followers[this.currentUser.username]
+    && this.profileData.followers[this.currentUser.username].userId === this.currentUser.id
     : false;
   };
 
   onFollow() {
     if (this.authService.visitingProfile(this.currentUser, this.profileData)) {
       const payload = {
+        followerId: this.currentUser.id,
         followerName: this.currentUser.name,
         followerUsername: this.currentUser.username,
+        profileId: this.profileData._id,
         profileName: this.profileData.name,
         profileUsername: this.profileData.username
       };
@@ -52,10 +55,12 @@ export class ProfileDetailsComponent implements OnInit {
   };
 
   onUnfollow() {
-    if (this.authService.visitingProfile(this.currentUser, this.profileData)) {
+    if (!this.authService.isExpired()) {
       const payload = {
+        followerId: this.currentUser.id,
         followerNane: this.currentUser.name,
         followerUsername: this.currentUser.username,
+        profileId: this.profileData._id,
         profileName: this.profileData.name,
         profileUsername: this.profileData.username
       };
