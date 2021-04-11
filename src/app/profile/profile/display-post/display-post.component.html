@@ -14,15 +14,14 @@
           <div>
             <button *ngIf="personalProfile()"
               type="button"
-              class="btn opinion"
+              class="btn opinion btn-bounce"
               (click)="markForDeletion(post)"
               data-toggle="modal"
               data-target="#deleteConfirmation">
               <i class="far fa-trash-alt icon-size white-font"></i>
-              <!-- consider setting up a modal for confirmation of deletion -->
             </button>
             <button type="button"
-              class="btn opinion"
+              class="btn opinion btn-bounce"
               (click)="onOpinionVoiced(post, 1)">
               <i *ngIf="checkForOpinion(post, 1); else likeNotSelected"
                 class="fas fa-arrow-alt-circle-up icon-size white-font"></i>
@@ -32,7 +31,7 @@
             </button>
             <p class="opinion opinion-count">{{ post.likes }}</p>
             <button type="button"
-              class="btn opinion"
+              class="btn opinion btn-bounce-reverse"
               (click)="onOpinionVoiced(post, -1)">
               <i *ngIf="checkForOpinion(post, -1); else dislikeNotSelected"
                 class="fas fa-arrow-alt-circle-down icon-size white-font"></i>

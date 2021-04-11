@@ -21,14 +21,14 @@
       <div *ngIf="displayFollowing(); else notFollowing"
         class="profile-inline">
         <button type="button"
-          class="btn profile-options-btn white-font"
+          class="btn profile-options-btn white-font btn-bounce"
           (click)="onUnfollow()">
           <i class="fas fa-heart white-font"></i></button>
       </div>
 
       <ng-template #notFollowing>
         <button type="button"
-          class="btn profile-options-btn white-font"
+          class="btn profile-options-btn white-font btn-bounce"
           (click)="onFollow()">
           <i class="far fa-heart white-font"></i></button>
       </ng-template>

@@ -1,9 +1,9 @@
+/* ================== */
+/* || Form Styling || */
+/* ================== */
+
 .form-style-box {
   display: inline-block;
-}
-
-.btn-container-holder {
-  text-align: center;
 }
 
 .form-btn-container {
@@ -19,10 +19,50 @@
   margin: 5% 10%;
 }
 
+/* ============ */
+/* || Button || */
+/* ============ */
+
+.btn-container-holder {
+  text-align: center;
+}
+
+.btn-bounce:hover {
+  position: relative;
+  animation: bounce .5s;
+}
+
+@keyframes bounce {
+  0% { top: 0px }
+  20% { top: -5px }
+  85% { top: 1px }
+  100% { top: 0px }
+}
+
+.btn-bounce-reverse:hover {
+  position: relative;
+  animation: bounce-reverse .5s;
+}
+
+@keyframes bounce-reverse {
+  0% { top: 0px }
+  20% { top: 5px }
+  85% { top: -1px }
+  100% { top: 0px }
+}
+
+/* =========== */
+/* || Links || */
+/* =========== */
+
 .clear-link, .clear-link:hover {
   text-decoration: none;
   color: white;
 }
+
+/* ================== */
+/* || main-content || */
+/* ================== */
 
 .main-content {
   border-top: solid;
@@ -39,6 +79,10 @@
   border-right: solid;
   border-width: 1px;
 }
+
+/* =========== */
+/* || Other || */
+/* =========== */
 
 .align-right {
   text-align: right;
