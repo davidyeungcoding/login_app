@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from '../../services/auth.service';
-import { PostService } from 'src/app/services/post.service';
 import { User } from '../../interfaces/user';
 
 @Component({
@@ -12,17 +11,20 @@ import { User } from '../../interfaces/user';
 export class ProfileDetailsComponent implements OnInit {
   profileData: User;
   private currentUser: any;
-  followErrorMsg: string = '';
+  followErrorMsg: string;
 
   constructor(
-    private authService: AuthService,
-    private postService: PostService
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
     this.authService.profileData.subscribe(_user => this.profileData = _user);
     this.authService.currentUser.subscribe(_user => this.currentUser = _user);
   }
+  
+// ===============
+// || Following ||
+// ===============
 
   displayFollowing(): boolean {
     return this.profileData.followers ? !!this.profileData.followers[this.currentUser.username]
@@ -50,20 +52,20 @@ export class ProfileDetailsComponent implements OnInit {
           
           setTimeout(() => {
             document.getElementById('followErrorMsg').classList.add('visible');
-            this.followErrorMsg = '';
             this.authService.handleRedirectProfile(this.currentUser.username);
           }, 5000);
         };
       });
-      // consider handling all below actions in a service function for all components
     } else if (!!localStorage.getItem('id_token') && this.authService.isExpired()) {
-      // handle expired
-      this.authService.logout();
-      // redirect user to expired token page
+      this.authService.redirectDump('/session-timed-out', 'session');
     } else if (!localStorage.getItem('id_token')) {
-      // handle not logged in condition
-      // modal informing user needs to log in before they can use feature
-    }
+      this.followErrorMsg = 'You must be logged in before following.';
+      document.getElementById('followErrorMsg').classList.remove('visible');
+
+      setTimeout(() => {
+        document.getElementById('followErrorMsg').classList.add('visible');
+      }, 5000);
+    };
   };
 
   onUnfollow() {
@@ -77,18 +79,21 @@ export class ProfileDetailsComponent implements OnInit {
         profileUsername: this.profileData.username
       };
   
-      this.authService.unfollow(payload).subscribe(doc => {
-        if (doc.success) {
-          this.authService.changeProfileData(doc.msg);
+      this.authService.unfollow(payload).subscribe(_user => {
+        if (_user.success) {
+          this.authService.changeProfileData(_user.msg);
         } else {
-          // handle error
-          // redirect to profile not found for followed profile
-        }
+          this.followErrorMsg = _user.msg;
+          document.getElementById('followErrorMsg').classList.remove('visible');
+
+          setTimeout(() => {
+            document.getElementById('followErrorMsg').classList.add('visible');
+            this.authService.handleRedirectProfile(this.currentUser.username);
+          }, 5000);
+        };
       });
-    } else {
-      // handle isexpired
-      // redirect to expired session page informing the problem
-      // redirect to home and logout / maybe logout and stay on page
-    }
+    } else if (!!localStorage.getItem('id_token') && this.authService.isExpired()) {
+      this.authService.redirectDump('/session-timed-out', 'session');
+    };
   };
 }

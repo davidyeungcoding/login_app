@@ -20,6 +20,7 @@ import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import * as bootstrap from "bootstrap";
 import { FollowingListComponent } from './profile/profile/following-list/following-list.component';
 import { FollowerListComponent } from './profile/profile/follower-list/follower-list.component';
+import { DumpScreenComponent } from './dump-screen/dump-screen.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { FollowerListComponent } from './profile/profile/follower-list/follower-
     ProfileContentComponent,
     FollowingListComponent,
     FollowerListComponent,
+    DumpScreenComponent,
   ],
   imports: [
     BrowserModule,

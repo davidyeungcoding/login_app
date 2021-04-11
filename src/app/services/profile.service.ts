@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -6,7 +7,9 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ProfileService {
   private activeTabSource = new BehaviorSubject<string>('postList');
-  activeTab = this.activeTabSource.asObservable()
+  activeTab = this.activeTabSource.asObservable();
+  private dumpMessageSource = new BehaviorSubject<string>('');
+  dumpMessage = this.dumpMessageSource.asObservable();
 
   constructor() { }
 
@@ -18,5 +21,9 @@ export class ProfileService {
 
   changeActiveTab(tab: string): void {
     this.activeTabSource.next(tab);
+  };
+
+  changeDumpMessage(term: string): void {
+    this.dumpMessageSource.next(term);
   };
 }

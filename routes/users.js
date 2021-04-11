@@ -7,6 +7,12 @@ const config = require('../config/database');
 const User = require('../models/user');
 const user = require('../models/user');
 
+module.exports = router;
+
+// ====================
+// || Create Account ||
+// ====================
+
 router.post('/register', (req, res, next) => {
   let newUser = new User({
     username: req.body.username,
@@ -21,6 +27,10 @@ router.post('/register', (req, res, next) => {
     : res.json({success: true, msg: `New user registered.`});
   });
 })
+
+// =============================
+// || Authenticate Login Info ||
+// =============================
 
 router.post('/authenticate', (req, res, next) => {
   const username = req.body.username;
@@ -49,12 +59,26 @@ router.post('/authenticate', (req, res, next) => {
         return res.json({success: false, msg: 'Username and password do not match.'});
       };
     });
-  })
+  });
 })
 
-module.exports = router;
+// ================
+// || Search Bar ||
+// ================
 
-// Test Below
+router.post('/search', (req, res, next) => {
+  const re = new RegExp(req.body.searchTerm);
+  const query = {username: re};
+  user.getSpecific(query, 'name username', (err, doc) => {
+    if (err) throw err;
+    return doc.length ? res.json({success: true, msg: doc})
+    : res.json({success : false, msg: 'No matching users'});
+  });
+});
+
+// ==================
+// || Profile Page ||
+// ==================
 
 router.get('/profile/:username', (req, res, next) => {
   const username = req.params.username;
@@ -77,6 +101,10 @@ router.get('/profile/:username', (req, res, next) => {
   });
 });
 
+// ===========
+// || Posts ||
+// ===========
+
 router.get('/profile/:username/post', (req, res, next) => {
   const username = req.params.username;
   const query = {username: username};
@@ -95,15 +123,9 @@ router.put('/profile/:username/post', (req, res, next) => {
   });
 });
 
-router.post('/search', (req, res, next) => {
-  const re = new RegExp(req.body.searchTerm);
-  const query = {username: re};
-  user.getSpecific(query, 'name username', (err, doc) => {
-    if (err) throw err;
-    return doc.length ? res.json({success: true, msg: doc})
-    : res.json({success : false, msg: 'No matching users'});
-  });
-});
+// ============================
+// || Post: Likes & Dislikes ||
+// ============================
 
 router.put('/profile/:username/post/opinion', (req, res, next) => {
   user.postOpinion(req.body, (err, doc) => {
@@ -120,6 +142,10 @@ router.put("/profile/:username/post/remove", (req, res, next) => {
     : res.json({success: false, msg: 'failed to remove post'});
   });
 });
+
+// ================================
+// || Profile: Follow & Unfollow ||
+// ================================
 
 router.put('/profile/:username/follow', (req, res, next) => {
   const follower = {

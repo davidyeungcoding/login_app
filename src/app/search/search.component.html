@@ -3,7 +3,7 @@
     <div *ngFor="let result of searchResults"
       class="main-content"
       (click)="changeProfileData(result.username)">
-      <div class="content-box-main"
+      <div class="container content-box-main"
         routerLink="/profile/{{ result.username }}">
         <h4>@{{ result.username }}</h4>
         <p>{{ result.name }}</p>

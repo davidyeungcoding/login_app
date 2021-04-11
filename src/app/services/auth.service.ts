@@ -6,6 +6,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from '../interfaces/user';
 import { PostService } from './post.service';
 import { Router } from '@angular/router';
+import { ProfileService } from './profile.service';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -27,6 +28,10 @@ export class AuthService {
   };
   api = 'http://localhost:3000/users';
 
+// =================
+// || Observables ||
+// =================
+
   private userSource = new BehaviorSubject<any>(this.localUser ? this.localUser : this.emptyUser);
   currentUser = this.userSource.asObservable();
   private profileDataSource = new BehaviorSubject<any>({});
@@ -34,10 +39,15 @@ export class AuthService {
 
   constructor(
     private postService: PostService,
+    private profileService: ProfileService,
     private router: Router,
     private http: HttpClient,
     private jwtHelper: JwtHelperService,
   ) { }
+
+// =====================
+// || Router Requests ||
+// =====================
 
   registerUser(user) {
     return this.http.post(`${this.api}/register`, user, httpOptions).pipe(
@@ -69,6 +79,10 @@ export class AuthService {
     );
   };
 
+// ========================
+// || User Profile Setup ||
+// ========================
+
   storeUserData(token, user): void {
     localStorage.setItem('id_token', token);
     localStorage.setItem('user', JSON.stringify(user));
@@ -85,6 +99,10 @@ export class AuthService {
     return this.jwtHelper.isTokenExpired();
   };
 
+// ============================
+// || Change Observable Data ||
+// ============================
+
   changeUser(user: any): void {
     user ? this.userSource.next({
       id: user.id,
@@ -98,6 +116,10 @@ export class AuthService {
     this.profileDataSource.next(user);
   };
 
+// =============================
+// || Verify Personal Profile ||
+// =============================
+
   personalProfile(currentUser, profileUser): boolean {
     return currentUser.id && !this.isExpired()
     && currentUser.username === profileUser.username ? true : false;
@@ -107,6 +129,10 @@ export class AuthService {
     return currentUser.id && !this.isExpired()
     && currentUser.username !== profileUser.username ? true : false;
   };
+
+// =======================
+// || Logout & Redirect ||
+// =======================
 
   logout(): void {
     this.authToken = null;
@@ -120,8 +146,15 @@ export class AuthService {
         this.changeProfileData(_user.user);
         this.postService.changePost(_user.user.posts);
         this.router.navigate([`/profile/${username}`]);
-      } else this.logout();
-      // convert logout to handleLogout function when ready
+      } else this.redirectDump('/profile-not-found', 'profile');
     });
+  };
+
+  redirectDump(route: string, term: string): void {
+    // needs more work
+    // redirect to profile not found then timeout follow up with logout
+    // needs to be tested
+    this.profileService.changeDumpMessage(term);
+    this.router.navigate([route]);
   };
 }
