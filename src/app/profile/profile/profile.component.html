@@ -1,5 +1,5 @@
 <div class="main-content-container">
-  <div *ngIf='profileFound; else profileNotFound'>
+  <div *ngIf='!!profileData.username; else profileNotFound'>
     <div class="container" *ngIf="profileData">
       <app-profile-details></app-profile-details>
       <app-profile-content></app-profile-content>

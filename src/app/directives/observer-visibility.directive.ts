@@ -2,6 +2,10 @@ import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, OnDestroy, O
 import { Subject } from 'rxjs';
 import { delay, filter } from 'rxjs/operators'
 
+import { PostService } from '../services/post.service';
+import { ActivatedRoute } from '@angular/router';
+import { Post } from '../interfaces/post';
+
 @Directive({
   selector: '[appObserverVisibility]'
 })
@@ -18,14 +22,22 @@ export class ObserverVisibilityDirective
   //   observer: IntersectionObserver;
   // }>();
   private testObserver: IntersectionObserver | undefined;
+  private postCount: number;
+  private posts: Post[];
 
-  constructor(private element: ElementRef) { }
+  constructor(
+    private element: ElementRef,
+    private postService: PostService,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
+    this.test();
+    this.postService.postCount.subscribe(_count => this.postCount = _count);
+    this.postService.currentPosts.subscribe(_postList => this.posts = _postList);
+    this.testObserver.observe(this.element.nativeElement);
     // this.createObserver();
     console.log('ngOnInit')
-    this.test()
-    this.testObserver.observe(this.element.nativeElement)
   }
   
   ngAfterViewInit() {
@@ -91,11 +103,22 @@ export class ObserverVisibilityDirective
   //   })
   // }
 
+// ==============
 // || Personal ||
+// ==============
 
   test(): void {
     this.testObserver = new IntersectionObserver(entry => {
-      if (entry[0].intersectionRatio > 0) console.log(entry)
+      if (entry[0].intersectionRatio > 0) {
+        const username = this.route.snapshot.paramMap.get('username');
+
+        this.postService.loadMorePosts(username, this.posts.length).subscribe(_posts => {
+          if (_posts.success) {
+            this.posts.push(..._posts.msg);
+            // this.postService.changePost([...this.posts, ..._posts.msg]);
+          }
+        })
+      }
     });
   };
 }

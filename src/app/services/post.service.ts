@@ -64,7 +64,7 @@ export class PostService {
   //   );
   // };
 
-  loadMorePosts(username: string, start: number, end: number) {
+  loadMorePosts(username: string, start: number) {
     return this.http.get(`${this.api}/profile/${username}/loadmoreposts?start=${start}`).pipe(
       catchError(err => of(err))
     );

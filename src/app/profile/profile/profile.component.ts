@@ -13,7 +13,6 @@ import { User } from '../../interfaces/user';
 })
 export class ProfileComponent implements OnInit {
   private profileData: User;
-  profileFound: boolean;
 
   constructor(
     private authService: AuthService,
@@ -25,18 +24,11 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.authService.profileData.subscribe(user => this.profileData = user);
     this.profileService.changeActiveList('postList');
-    this.getProfileData();
+    if (!this.profileData.username) this.getProfileData();
   }
 
   getProfileData(): void {
     let username = this.route.snapshot.paramMap.get('username');
-    this.authService.getProfile(username).subscribe(_user => {
-      if (_user.success) {
-        this.profileFound = true;
-        this.authService.changeProfileData(_user.user);
-        this.postService.changePostCount(_user.user.postCount);
-        this.postService.changePost(this.profileData.posts);
-      } else this.profileFound = false;
-    });
+    this.authService.handleRedirectProfile(username, false);
   };
 }

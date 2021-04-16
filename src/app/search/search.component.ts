@@ -25,13 +25,6 @@ export class SearchComponent implements OnInit {
   }
 
   changeProfileData(username: string): void {
-    this.authService.getProfile(username).subscribe(doc => {
-      if (doc.success) {
-        this.authService.changeProfileData(doc.user);
-        this.postService.changePostCount(doc.users.postCount);
-      } else {
-        this.authService.changeProfileData(this.authService.emptyUser);
-      };
-    });
+    this.authService.handleRedirectProfile(username);
   };
 }

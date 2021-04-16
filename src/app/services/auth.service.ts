@@ -140,12 +140,13 @@ export class AuthService {
     localStorage.clear();
   };
 
-  handleRedirectProfile(username: string): void {
+  handleRedirectProfile(username: string, redirect: boolean = true): void {
     this.getProfile(username).subscribe(_user => {
       if (_user.success) {
         this.changeProfileData(_user.user);
         this.postService.changePost(_user.user.posts);
-        this.router.navigate([`/profile/${username}`]);
+        this.postService.changePostCount(_user.user.postCount);
+        if (redirect) this.router.navigate([`/profile/${username}`]);
       } else this.redirectDump('/profile-not-found', 'profile');
     });
   };
