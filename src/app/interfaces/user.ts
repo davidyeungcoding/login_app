@@ -5,6 +5,7 @@ export interface User {
   username: string,
   name: string,
   email: string,
+  postCount: number,
   posts: Post[],
   followerCount: number,
   followers: object,

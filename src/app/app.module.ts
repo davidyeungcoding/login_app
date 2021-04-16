@@ -21,6 +21,7 @@ import * as bootstrap from "bootstrap";
 import { FollowingListComponent } from './profile/profile/following-list/following-list.component';
 import { FollowerListComponent } from './profile/profile/follower-list/follower-list.component';
 import { DumpScreenComponent } from './dump-screen/dump-screen.component';
+import { ObserverVisibilityDirective } from './directives/observer-visibility.directive';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { DumpScreenComponent } from './dump-screen/dump-screen.component';
     FollowingListComponent,
     FollowerListComponent,
     DumpScreenComponent,
+    ObserverVisibilityDirective,
   ],
   imports: [
     BrowserModule,

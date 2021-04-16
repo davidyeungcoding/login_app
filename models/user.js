@@ -19,6 +19,10 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  postCount: {
+    type: Number,
+    default: 0
+  },
   posts: [
     mongoose.Schema({
       timestamp: {
@@ -55,8 +59,13 @@ module.exports.getUserById = function(id, callback) {
 }
 
 module.exports.getUserByUsername = function(username, callback) {
-  const query = {username: username};
-  User.findOne(query, callback);
+  const filter = {username: username};
+  const query = {
+    posts: {
+      $slice: [0, 25]
+    }
+  };
+  User.findOne(filter, query, callback);
 }
 
 module.exports.addUser = function(newUser, callback) {
@@ -76,20 +85,15 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
   });
 }
 
-// Test Below
-
-// module.exports.findUsers = function(term, callback) {
-//   const re = new RegExp(term);
-//   const query = {username: re};
-//   User.find(query, callback).select('username');
-// }
-
 module.exports.getSpecific = function(query, selection, callback) {
   User.find(query, callback).select(selection);
 }
 
 module.exports.addPost = function(newPost, callback) {
   const query = {
+    $inc: {
+      postCount: 1
+    },
     $push: {
       posts: {
         $each: [newPost.content],
@@ -98,7 +102,22 @@ module.exports.addPost = function(newPost, callback) {
     }
   };
   const options = {new: true};
-  User.findByIdAndUpdate(newPost.userId, query, options, callback);
+  User.findByIdAndUpdate(newPost.userId, query, options, callback).select('posts postCount');
+}
+
+module.exports.removePost = function(post, callback) {
+  const query = {
+    $inc: {
+      postCount: -1
+    },
+    $pull: {
+      posts: {
+        _id: post.id
+      }
+    }
+  };
+  const options = {new: true};
+  User.findOneAndUpdate({username: post.username}, query, options, callback).select('posts postCount');
 }
 
 module.exports.postOpinion = function(post, callback) {
@@ -118,18 +137,6 @@ module.exports.postOpinion = function(post, callback) {
   };
   const options = { new: true };
   User.findOneAndUpdate(filter, query, options, callback);
-}
-
-module.exports.removePost = function(post, callback) {
-  const query = {
-    $pull: {
-      posts: {
-        _id: post.id
-      }
-    }
-  };
-  const options = {new: true};
-  User.findOneAndUpdate({username: post.username}, query, options, callback);
 }
 
 module.exports.followed = function(currentUser, profileUser, callback) {
@@ -203,3 +210,12 @@ module.exports.removeFollowing = function(user, profile, callback) {
   };
   User.findOneAndUpdate(filter, query, callback);
 }
+
+module.exports.loadMorePosts = function(username, start, callback) {
+  const query = {
+    posts: {
+      $slice: [start, 25]
+    }
+  };
+  User.findOne({username: username}, query, callback);
+};

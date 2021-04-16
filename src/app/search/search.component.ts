@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { SearchService } from '../services/search.service';
 import { AuthService } from '../services/auth.service';
+import { PostService } from '../services/post.service';
 
 @Component({
   selector: 'app-search',
@@ -14,7 +15,8 @@ export class SearchComponent implements OnInit {
 
   constructor(
     private searchService: SearchService,
-    private authService: AuthService
+    private authService: AuthService,
+    private postService: PostService
   ) { }
 
   ngOnInit(): void {
@@ -24,8 +26,12 @@ export class SearchComponent implements OnInit {
 
   changeProfileData(username: string): void {
     this.authService.getProfile(username).subscribe(doc => {
-      doc.success ? this.authService.changeProfileData(doc.user)
-      : this.authService.changeProfileData(this.authService.emptyUser);
+      if (doc.success) {
+        this.authService.changeProfileData(doc.user);
+        this.postService.changePostCount(doc.users.postCount);
+      } else {
+        this.authService.changeProfileData(this.authService.emptyUser);
+      };
     });
   };
 }

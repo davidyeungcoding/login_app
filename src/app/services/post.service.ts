@@ -20,10 +20,16 @@ export class PostService {
   
   postsSource = new BehaviorSubject<Post[]>([]);
   currentPosts = this.postsSource.asObservable();
+  postCountSource = new BehaviorSubject<number>(0);
+  postCount = this.postCountSource.asObservable();
 
   constructor(
     private http: HttpClient
   ) { }
+
+// =====================
+// || Router Requests ||
+// =====================
 
   addPost(form: NgForm) {
     const localUser = JSON.parse(localStorage.getItem('user'));
@@ -58,7 +64,21 @@ export class PostService {
   //   );
   // };
 
+  loadMorePosts(username: string, start: number, end: number) {
+    return this.http.get(`${this.api}/profile/${username}/loadmoreposts?start=${start}`).pipe(
+      catchError(err => of(err))
+    );
+  };
+
+// =======================
+// || Change Observable ||
+// =======================
+
   changePost(post: Post[]): void {
     this.postsSource.next(post);
+  };
+
+  changePostCount(count: number): void {
+    this.postCountSource.next(count);
   };
 }

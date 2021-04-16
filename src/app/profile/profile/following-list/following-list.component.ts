@@ -32,11 +32,12 @@ export class FollowingListComponent implements OnInit {
     this.authService.getProfile(username).subscribe(_profile => {
       if (_profile.success) {
         this.authService.changeProfileData(_profile.user);
+        this.postService.changePostCount(_profile.user.postCount);
         this.postService.changePost(_profile.user.posts);
-        this.profileService.resetVisible('followingList', 'postList');
+        this.profileService.resetVisible('followingList');
+        this.profileService.resetActiveTab('followingTab');
       } else {
-        // handle proflie not found here
-        // redirect to profile not found page
+        this.authService.redirectDump('profile-not-found', 'profile');
       };
     });
   };

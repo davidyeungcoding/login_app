@@ -4,17 +4,25 @@
       class="btn profile-options-btn col white-font"
       data-toggle="modal"
       data-target="#postModal">New Post</button>
+
+    <button type="button"
+      class="btn profile-options-btn col white-font active-tab"
+      id="postTab"
+      (click)="onMakeActive('postList', 'postTab')">My Posts</button>
+
     <button type="button"
       class="btn profile-options-btn col white-font"
-      (click)="onMakeActive('postList')">My Posts</button>
+      id="followingTab"
+      (click)="onMakeActive('followingList', 'followingTab')">Follwing</button>
+
     <button type="button"
       class="btn profile-options-btn col white-font"
-      (click)="onMakeActive('followingList')">Follwing</button>
+      id="followerTab"
+      (click)="onMakeActive('followerList', 'followerTab')">Followers</button>
+      
     <button type="button"
       class="btn profile-options-btn col white-font"
-      (click)="onMakeActive('followerList')">Followers</button>
-    <button type="button"
-      class="btn profile-options-btn col white-font"
-      (click)="onMakeActive('mentionsList')">Mentions</button>
+      id="mentionsTab"
+      (click)="onMakeActive('mentionsList', 'mentionsTab')">Mentions</button>
   </div>
 </div>

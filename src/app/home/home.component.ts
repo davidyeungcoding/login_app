@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import { PostService } from '../services/post.service';
 import { Router } from '@angular/router';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { timestamp } from 'rxjs/operators';
@@ -15,6 +16,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private postService: PostService,
     private router: Router,
     private flashMessage: FlashMessagesService
   ) { }
@@ -28,6 +30,7 @@ export class HomeComponent implements OnInit {
       if (data.success) {
         this.authService.storeUserData(data.token, data.user);
         this.authService.changeProfileData(data.user);
+        this.postService.changePostCount(data.user.postCount);
         this.router.navigate([`/profile/${this.currentUser.username}`]);
       } else {
         this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 3000 });

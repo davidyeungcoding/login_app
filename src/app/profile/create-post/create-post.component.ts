@@ -10,6 +10,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./create-post.component.css']
 })
 export class CreatePostComponent implements OnInit {
+  private postCount: number;
 
   constructor(
     private postService: PostService,
@@ -17,12 +18,18 @@ export class CreatePostComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.postService.postCount.subscribe(_count => this.postCount = _count);
   }
 
   onAddPost(form: NgForm) {
     if (form.value.content) {
       this.postService.addPost(form).subscribe(data => {
-        if (data.success) this.postService.changePost(data.msg.posts);
+        if (data.success) {
+          this.postService.changePost(data.msg.posts);
+          this.postService.changePostCount(data.msg.postCount);
+        } else {
+          // handle error
+        }
       });
       $('#content').val('');
       form.value.content = '';

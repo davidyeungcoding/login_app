@@ -12,6 +12,7 @@ import { User } from '../../../interfaces/user';
 })
 export class DisplayPostComponent implements OnInit {
   posts: Post[];
+  private postCount: number;
   profileData: User;
   currentUser: any;
   toRemove: any = null;
@@ -23,10 +24,27 @@ export class DisplayPostComponent implements OnInit {
 
   ngOnInit(): void {
     this.postService.currentPosts.subscribe(_posts => this.posts = _posts);
+    this.postService.postCount.subscribe(_count => this.postCount = _count);
     this.authService.profileData.subscribe(_profile => this.profileData = _profile);
     this.authService.currentUser.subscribe(_user => this.currentUser = _user);
   }
+
+// =================
+// || HTML Checks ||
+// =================
   
+  personalProfile(): boolean {
+    return this.authService.personalProfile(this.currentUser, this.profileData);
+  };
+
+  endOfPosts(): boolean {
+    return this.postCount === this.posts.length;
+  };
+
+// ====================
+// || Like & Dislike ||
+// ====================
+
   checkForOpinion(post: Post, value): boolean {
     if (this.currentUser.id && post.opinions && post.opinions[this.currentUser.username]) {
       return post.opinions[this.currentUser.username] === value;
@@ -79,6 +97,10 @@ export class DisplayPostComponent implements OnInit {
     };
   };
 
+// =================
+// || Delete Post ||
+// =================
+
   deletePost(): void {
     const payload = {
       username: JSON.parse(localStorage.getItem('user')).username,
@@ -87,7 +109,8 @@ export class DisplayPostComponent implements OnInit {
 
     this.postService.deletePost(payload).subscribe(doc => {
       if (doc.success) {
-        this.postService.changePost(doc.msg);
+        this.postService.changePost(doc.msg.posts);
+        this.postService.changePostCount(doc.msg.postCount);
       } else {
         // handle error
       };
@@ -103,9 +126,5 @@ export class DisplayPostComponent implements OnInit {
   clearDeleteRequest(): void {
     this.toRemove = null;
     $('#deleteConfirmation').modal('hide');
-  };
-
-  personalProfile(): boolean {
-    return this.authService.personalProfile(this.currentUser, this.profileData);
   };
 }

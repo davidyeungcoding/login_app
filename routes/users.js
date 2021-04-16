@@ -91,6 +91,7 @@ router.get('/profile/:username', (req, res, next) => {
         username: user.username,
         name: user.name,
         email: user.email,
+        postCount: user.postCount,
         posts: user.posts,
         followerCount: user.followerCount,
         followers: user.followers,
@@ -115,11 +116,29 @@ router.get('/profile/:username/post', (req, res, next) => {
   });
 });
 
+router.get('/profile/:username/loadmoreposts', (req, res, next) => {
+  const username = req.params.username;
+  const start = Number(req.query.start);
+  user.loadMorePosts(username, start, (err, doc) => {
+    if (err) throw err;
+    doc ? res.json({success: true, msg: doc.posts})
+    : res.json({success: false, msg: 'No posts found'})
+  })
+});
+
 router.put('/profile/:username/post', (req, res, next) => {
   user.addPost(req.body, (err, doc) => {
     if (err) throw err;
     return doc ? res.json({success: true, msg: doc})
     : res.json({success: false, msg: "Faild to add post"})
+  });
+});
+
+router.put("/profile/:username/post/remove", (req, res, next) => {
+  user.removePost(req.body, (err, doc) => {
+    if (err) throw err;
+    return doc ? res.json({success: true, msg: doc})
+    : res.json({success: false, msg: 'failed to remove post'});
   });
 });
 
@@ -132,14 +151,6 @@ router.put('/profile/:username/post/opinion', (req, res, next) => {
     if (err) throw err;
     return doc ? res.json({success: true, msg: doc.posts})
     : res.json({success: false, msg: "faild to update post opinion"});
-  });
-});
-
-router.put("/profile/:username/post/remove", (req, res, next) => {
-  user.removePost(req.body, (err, doc) => {
-    if (err) throw err;
-    return doc ? res.json({success: true, msg: doc.posts})
-    : res.json({success: false, msg: 'failed to remove post'});
   });
 });
 

@@ -48,23 +48,23 @@ export class ProfileDetailsComponent implements OnInit {
           this.authService.changeProfileData(_user.msg);
         } else {
           this.followErrorMsg = _user.msg;
-          document.getElementById('followErrorMsg').classList.remove('visible');
+          $('#followErrorMsg').removeClass('visible');
           
           setTimeout(() => {
-            document.getElementById('followErrorMsg').classList.add('visible');
+            $('#followErrorMsg').addClass('visible');
             this.authService.handleRedirectProfile(this.currentUser.username);
-          }, 5000);
+          }, 4000);
         };
       });
     } else if (!!localStorage.getItem('id_token') && this.authService.isExpired()) {
       this.authService.redirectDump('/session-timed-out', 'session');
     } else if (!localStorage.getItem('id_token')) {
       this.followErrorMsg = 'You must be logged in before following.';
-      document.getElementById('followErrorMsg').classList.remove('visible');
+      $('#followErrorMsg').removeClass('visible');
 
       setTimeout(() => {
-        document.getElementById('followErrorMsg').classList.add('visible');
-      }, 5000);
+        $('#followErrorMsg').addClass('visible');
+      }, 4000);
     };
   };
 
@@ -84,12 +84,12 @@ export class ProfileDetailsComponent implements OnInit {
           this.authService.changeProfileData(_user.msg);
         } else {
           this.followErrorMsg = _user.msg;
-          document.getElementById('followErrorMsg').classList.remove('visible');
+          $('#followErrorMsg').removeClass('visible');
 
           setTimeout(() => {
-            document.getElementById('followErrorMsg').classList.add('visible');
+            $('#followErrorMsg').addClass('visible');
             this.authService.handleRedirectProfile(this.currentUser.username);
-          }, 5000);
+          }, 4000);
         };
       });
     } else if (!!localStorage.getItem('id_token') && this.authService.isExpired()) {

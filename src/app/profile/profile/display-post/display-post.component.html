@@ -44,6 +44,15 @@
         </div>
       </div>
     </div>
+
+    <div class="end-of-content">
+      <div *ngIf="!endOfPosts()"
+        class="loading" appObserverVisibility>
+        <div class="ball"></div>
+        <div class="ball"></div>
+        <div class="ball"></div>
+      </div>
+    </div>
   </div>
   
   <ng-template #noContent>

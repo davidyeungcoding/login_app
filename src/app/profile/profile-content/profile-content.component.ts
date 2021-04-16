@@ -12,6 +12,7 @@ import { User } from '../../interfaces/user';
 export class ProfileContentComponent implements OnInit {
   private profileData: User;
   private currentUser: any;
+  private activeList: string;
   private activeTab: string;
 
   constructor(
@@ -22,6 +23,7 @@ export class ProfileContentComponent implements OnInit {
   ngOnInit(): void {
     this.authService.profileData.subscribe(_user => this.profileData = _user);
     this.authService.currentUser.subscribe(_user => this.currentUser = _user);
+    this.profileService.activeList.subscribe(_list => this.activeList = _list);
     this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab);
   }
 
@@ -29,14 +31,15 @@ export class ProfileContentComponent implements OnInit {
     return this.authService.personalProfile(this.currentUser, this.profileData);
   };
 
-  onMakeActive(id: string): void {
-    const current = document.getElementById(id);
-    const previous = document.getElementById(this.activeTab);
-
-    if (id !== this.activeTab) {
-      previous.classList.add('visible');
-      current.classList.remove('visible');
-      this.profileService.changeActiveTab(id);
+  onMakeActive(listId: string, tabId: string): void {
+    if (listId !== this.activeList) {
+      $(`#${this.activeList}`).addClass('visible');
+      $(`#${listId}`).removeClass('visible');
+      this.profileService.changeActiveList(listId);
+    } if (tabId !== this.activeTab) {
+      $(`#${this.activeTab}`).removeClass('active-tab');
+      $(`#${tabId}`).addClass('active-tab');
+      this.profileService.changeActiveTab(tabId);
     };
   };
 }
