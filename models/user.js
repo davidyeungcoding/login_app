@@ -2,6 +2,21 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const config = require('../config/database');
 
+const MiniUser = mongoose.Schema({
+  userId: {
+    type: String,
+    required: true
+  },
+  name: {
+    type: String,
+    required: true
+  },
+  username: {
+    type: String,
+    required: true
+  }
+})
+
 const UserSchema = mongoose.Schema({
   username: {
     type: String,
@@ -48,11 +63,17 @@ const UserSchema = mongoose.Schema({
     type: Number,
     default: 0
   },
-  followers: {},
-  following: {}
+  followers: [MiniUser],
+  following: [MiniUser]
+  // followers: {},
+  // following: {}
 })
 
 const User = module.exports = mongoose.model('User', UserSchema);
+
+// ===============================
+// || Get Full User Information ||
+// ===============================
 
 module.exports.getUserById = function(id, callback) {
   User.findById(id, callback);
@@ -68,6 +89,21 @@ module.exports.getUserByUsername = function(username, callback) {
   User.findOne(filter, query, callback);
 }
 
+// =======================
+// || Authenticate User ||
+// =======================
+
+module.exports.comparePassword = function(candidatePassword, hash, callback) {
+  bcrypt.compare(candidatePassword, hash, (err, isMatch) => {
+    if (err) throw err;
+    callback(null, isMatch);
+  });
+}
+
+// ==================
+// || Add New User ||
+// ==================
+
 module.exports.addUser = function(newUser, callback) {
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -75,13 +111,6 @@ module.exports.addUser = function(newUser, callback) {
       newUser.password = hash;
       newUser.save(callback);
     });
-  });
-}
-
-module.exports.comparePassword = function(candidatePassword, hash, callback) {
-  bcrypt.compare(candidatePassword, hash, (err, isMatch) => {
-    if (err) throw err;
-    callback(null, isMatch);
   });
 }
 
@@ -146,13 +175,23 @@ module.exports.followed = function(currentUser, profileUser, callback) {
   };
 
   const query = {
-    $set: {
-      [`followers.${currentUser.username}`]: {
-        userId: currentUser.userId,
-        name: currentUser.name,
-        username: currentUser.username
+    $push: {
+      followers: {
+        $each: [{
+          userId: currentUser.userId,
+          name: currentUser.name,
+          username: currentUser.username
+        }],
+        $sort: {username: 1}
       }
     },
+    // $set: {
+    //   [`followers.${currentUser.username}`]: {
+    //     userId: currentUser.userId,
+    //     name: currentUser.name,
+    //     username: currentUser.username
+    //   }
+    // },
     $inc: {
       followerCount: 1
     }
@@ -168,13 +207,23 @@ module.exports.following = function(currentUser, profileUser, callback) {
   };
 
   const query = {
-    $set: {
-      [`following.${profileUser.username}`] : {
-        userId: profileUser.userId,
-        name: profileUser.name,
-        username: profileUser.username
+    $push: {
+      following: {
+        $each: [{
+          userId: profileUser.userId,
+          name: profileUser.name,
+          username: profileUser.username
+        }],
+        $sort: {username: 1}
       }
     }
+    // $set: {
+    //   [`following.${profileUser.username}`] : {
+    //     userId: profileUser.userId,
+    //     name: profileUser.name,
+    //     username: profileUser.username
+    //   }
+    // }
   };
   User.findOneAndUpdate(filter, query, callback);
 }
@@ -186,9 +235,15 @@ module.exports.unfollow = function(user, profile, callback) {
   };
 
   const query = {
-    $unset: {
-      [`followers.${user.username}`]: ""
+    $pull: {
+      followers: {
+        userId: user.userId,
+        username: user.username
+      }
     },
+    // $unset: {
+    //   [`followers.${user.username}`]: ""
+    // },
     $inc: {
       followerCount: -1
     }
@@ -204,9 +259,15 @@ module.exports.removeFollowing = function(user, profile, callback) {
   };
 
   const query = {
-    $unset: {
-      [`following.${profile.username}`]: ""
+    $pull: {
+      following: {
+        userId: profile.userId,
+        username: profile.username
+      }
     }
+    // $unset: {
+    //   [`following.${profile.username}`]: ""
+    // }
   };
   User.findOneAndUpdate(filter, query, callback);
 }

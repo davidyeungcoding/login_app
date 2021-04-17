@@ -12,7 +12,7 @@ import { User } from '../../interfaces/user';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  private profileData: User;
+  profileData: User;
 
   constructor(
     private authService: AuthService,
@@ -24,7 +24,8 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.authService.profileData.subscribe(user => this.profileData = user);
     this.profileService.changeActiveList('postList');
-    if (!this.profileData.username) this.getProfileData();
+    if (!this.profileData.username
+      || this.profileData.username !== this.route.snapshot.paramMap.get('username')) this.getProfileData();
   }
 
   getProfileData(): void {

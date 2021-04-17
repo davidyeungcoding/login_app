@@ -23,7 +23,7 @@ export class FollowerListComponent implements OnInit {
     this.authService.profileData.subscribe(_profile => this.profileData = _profile);
   }
 
-  followersLength(): boolean {
+  followersList(): boolean {
     return this.profileData.followers ? !!Object.keys(this.profileData.followers).length
     : false;
   };

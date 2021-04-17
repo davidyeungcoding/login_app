@@ -11,7 +11,7 @@ import { User } from 'src/app/interfaces/user';
   styleUrls: ['./following-list.component.css']
 })
 export class FollowingListComponent implements OnInit {
-  private profileData: User;
+  profileData: User;
 
   constructor(
     private authService: AuthService,

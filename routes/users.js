@@ -22,7 +22,7 @@ router.post('/register', (req, res, next) => {
     posts: []
   });
 
-  User.addUser(newUser, (err, user) => {
+  user.addUser(newUser, (err, user) => {
     err ? res.json({success: false, msg: `Failed to register user.`, err: err})
     : res.json({success: true, msg: `New user registered.`});
   });
@@ -36,7 +36,7 @@ router.post('/authenticate', (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  User.getUserByUsername(username, (err, user) => {
+  user.getUserByUsername(username, (err, user) => {
     if (err) throw err;
     if (!user) return res.json({success: false, msg: `User not found`});
     

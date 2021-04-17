@@ -1,10 +1,10 @@
 <div *ngIf="followingList(); else notFollowing">
-  <div *ngFor="let user of profileData.following | keyvalue"
+  <div *ngFor="let user of profileData.following"
     class="main-content"
-    (click)="changeProfileData(user.key)">
+    (click)="changeProfileData(user.username)">
     <div class="container content-box-main">
-      <h4>@{{ user.value.username }}</h4>
-      <p>{{ user.value.name }}</p>
+      <h4>@{{ user.username }}</h4>
+      <p>{{ user.name }}</p>
     </div>
   </div>
 </div>

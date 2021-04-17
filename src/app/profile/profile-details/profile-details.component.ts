@@ -20,16 +20,23 @@ export class ProfileDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.authService.profileData.subscribe(_user => this.profileData = _user);
     this.authService.currentUser.subscribe(_user => this.currentUser = _user);
+    console.log(this.profileData)
+    console.log(this.profileData.followers)
   }
   
 // ===============
 // || Following ||
 // ===============
 
+  checkFollowing(): boolean {
+    for(const [key, value] of Object.entries(this.profileData.followers)) {
+      if (value.username === this.currentUser.username && value.userId === this.currentUser.id) return true;
+    };
+    return false;
+  };
+
   displayFollowing(): boolean {
-    return this.profileData.followers ? !!this.profileData.followers[this.currentUser.username]
-    && this.profileData.followers[this.currentUser.username].userId === this.currentUser.id
-    : false;
+    return Object.keys(this.profileData.followers) ? this.checkFollowing() : false;
   };
 
   onFollow() {

@@ -1,10 +1,10 @@
-<div *ngIf="followersLength(); else noFollowers">
-  <div *ngFor="let user of profileData.followers | keyvalue"
+<div *ngIf="followersList(); else noFollowers">
+  <div *ngFor="let user of profileData.followers"
     class="main-content"
-    (click)="changeProfileData(user.key)">
+    (click)="changeProfileData(user.username)">
     <div class="container content-box-main">
-      <h4>@{{ user.key }}</h4>
-      <p>{{ user.value.name }}</p>
+      <h4>@{{ user.username }}</h4>
+      <p>{{ user.name }}</p>
     </div>
   </div>
 </div>
@@ -12,7 +12,7 @@
 <ng-template #noFollowers>
   <div class="main-content">
     <div class="container content-box-main">
-      <h5>You currently have no followers</h5>
+      <h5>You currently have 0 followers</h5>
     </div>
   </div>
 </ng-template>
