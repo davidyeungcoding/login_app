@@ -134,6 +134,10 @@
   display: none;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 textarea {
   resize: none;
 }

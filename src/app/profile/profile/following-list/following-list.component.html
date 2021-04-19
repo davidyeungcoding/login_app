@@ -1,6 +1,6 @@
 <div *ngIf="followingList(); else notFollowing">
   <div *ngFor="let user of profileData.following"
-    class="main-content"
+    class="main-content pointer"
     (click)="changeProfileData(user.username)">
     <div class="container content-box-main">
       <h4>@{{ user.username }}</h4>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from '../../services/auth.service';
+import { ProfileService } from '../../services/profile.service';
 import { User } from '../../interfaces/user';
 
 @Component({
@@ -12,16 +13,17 @@ export class ProfileDetailsComponent implements OnInit {
   profileData: User;
   private currentUser: any;
   followErrorMsg: string;
+  private isFollowing: boolean;
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private profileService: ProfileService
   ) { }
 
   ngOnInit(): void {
     this.authService.profileData.subscribe(_user => this.profileData = _user);
     this.authService.currentUser.subscribe(_user => this.currentUser = _user);
-    console.log(this.profileData)
-    console.log(this.profileData.followers)
+    this.profileService.isFollowing.subscribe(_following => this.isFollowing = _following);
   }
   
 // ===============
@@ -36,7 +38,7 @@ export class ProfileDetailsComponent implements OnInit {
   };
 
   displayFollowing(): boolean {
-    return Object.keys(this.profileData.followers) ? this.checkFollowing() : false;
+    return this.isFollowing;
   };
 
   onFollow() {
@@ -53,6 +55,7 @@ export class ProfileDetailsComponent implements OnInit {
       this.authService.followUser(payload).subscribe(_user => {
         if (_user.success) {
           this.authService.changeProfileData(_user.msg);
+          this.profileService.changeIsFollowing(true);
         } else {
           this.followErrorMsg = _user.msg;
           $('#followErrorMsg').removeClass('visible');
@@ -89,6 +92,7 @@ export class ProfileDetailsComponent implements OnInit {
       this.authService.unfollow(payload).subscribe(_user => {
         if (_user.success) {
           this.authService.changeProfileData(_user.msg);
+          this.profileService.changeIsFollowing(false);
         } else {
           this.followErrorMsg = _user.msg;
           $('#followErrorMsg').removeClass('visible');

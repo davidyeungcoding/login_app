@@ -61,11 +61,17 @@ export class AuthService {
     );
   };
 
-  getProfile(username) {
-    return this.http.get(`${this.api}/profile/${username}`).pipe(
+  getProfile(profileUsername, username: string, id: string) {
+    return this.http.get(`${this.api}/profile/${profileUsername}?currentUsername=${username}&currentId=${id}`).pipe(
       catchError(err => of(err))
     );
   };
+
+  // getVisitingProfile(profileUsername, username: string, id: string) {
+  //   return this.http.get(`${this.api}/profile/${profileUsername}/visiting?currentUsername=${username}&currentId=${id}`).pipe(
+  //     catchError(err => of(err))
+  //   );
+  // };
 
   followUser(payload) {
     return this.http.put(`${this.api}/profile/${payload.profileUsername}/follow`, payload, httpOptions).pipe(
@@ -97,6 +103,17 @@ export class AuthService {
 
   isExpired() {
     return this.jwtHelper.isTokenExpired();
+  };
+
+  changeProfileInfo(username: string, user: User, redirect: boolean): void {
+    this.changeProfileData(user);
+    this.postService.changePost(user.posts);
+    this.postService.changePostCount(user.postCount);
+    this.profileService.changeFollowingList(user.following);
+    this.profileService.changeFollowingCount(user.followingCount);
+    this.profileService.changeFollowerList(user.followers);
+    this.profileService.changeFollowerCount(user.followerCount);
+    if (redirect) this.router.navigate([`/profile/${username}`]);
   };
 
 // ============================
@@ -141,12 +158,13 @@ export class AuthService {
   };
 
   handleRedirectProfile(username: string, redirect: boolean = true): void {
-    this.getProfile(username).subscribe(_user => {
+    const localUser = !!localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))
+    : this.emptyUser;
+
+    this.getProfile(username, localUser.username, localUser.id).subscribe(_user => {
       if (_user.success) {
-        this.changeProfileData(_user.user);
-        this.postService.changePost(_user.user.posts);
-        this.postService.changePostCount(_user.user.postCount);
-        if (redirect) this.router.navigate([`/profile/${username}`]);
+        this.changeProfileInfo(username, _user.user, redirect);
+        this.profileService.changeIsFollowing(_user.follower);
       } else this.redirectDump('/profile-not-found', 'profile');
     });
   };

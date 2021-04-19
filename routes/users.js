@@ -36,7 +36,7 @@ router.post('/authenticate', (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  user.getUserByUsername(username, (err, user) => {
+  user.getUserForLogin(username, (err, user) => {
     if (err) throw err;
     if (!user) return res.json({success: false, msg: `User not found`});
     
@@ -81,24 +81,21 @@ router.post('/search', (req, res, next) => {
 // ==================
 
 router.get('/profile/:username', (req, res, next) => {
-  const username = req.params.username;
-  user.getUserByUsername(username, (err, user) => {
+  const profileUsername = req.params.username;
+  const currentUsername = req.query.currentUsername;
+  const currentId = req.query.currentId;
+
+  user.getUserByUsername(profileUsername, (err, profile) => {
     if (err) throw err;
-    return user ? res.json({
-      success: true,
-      user: {
-        _id: user._id,
-        username: user.username,
-        name: user.name,
-        email: user.email,
-        postCount: user.postCount,
-        posts: user.posts,
-        followerCount: user.followerCount,
-        followers: user.followers,
-        following: user.following
-      }
-    })
-    : res.json({ success: false, msg: 'User not found' });
+    if (profile) {
+      user.isFollowing(currentUsername, currentId, profileUsername, (err, doc) => {
+        if (err) throw err;
+        return doc ? res.json({ success: true, user: profile, follower: true })
+        : res.json({ success: true, user: profile, follower: false });
+      })
+    } else {
+      res.json({ success: false, msg: `Unable to retrieve user profile for ${profileUsername}`});
+    };
   });
 });
 

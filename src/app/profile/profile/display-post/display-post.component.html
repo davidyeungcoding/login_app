@@ -1,5 +1,5 @@
 <div>
-  <div *ngIf="posts.length; else noContent">
+  <div *ngIf="!!posts && posts.length; else noContent">
     <div class="main-content"
       *ngFor="let post of posts">
       <div class="container content-box-main">
@@ -56,7 +56,11 @@
   </div>
   
   <ng-template #noContent>
-    <p class="main-content">No Posts Found</p>
+    <div class="main-content">
+      <div class="container content-box-main">
+        <h5>No Posts Found</h5>
+      </div>
+    </div>
   </ng-template>
 
   <div class="modal fade"

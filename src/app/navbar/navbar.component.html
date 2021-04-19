@@ -43,7 +43,7 @@
         <li *ngIf="!this.expiredToken()"
           class="nav-item"
           routerLinkActive="active">
-          <a class="nav-link"
+          <a class="nav-link pointer"
             (click)="onLoadProfile()">My Profile</a>
         </li>
         <li *ngIf="this.expiredToken()"

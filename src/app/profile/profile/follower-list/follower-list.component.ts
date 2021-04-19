@@ -28,6 +28,10 @@ export class FollowerListComponent implements OnInit {
     : false;
   };
 
+  endOfFollowerList(): boolean {
+    return Object.keys(this.profileData.followers).length === this.profileData.followerCount;
+  };
+
   changeProfileData(username: string): void {
     this.authService.handleRedirectProfile(username);
     this.profileService.resetVisible('followerList');

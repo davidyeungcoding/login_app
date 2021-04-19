@@ -1,4 +1,5 @@
 import { Post } from './post';
+import { ProfilePreview } from './profile-preview';
 
 export interface User {
   _id: string,
@@ -8,6 +9,7 @@ export interface User {
   postCount: number,
   posts: Post[],
   followerCount: number,
-  followers: object,
-  following: object
+  followers: ProfilePreview[],
+  followingCount: number,
+  following: ProfilePreview[]
 }

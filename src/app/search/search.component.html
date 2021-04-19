@@ -1,7 +1,7 @@
 <div class="main-content-container">
   <div *ngIf="searchResults.length; else no_results">
     <div *ngFor="let result of searchResults"
-      class="main-content"
+      class="main-content pointer"
       (click)="changeProfileData(result.username)">
       <div class="container content-box-main">
         <h4>@{{ result.username }}</h4>

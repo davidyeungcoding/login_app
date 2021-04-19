@@ -64,29 +64,42 @@ const UserSchema = mongoose.Schema({
     default: 0
   },
   followers: [MiniUser],
+  followingCount: {
+    type: Number,
+    default: 0
+  },
   following: [MiniUser]
-  // followers: {},
-  // following: {}
 })
 
 const User = module.exports = mongoose.model('User', UserSchema);
 
-// ===============================
-// || Get Full User Information ||
-// ===============================
+// ==========================
+// || Get User Information ||
+// ==========================
 
 module.exports.getUserById = function(id, callback) {
   User.findById(id, callback);
 }
 
+module.exports.getUserForLogin = function(username, callback) {
+  User.findOne({ username: username }, callback);
+}
+
 module.exports.getUserByUsername = function(username, callback) {
-  const filter = {username: username};
-  const query = {
+  const selection = {
     posts: {
       $slice: [0, 25]
-    }
+    },
+    followers: {
+      $slice: [0, 1] // update here [0, 25] for the first 25
+    },
+    password: 0
   };
-  User.findOne(filter, query, callback);
+  User.findOne({ username: username }, selection, callback);
+}
+
+module.exports.getSpecific = function(query, selection, callback) {
+  User.find(query, callback).select(selection);
 }
 
 // =======================
@@ -114,9 +127,9 @@ module.exports.addUser = function(newUser, callback) {
   });
 }
 
-module.exports.getSpecific = function(query, selection, callback) {
-  User.find(query, callback).select(selection);
-}
+// ===============
+// || Post Data ||
+// ===============
 
 module.exports.addPost = function(newPost, callback) {
   const query = {
@@ -168,6 +181,28 @@ module.exports.postOpinion = function(post, callback) {
   User.findOneAndUpdate(filter, query, options, callback);
 }
 
+module.exports.loadMorePosts = function(username, start, callback) {
+  const query = {
+    posts: {
+      $slice: [start, 25]
+    }
+  };
+  User.findOne({username: username}, query, callback);
+}
+
+// ==========================
+// || Follower & Following ||
+// ==========================
+
+module.exports.isFollowing = function(currentUsername, currentId, profileUser, callback) {
+  const filter = {
+    username: profileUser,
+    "followers.username": currentUsername,
+    "followers.userId": currentId
+  };
+  User.findOne(filter, callback);
+}
+
 module.exports.followed = function(currentUser, profileUser, callback) {
   const filter = {
     _id: profileUser.userId,
@@ -185,13 +220,6 @@ module.exports.followed = function(currentUser, profileUser, callback) {
         $sort: {username: 1}
       }
     },
-    // $set: {
-    //   [`followers.${currentUser.username}`]: {
-    //     userId: currentUser.userId,
-    //     name: currentUser.name,
-    //     username: currentUser.username
-    //   }
-    // },
     $inc: {
       followerCount: 1
     }
@@ -216,14 +244,10 @@ module.exports.following = function(currentUser, profileUser, callback) {
         }],
         $sort: {username: 1}
       }
+    },
+    $inc: {
+      followingCount: 1
     }
-    // $set: {
-    //   [`following.${profileUser.username}`] : {
-    //     userId: profileUser.userId,
-    //     name: profileUser.name,
-    //     username: profileUser.username
-    //   }
-    // }
   };
   User.findOneAndUpdate(filter, query, callback);
 }
@@ -241,9 +265,6 @@ module.exports.unfollow = function(user, profile, callback) {
         username: user.username
       }
     },
-    // $unset: {
-    //   [`followers.${user.username}`]: ""
-    // },
     $inc: {
       followerCount: -1
     }
@@ -264,19 +285,10 @@ module.exports.removeFollowing = function(user, profile, callback) {
         userId: profile.userId,
         username: profile.username
       }
+    },
+    $inc: {
+      followingCount: -1
     }
-    // $unset: {
-    //   [`following.${profile.username}`]: ""
-    // }
   };
   User.findOneAndUpdate(filter, query, callback);
 }
-
-module.exports.loadMorePosts = function(username, start, callback) {
-  const query = {
-    posts: {
-      $slice: [start, 25]
-    }
-  };
-  User.findOne({username: username}, query, callback);
-};

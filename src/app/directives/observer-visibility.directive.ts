@@ -4,7 +4,9 @@ import { delay, filter } from 'rxjs/operators'
 
 import { PostService } from '../services/post.service';
 import { ActivatedRoute } from '@angular/router';
+import { ProfileService } from '../services/profile.service';
 import { Post } from '../interfaces/post';
+import { ProfilePreview } from '../interfaces/profile-preview';
 
 @Directive({
   selector: '[appObserverVisibility]'
@@ -22,31 +24,35 @@ export class ObserverVisibilityDirective
   //   observer: IntersectionObserver;
   // }>();
   private testObserver: IntersectionObserver | undefined;
-  private postCount: number;
   private posts: Post[];
+  private postCount: number;
+  private followerList: ProfilePreview[];
+  private followingList: ProfilePreview[];
+  private activeTab: string;
 
   constructor(
     private element: ElementRef,
     private postService: PostService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private profileService: ProfileService
   ) { }
 
   ngOnInit() {
     this.test();
     this.postService.postCount.subscribe(_count => this.postCount = _count);
     this.postService.currentPosts.subscribe(_postList => this.posts = _postList);
+    this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab);
+    this.profileService.followingList.subscribe(_list => this.followingList = _list);
+    this.profileService.followerList.subscribe(_list => this.followerList = _list);
     this.testObserver.observe(this.element.nativeElement);
     // this.createObserver();
-    console.log('ngOnInit')
   }
   
   ngAfterViewInit() {
-    console.log('ngAfterViewInit')
     // this.startObserverElements();
   }
 
   ngOnDestroy() {
-    console.log('ngOnDestroy')
     // if (this.observer) {
     //   this.observer.disconnect();
     //   this.observer = undefined;
@@ -107,17 +113,41 @@ export class ObserverVisibilityDirective
 // || Personal ||
 // ==============
 
+  loadMorePosts(username: string, postLength: number): void {
+    this.postService.loadMorePosts(username, postLength).subscribe(_posts => {
+      if (_posts.success) this.posts.push(..._posts.msg);
+    });
+  };
+
+  loadMoreFollowing(username: string, followingLength: number): void {
+
+  }
+
+  // loadMoreFollowers(username: string, followerLength: number): void {
+  //   this.profileService.loadMoreFollowers(username, followerLength).subscribe(_followers => {
+  //     if (_followers.success) this.followerList.push(..._followers.msg);
+  //   });
+  // };
+
   test(): void {
     this.testObserver = new IntersectionObserver(entry => {
       if (entry[0].intersectionRatio > 0) {
         const username = this.route.snapshot.paramMap.get('username');
+        // this.postService.loadMorePosts(username, this.posts.length).subscribe(_posts => {
+        //   if (_posts.success) this.posts.push(..._posts.msg);
+        // })
 
-        this.postService.loadMorePosts(username, this.posts.length).subscribe(_posts => {
-          if (_posts.success) {
-            this.posts.push(..._posts.msg);
-            // this.postService.changePost([...this.posts, ..._posts.msg]);
-          }
-        })
+        switch (this.activeTab) {
+          case 'postTab':
+            this.loadMorePosts(username, this.posts.length);
+            break;
+          case 'followingTab':
+            // this.loadMoreFollowing(username, this.followingList.length);
+            break;
+          case 'followerTab':
+            // this.loadMoreFollowers(username, this.followerList.length);
+            break;
+        };
       }
     });
   };
