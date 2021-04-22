@@ -110,7 +110,7 @@ module.exports.loadMoreSearchResults = function(term, start, callback) {
     username: 1,
     name: 1
   }
-  User.find({username: term}, selection, callback).skip(start).limit(4);
+  User.find({username: term}, selection, callback).skip(start).limit(25);
 }
 
 // =======================

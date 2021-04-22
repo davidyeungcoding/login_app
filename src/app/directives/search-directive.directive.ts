@@ -29,7 +29,7 @@ export class SearchDirectiveDirective implements OnInit {
         this.searchService.getUsers({searchTerm: this.term}, this.searchResults.length).subscribe(_result => {
           _result.success ? this.searchResults.push(..._result.msg)
           : this.searchService.changeEndOfResults(true);
-          if (this.searchResults.length % 4 !== 0 || _result.msg.length === 0) this.searchService.changeEndOfResults(true);
+          if (this.searchResults.length % 25 !== 0 || _result.msg.length === 0) this.searchService.changeEndOfResults(true);
         });
       };
     });
