@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { SearchService } from '../services/search.service';
 import { AuthService } from '../services/auth.service';
-import { PostService } from '../services/post.service';
+import { ProfilePreview } from '../interfaces/profile-preview';
 
 @Component({
   selector: 'app-search',
@@ -10,18 +10,19 @@ import { PostService } from '../services/post.service';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-  searchResults: any[];
-  searchTerm: string;
+  searchResults: ProfilePreview[];
+  private searchTerm: string;
+  endOfResults: boolean;
 
   constructor(
     private searchService: SearchService,
-    private authService: AuthService,
-    private postService: PostService
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
-    this.searchService.searchResults.subscribe(results => this.searchResults = results);
-    this.searchService.currentSearchTerm.subscribe(term => this.searchTerm = term);
+    this.searchService.searchResults.subscribe(_results => this.searchResults = _results);
+    this.searchService.currentSearchTerm.subscribe(_term => this.searchTerm = _term);
+    this.searchService.endOfResults.subscribe(_status => this.endOfResults = _status);
   }
 
   changeProfileData(username: string): void {

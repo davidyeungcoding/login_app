@@ -66,13 +66,23 @@ router.post('/authenticate', (req, res, next) => {
 // || Search Bar ||
 // ================
 
+// router.post('/search', (req, res, next) => {
+//   const re = new RegExp(req.body.searchTerm);
+//   const query = {username: re};
+//   user.getSpecific(query, 'name username', (err, doc) => {
+//     if (err) throw err;
+//     return doc.length ? res.json({success: true, msg: doc})
+//     : res.json({success : false, msg: 'No matching users'});
+//   });
+// });
+
 router.post('/search', (req, res, next) => {
-  const re = new RegExp(req.body.searchTerm);
-  const query = {username: re};
-  user.getSpecific(query, 'name username', (err, doc) => {
+  const term = new RegExp(req.body.searchTerm);
+  const start = Number(req.query.start);
+  user.loadMoreSearchResults(term, start, (err, doc) => {
     if (err) throw err;
-    return doc.length ? res.json({success: true, msg: doc})
-    : res.json({success : false, msg: 'No matching users'});
+    return doc ? res.json({ success: true, msg: doc })
+    : res.json({ success: false, msg: 'No results found' });
   });
 });
 
@@ -99,6 +109,37 @@ router.get('/profile/:username', (req, res, next) => {
   });
 });
 
+router.get('/profile/:username/loadmoreposts', (req, res, next) => {
+  const username = req.params.username;
+  const start = Number(req.query.start);
+  user.loadMorePosts(username, start, (err, doc) => {
+    if (err) throw err;
+    doc ? res.json({success: true, msg: doc.posts})
+    : res.json({ success: false, msg: 'No posts found' })
+  });
+});
+
+router.get(`/profile/:username/loadmorefollowers`, (req, res, next) => {
+  const username = req.params.username;
+  const start = Number(req.query.start);
+  user.loadMoreFollowers(username, start, (err, doc) => {
+    if (err) throw err;
+    console.log(doc)
+    return doc ? res.json({ success: true, msg: doc.followers })
+    : res.json({ success: false, msg: 'No followers found' });
+  });
+});
+
+router.get('/profile/:username/loadmorefollowing', (req, res, next) => {
+  const username = req.params.username;
+  const start = Number(req.query.start);
+  user.loadMoreFollowing(username, start, (err, doc) => {
+    if (err) throw err;
+    doc ? res.json({ success: true, msg: doc.following })
+    : res.json({ success: false, msg: 'No additional followed profiles'});
+  });
+});
+
 // ===========
 // || Posts ||
 // ===========
@@ -111,16 +152,6 @@ router.get('/profile/:username/post', (req, res, next) => {
     doc ? res.json({ success: true, msg: doc})
     : res.json({ success: false, msg: 'No posts found' });
   });
-});
-
-router.get('/profile/:username/loadmoreposts', (req, res, next) => {
-  const username = req.params.username;
-  const start = Number(req.query.start);
-  user.loadMorePosts(username, start, (err, doc) => {
-    if (err) throw err;
-    doc ? res.json({success: true, msg: doc.posts})
-    : res.json({success: false, msg: 'No posts found'})
-  })
 });
 
 router.put('/profile/:username/post', (req, res, next) => {

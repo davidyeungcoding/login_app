@@ -91,7 +91,10 @@ module.exports.getUserByUsername = function(username, callback) {
       $slice: [0, 25]
     },
     followers: {
-      $slice: [0, 1] // update here [0, 25] for the first 25
+      $slice: [0, 25]
+    },
+    following: {
+      $slice: [0, 25]
     },
     password: 0
   };
@@ -100,6 +103,14 @@ module.exports.getUserByUsername = function(username, callback) {
 
 module.exports.getSpecific = function(query, selection, callback) {
   User.find(query, callback).select(selection);
+}
+
+module.exports.loadMoreSearchResults = function(term, start, callback) {
+  const selection = {
+    username: 1,
+    name: 1
+  }
+  User.find({username: term}, selection, callback).skip(start).limit(4);
 }
 
 // =======================
@@ -182,12 +193,30 @@ module.exports.postOpinion = function(post, callback) {
 }
 
 module.exports.loadMorePosts = function(username, start, callback) {
-  const query = {
+  const selection = {
     posts: {
       $slice: [start, 25]
     }
   };
-  User.findOne({username: username}, query, callback);
+  User.findOne({username: username}, selection, callback);
+}
+
+module.exports.loadMoreFollowers = function(username, start, callback) {
+  const selection = {
+    followers: {
+      $slice: [start, 25]
+    }
+  };
+  User.findOne({username: username}, selection, callback);
+}
+
+module.exports.loadMoreFollowing = function(username, start, callback) {
+  const selection = {
+    following: {
+      $slice: [start, 25]
+    }
+  };
+  User.findOne({username: username}, selection, callback);
 }
 
 // ==========================

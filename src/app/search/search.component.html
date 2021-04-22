@@ -8,9 +8,20 @@
         <p>{{ result.name }}</p>
       </div>
     </div>
+  
+    <div class="end-of-content">
+      <div *ngIf="!endOfResults"
+        class="loading" appSearchDirective>
+        <div class="ball"></div>
+        <div class="ball"></div>
+        <div class="ball"></div>
+      </div>
+    </div>
   </div>
   
   <ng-template #no_results>
-    <h5>No results found matching: "{{ searchTerm }}"</h5>
+    <div class="main-content">
+      <h5>No results found matching: "{{ searchTerm }}"</h5>
+    </div>
   </ng-template>
 </div>

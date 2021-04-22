@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from '../services/auth.service';
 import { SearchService } from '../services/search.service';
-import { PostService } from '../services/post.service';
 import { NgForm } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -12,20 +11,14 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  private currentUser: any;
-  private searchResults: any[];
 
   constructor(
     private authService: AuthService,
     private searchService: SearchService,
-    private postService: PostService,
-    private router: Router,
-    private route: ActivatedRoute
+    private router: Router
   ) { }
 
   ngOnInit(): void {
-    this.authService.currentUser.subscribe(_currentUser => this.currentUser = _currentUser);
-    this.searchService.searchResults.subscribe(results => this.searchResults = results);
   }
 
   onLogoutClick() {
@@ -41,16 +34,19 @@ export class NavbarComponent implements OnInit {
     this.authService.handleRedirectProfile(username);
   };
 
-  onSubmitSearch(searchForm: NgForm) {
-    searchForm.value.searchTerm = searchForm.value.searchTerm.trim();
-    this.searchService.changeSearchTerm(searchForm.value.searchTerm);
-    if (!searchForm.value.searchTerm.length) return;
-    this.searchService.getUsers(searchForm.value).subscribe(data => {
+  onSubmitSearch(searchForm: NgForm, searchBar: string) {
+    this.searchService.resetSearch();
+    const term = searchForm.value.searchTerm.trim();
+    searchForm.value.searchTerm = term;
+    this.searchService.changeSearchTerm(term);
+    if (!term.length) return;
+
+    this.searchService.getUsers(searchForm.value, 0).subscribe(data => {
       data.success ? this.searchService.changeSearchResults(data.msg)
-      : this.searchService.changeSearchResults([]);
-    if (!(this.router.url === '/search')) this.router.navigate(['/search']);
-    $('#navSearch').val('');
-    searchForm.value.searchTerm = '';
+      : this.searchService.changeEndOfResults(true);
     });
+    
+    if (this.router.url !== '/search') this.router.navigate(['/search']);
+    this.searchService.clearSearchBar(searchBar, searchForm);
   };
 }

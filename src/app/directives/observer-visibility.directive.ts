@@ -120,14 +120,16 @@ export class ObserverVisibilityDirective
   };
 
   loadMoreFollowing(username: string, followingLength: number): void {
-
+    this.profileService.loadMoreFollowing(username, followingLength).subscribe(_following => {
+      if (_following.success) this.followingList.push(..._following.msg);
+    })
   }
 
-  // loadMoreFollowers(username: string, followerLength: number): void {
-  //   this.profileService.loadMoreFollowers(username, followerLength).subscribe(_followers => {
-  //     if (_followers.success) this.followerList.push(..._followers.msg);
-  //   });
-  // };
+  loadMoreFollowers(username: string, followerLength: number): void {
+    this.profileService.loadMoreFollowers(username, followerLength).subscribe(_followers => {
+      if (_followers.success) this.followerList.push(..._followers.msg);
+    });
+  };
 
   test(): void {
     this.testObserver = new IntersectionObserver(entry => {
@@ -142,10 +144,10 @@ export class ObserverVisibilityDirective
             this.loadMorePosts(username, this.posts.length);
             break;
           case 'followingTab':
-            // this.loadMoreFollowing(username, this.followingList.length);
+            this.loadMoreFollowing(username, this.followingList.length);
             break;
           case 'followerTab':
-            // this.loadMoreFollowers(username, this.followerList.length);
+            this.loadMoreFollowers(username, this.followerList.length);
             break;
         };
       }

@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { ProfilePreview } from '../interfaces/profile-preview';
+import { HttpClient } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
+  api = 'http://localhost:3000/users';
 
 // ===================================
 // || Active Tabs and Display Lists ||
@@ -39,7 +42,9 @@ export class ProfileService {
   private isFollowingSource = new BehaviorSubject<boolean>(false);
   isFollowing = this.isFollowingSource.asObservable();
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   resetVisible(add: string): void {
     $(`#${add}`).addClass('visible');
@@ -51,6 +56,18 @@ export class ProfileService {
     $(`#${tab}`).removeClass('active-tab');
     $('#postTab').addClass('active-tab');
     this.changeActiveTab('postTab');
+  };
+
+  loadMoreFollowers(username: string, followerCount: number) {
+    return this.http.get(`${this.api}/profile/${username}/loadmorefollowers?start=${followerCount}`).pipe(
+      catchError(err => of(err))
+    );
+  };
+
+  loadMoreFollowing(username: string, followingCount: number) {
+    return this.http.get(`${this.api}/profile/${username}/loadmorefollowing?start=${followingCount}`).pipe(
+      catchError(err => of(err))
+    );
   };
 
 // =======================

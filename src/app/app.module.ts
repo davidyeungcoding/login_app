@@ -22,6 +22,7 @@ import { FollowingListComponent } from './profile/profile/following-list/followi
 import { FollowerListComponent } from './profile/profile/follower-list/follower-list.component';
 import { DumpScreenComponent } from './dump-screen/dump-screen.component';
 import { ObserverVisibilityDirective } from './directives/observer-visibility.directive';
+import { SearchDirectiveDirective } from './directives/search-directive.directive';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { ObserverVisibilityDirective } from './directives/observer-visibility.di
     FollowerListComponent,
     DumpScreenComponent,
     ObserverVisibilityDirective,
+    SearchDirectiveDirective,
   ],
   imports: [
     BrowserModule,

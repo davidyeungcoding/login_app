@@ -55,7 +55,6 @@ export class DisplayPostComponent implements OnInit {
     if (this.authService.visitingProfile(this.currentUser, this.profileData)) {
       const guest = this.currentUser.username;
       let payload;
-      // consider moving everything to the service to handle the 'work'
 
       if (post.opinions === undefined || post.opinions[guest] === undefined) {
         payload = {
