@@ -1,4 +1,4 @@
-import { Directive, ElementRef, OnInit } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, OnDestroy, OnInit } from '@angular/core';
 
 import { SearchService } from '../services/search.service';
 import { ProfilePreview } from '../interfaces/profile-preview';
@@ -6,7 +6,7 @@ import { ProfilePreview } from '../interfaces/profile-preview';
 @Directive({
   selector: '[appSearchDirective]'
 })
-export class SearchDirectiveDirective implements OnInit {
+export class SearchDirectiveDirective implements OnInit, AfterViewInit, OnDestroy {
   private searchObserver: IntersectionObserver | undefined;
   private term: string;
   private searchResults: ProfilePreview[];
@@ -16,11 +16,21 @@ export class SearchDirectiveDirective implements OnInit {
     private element: ElementRef
   ) { }
 
-  ngOnInit () {
+  ngOnInit() {
     this.checkVisible();
     this.searchService.currentSearchTerm.subscribe(_term => this.term = _term);
     this.searchService.searchResults.subscribe(_results => this.searchResults = _results);
+  }
+  
+  ngAfterViewInit() {
     this.searchObserver.observe(this.element.nativeElement);
+  }
+
+  ngOnDestroy() {
+    if (this.searchObserver) {
+      this.searchObserver.disconnect();
+      this.searchObserver = undefined;
+    };
   }
 
   checkVisible() {

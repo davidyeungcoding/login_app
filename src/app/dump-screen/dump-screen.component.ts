@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { AuthService } from '../services/auth.service';
 import { ProfileService } from '../services/profile.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dump-screen',
   templateUrl: './dump-screen.component.html',
   styleUrls: ['./dump-screen.component.css']
 })
-export class DumpScreenComponent implements OnInit {
+export class DumpScreenComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription = new Subscription();
   displayMessage: string;
   private dumpTerm: string;
 
@@ -20,8 +22,12 @@ export class DumpScreenComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.profileService.dumpMessage.subscribe(_msg => this.dumpTerm = _msg);
+    this.subscriptions.add(this.profileService.dumpMessage.subscribe(_msg => this.dumpTerm = _msg));
     this.displaySwitch();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   handleTimedLogout(time: number): void {

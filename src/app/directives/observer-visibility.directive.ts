@@ -23,7 +23,7 @@ export class ObserverVisibilityDirective
   //   entry: IntersectionObserverEntry;
   //   observer: IntersectionObserver;
   // }>();
-  private testObserver: IntersectionObserver | undefined;
+  private listObserver: IntersectionObserver | undefined;
   private posts: Post[];
   private postCount: number;
   private followerList: ProfilePreview[];
@@ -38,21 +38,25 @@ export class ObserverVisibilityDirective
   ) { }
 
   ngOnInit() {
-    this.test();
+    this.checkListVisibility();
     this.postService.postCount.subscribe(_count => this.postCount = _count);
     this.postService.currentPosts.subscribe(_postList => this.posts = _postList);
     this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab);
     this.profileService.followingList.subscribe(_list => this.followingList = _list);
     this.profileService.followerList.subscribe(_list => this.followerList = _list);
-    this.testObserver.observe(this.element.nativeElement);
     // this.createObserver();
   }
   
   ngAfterViewInit() {
+    this.listObserver.observe(this.element.nativeElement);
     // this.startObserverElements();
   }
 
   ngOnDestroy() {
+    if (this.listObserver) {
+      this.listObserver.disconnect();
+      this.listObserver = undefined;
+    };
     // if (this.observer) {
     //   this.observer.disconnect();
     //   this.observer = undefined;
@@ -131,13 +135,10 @@ export class ObserverVisibilityDirective
     });
   };
 
-  test(): void {
-    this.testObserver = new IntersectionObserver(entry => {
+  checkListVisibility(): void {
+    this.listObserver = new IntersectionObserver(entry => {
       if (entry[0].intersectionRatio > 0) {
         const username = this.route.snapshot.paramMap.get('username');
-        // this.postService.loadMorePosts(username, this.posts.length).subscribe(_posts => {
-        //   if (_posts.success) this.posts.push(..._posts.msg);
-        // })
 
         switch (this.activeTab) {
           case 'postTab':
@@ -150,7 +151,7 @@ export class ObserverVisibilityDirective
             this.loadMoreFollowers(username, this.followerList.length);
             break;
         };
-      }
+      };
     });
   };
 }

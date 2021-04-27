@@ -24,6 +24,7 @@ export class CreateAccountComponent implements OnInit {
   }
 
   onRegisterSubmit(createAccount: NgForm) {
+    // rework flash messages so I don't need to have the library in my project
     if (!this.validateService.validateRegister(createAccount.value)) {
       this.flashMessages.show('Please fill in all fields.', { cssClass: 'alert-danger', timeout: 3000});
       return;

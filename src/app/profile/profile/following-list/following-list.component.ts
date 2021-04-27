@@ -1,27 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { AuthService } from '../../../services/auth.service';
-import { PostService } from 'src/app/services/post.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { User } from 'src/app/interfaces/user';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-following-list',
   templateUrl: './following-list.component.html',
   styleUrls: ['./following-list.component.css']
 })
-export class FollowingListComponent implements OnInit {
+export class FollowingListComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription = new Subscription();
   private profileData: User;
 
   constructor(
     private authService: AuthService,
-    private postService: PostService,
     private profileService: ProfileService
   ) { }
 
   ngOnInit(): void {
-    this.authService.profileData.subscribe(_profile => this.profileData = _profile);
-  };
+    this.subscriptions.add(this.authService.profileData.subscribe(_profile => this.profileData = _profile));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 
   followingList(): boolean {
     return this.profileData.following ? !!Object.keys(this.profileData.following).length

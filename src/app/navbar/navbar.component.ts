@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from '../services/auth.service';
 import { SearchService } from '../services/search.service';
+import { ProfileService } from '../services/profile.service';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { User } from '../interfaces/user';
 
 @Component({
   selector: 'app-navbar',
@@ -11,14 +13,21 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  private activeList: string;
+  private activeTab: string;
+  private profileData: User;
 
   constructor(
     private authService: AuthService,
     private searchService: SearchService,
-    private router: Router
+    private profileService: ProfileService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
+    this.profileService.activeList.subscribe(_list => this.activeList = _list);
+    this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab);
+    this.authService.profileData.subscribe(_profile => this.profileData = _profile);
   }
 
   onLogoutClick() {
@@ -31,7 +40,9 @@ export class NavbarComponent implements OnInit {
 
   onLoadProfile(): void {
     let username = JSON.parse(localStorage.getItem('user')).username;
-    this.authService.handleRedirectProfile(username);
+    this.profileService.resetActiveTab(this.activeTab);
+    this.profileService.resetVisible(this.activeList);
+    if (this.router.url !== `/profile/${username}`) this.authService.handleRedirectProfile(username);
   };
 
   onSubmitSearch(searchForm: NgForm, searchBar: string) {

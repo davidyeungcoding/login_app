@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Post } from '../../../interfaces/post';
 import { PostService } from '../../../services/post.service';
 import { AuthService } from '../../../services/auth.service';
 import { User } from '../../../interfaces/user';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-display-post',
   templateUrl: './display-post.component.html',
   styleUrls: ['./display-post.component.css']
 })
-export class DisplayPostComponent implements OnInit {
+export class DisplayPostComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription = new Subscription();
   posts: Post[];
   private postCount: number;
   profileData: User;
@@ -23,10 +25,14 @@ export class DisplayPostComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.postService.currentPosts.subscribe(_posts => this.posts = _posts);
-    this.postService.postCount.subscribe(_count => this.postCount = _count);
-    this.authService.profileData.subscribe(_profile => this.profileData = _profile);
-    this.authService.currentUser.subscribe(_user => this.currentUser = _user);
+    this.subscriptions.add(this.postService.currentPosts.subscribe(_posts => this.posts = _posts));
+    this.subscriptions.add(this.postService.postCount.subscribe(_count => this.postCount = _count));
+    this.subscriptions.add(this.authService.profileData.subscribe(_profile => this.profileData = _profile));
+    this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
 // =================

@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { AuthService } from '../../services/auth.service';
 import { ProfileService } from '../../services/profile.service';
 import { User } from '../../interfaces/user';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile-details',
   templateUrl: './profile-details.component.html',
   styleUrls: ['./profile-details.component.css']
 })
-export class ProfileDetailsComponent implements OnInit {
+export class ProfileDetailsComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription = new Subscription();
   profileData: User;
   private currentUser: any;
   followErrorMsg: string;
@@ -21,9 +23,13 @@ export class ProfileDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.authService.profileData.subscribe(_user => this.profileData = _user);
-    this.authService.currentUser.subscribe(_user => this.currentUser = _user);
-    this.profileService.isFollowing.subscribe(_following => this.isFollowing = _following);
+    this.subscriptions.add(this.authService.profileData.subscribe(_user => this.profileData = _user));
+    this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
+    this.subscriptions.add(this.profileService.isFollowing.subscribe(_following => this.isFollowing = _following));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
   
 // ===============

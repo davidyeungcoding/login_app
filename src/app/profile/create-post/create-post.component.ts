@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { PostService } from '../../services/post.service';
 import { AuthService } from '../../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-post',
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.css']
 })
-export class CreatePostComponent implements OnInit {
+export class CreatePostComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription = new Subscription();
   private postCount: number;
 
   constructor(
@@ -18,7 +20,11 @@ export class CreatePostComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.postService.postCount.subscribe(_count => this.postCount = _count);
+    this.subscriptions.add(this.postService.postCount.subscribe(_count => this.postCount = _count));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   onAddPost(form: NgForm) {
