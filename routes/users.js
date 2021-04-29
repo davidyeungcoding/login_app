@@ -1,8 +1,45 @@
+// =============
+// || Express ||
+// =============
+
 const express = require('express');
 const router = express.Router();
+
+// ============
+// || Multer ||
+// ============
+
+const multer = require('multer');
+
+const fileFilter = (req, file, cb) => {
+  const acceptedTypes = ['image/jpeg', 'image/png'];
+  acceptedTypes.some(index => index === file.mimetype) ? cb(null, true)
+  : cb(null, false);
+};
+
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, './uploads');
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.originalname);
+  },
+  fileFilter: fileFilter
+});
+
+const upload = multer({storage: storage});
+
+// ====================
+// || JSON Web Token ||
+// ====================
+
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
+
+// ============
+// || Models ||
+// ============
 
 const User = require('../models/user');
 const user = require('../models/user');
@@ -13,13 +50,15 @@ module.exports = router;
 // || Create Account ||
 // ====================
 
+// router.post('/register', upload.single('profileImage'), (req, res, next) => {
 router.post('/register', (req, res, next) => {
   let newUser = new User({
     username: req.body.username,
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-    posts: []
+    posts: [],
+    // profileImage: req.file.path.replace('\\', '/')
   });
 
   user.addUser(newUser, (err, user) => {

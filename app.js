@@ -22,6 +22,7 @@ const users = require('./routes/users');
 
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'src')));
+// app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());

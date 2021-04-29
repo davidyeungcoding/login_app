@@ -2,11 +2,13 @@ import { AfterViewInit, Directive, ElementRef, OnDestroy, OnInit } from '@angula
 
 import { SearchService } from '../services/search.service';
 import { ProfilePreview } from '../interfaces/profile-preview';
+import { Subscription } from 'rxjs';
 
 @Directive({
   selector: '[appSearchDirective]'
 })
 export class SearchDirectiveDirective implements OnInit, AfterViewInit, OnDestroy {
+  private subscriptions: Subscription = new Subscription();
   private searchObserver: IntersectionObserver | undefined;
   private term: string;
   private searchResults: ProfilePreview[];
@@ -18,19 +20,21 @@ export class SearchDirectiveDirective implements OnInit, AfterViewInit, OnDestro
 
   ngOnInit() {
     this.checkVisible();
-    this.searchService.currentSearchTerm.subscribe(_term => this.term = _term);
-    this.searchService.searchResults.subscribe(_results => this.searchResults = _results);
+    this.subscriptions.add(this.searchService.currentSearchTerm.subscribe(_term => this.term = _term));
+    this.subscriptions.add(this.searchService.searchResults.subscribe(_results => this.searchResults = _results));
   }
   
   ngAfterViewInit() {
     this.searchObserver.observe(this.element.nativeElement);
   }
-
+  
   ngOnDestroy() {
     if (this.searchObserver) {
       this.searchObserver.disconnect();
       this.searchObserver = undefined;
     };
+    
+    this.subscriptions.unsubscribe();
   }
 
   checkVisible() {
