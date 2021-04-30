@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import { AuthService } from '../../services/auth.service';
 import { ProfileService } from '../../services/profile.service';
@@ -16,6 +16,14 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
   private currentUser: any;
   followErrorMsg: string;
   private isFollowing: boolean;
+
+  @ViewChild('myPond') myPond:any;
+  pondOptions = {
+    class: 'my-filepond',
+    labelIdle: 'Drop files here',
+    credits: {},
+    acceptedFileTypes: 'image/jpeg, image/png'
+  }
 
   constructor(
     private authService: AuthService,

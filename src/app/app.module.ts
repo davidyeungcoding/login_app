@@ -1,6 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+// ================
+// || Components ||
+// ================
+
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
@@ -11,18 +15,45 @@ import { ProfileComponent } from './profile/profile/profile.component';
 import { SearchComponent } from './search/search.component';
 import { ProfileDetailsComponent } from './profile/profile-details/profile-details.component';
 import { ProfileContentComponent } from './profile/profile-content/profile-content.component';
+import { FollowingListComponent } from './profile/profile/following-list/following-list.component';
+import { FollowerListComponent } from './profile/profile/follower-list/follower-list.component';
+import { DumpScreenComponent } from './dump-screen/dump-screen.component';
+
+// ================
+// || Directives ||
+// ================
+
+import { ObserverVisibilityDirective } from './directives/observer-visibility.directive';
+import { SearchDirectiveDirective } from './directives/search-directive.directive';
+
+// =============
+// || Modules ||
+// =============
 
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { FlashMessagesModule } from 'angular2-flash-messages';
+import { FlashMessagesModule } from 'angular2-flash-messages'; // come back to delete when uninstalling later
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+
+// ===========
+// || Other ||
+// ===========
+
 import * as bootstrap from "bootstrap";
-import { FollowingListComponent } from './profile/profile/following-list/following-list.component';
-import { FollowerListComponent } from './profile/profile/follower-list/follower-list.component';
-import { DumpScreenComponent } from './dump-screen/dump-screen.component';
-import { ObserverVisibilityDirective } from './directives/observer-visibility.directive';
-import { SearchDirectiveDirective } from './directives/search-directive.directive';
+
+// ==============
+// || FilePond ||
+// ==============
+
+import { FilePondModule, registerPlugin } from 'ngx-filepond';
+import * as FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import * as FilePondPluginImageResize from 'filepond-plugin-image-resize';
+
+registerPlugin(
+  FilePondPluginImagePreview,
+  FilePondPluginImageResize
+)
 
 @NgModule({
   declarations: [
@@ -54,7 +85,8 @@ import { SearchDirectiveDirective } from './directives/search-directive.directiv
           return localStorage.getItem('id_token');
         }
       }
-    })
+    }),
+    FilePondModule
   ],
   providers: [],
   bootstrap: [AppComponent]
