@@ -5,6 +5,8 @@ import { ProfileService } from '../../services/profile.service';
 import { User } from '../../interfaces/user';
 import { Subscription } from 'rxjs';
 
+import * as Buffer from 'buffer';
+
 @Component({
   selector: 'app-profile-details',
   templateUrl: './profile-details.component.html',
@@ -17,29 +19,80 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
   followErrorMsg: string;
   private isFollowing: boolean;
 
-  @ViewChild('myPond') myPond:any;
-  pondOptions = {
-    class: 'my-filepond',
-    labelIdle: 'Drop files here',
-    credits: {},
-    acceptedFileTypes: 'image/jpeg, image/png'
-  }
-
+  target;
+  targetImage;
+  
   constructor(
     private authService: AuthService,
     private profileService: ProfileService
   ) { }
-
+  
   ngOnInit(): void {
     this.subscriptions.add(this.authService.profileData.subscribe(_user => this.profileData = _user));
     this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
     this.subscriptions.add(this.profileService.isFollowing.subscribe(_following => this.isFollowing = _following));
+    
+    console.log(this.profileData)
+    this.targetImage = this.profileData.profileImage;
+    console.log(this.targetImage)
+    // console.log(JSON.parse(this.targetImage.toString()))
+    // console.log(this.targetImage.toString('base64'))
+    // this.pondFile = 'this.profileData.profileImage';
+    // this.pondFile = this.profileData.profileImage;
+    // this.pondFile = `data:${this.profileData.imageType};base64,${this.profileData.profileImage}`;
+    this.target = document.getElementById('test');
+    // console.log(this.targetImage.data)
+    // console.log(`data:${this.profileData.profileImageType};charset-utf-8;base64,${this.targetImage.data}`)
+    // this.target.setAttribute('src', `data:${this.profileData.profileImageType};charset-utf-8;base64,${this.targetImage.data}`)
+    // console.log(this.target)
   }
-
+  
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
+    
+// =====================
+// || FilePond Values ||
+// =====================
+
+  @ViewChild('myPond') myPond: any;
+  pondFile;
   
+  pondOptions = {
+    class: 'my-filepond',
+    labelIdle: 'Drop Image Here',
+    imagePreviewHeight: 150,
+    imageCropAspectRatio: '1:1',
+    imageResizeTargetWidth: 150,
+    ImageResizeTargetHeight: 150,
+    stylePanelLayout: 'compact circle',
+    styleLoadIndicatorPosition: 'center bottom',
+    styleButtonRemoveItemPosition: 'center bottom',
+    credits: false,
+    acceptedFileTypes: 'image/jpeg, image/png'
+  }
+
+  pondHandleAddFile(event: any) {
+    const file = this.myPond.getFile();
+    const base64Image = file.getFileEncodeBase64String();
+    const bufferImage = Buffer.Buffer.from(base64Image, 'base64');
+    const check = file.getFileEncodeDataURL();
+    const type = check.split(';')[0].split(':')[1];
+    const payload = {
+      id: this.profileData._id,
+      username: this.profileData.username,
+      profileImage: bufferImage,
+      imageType: type
+    };
+    
+    console.log(bufferImage)
+    // this.target.setAttribute('src', `data:${this.profileData.profileImageType};base64,${this.profileData.profileImage}`);
+    
+    this.profileService.updateProfileImage(payload).subscribe(_status => {
+      if (!!_status) console.log(_status);
+    });
+  }
+    
 // ===============
 // || Following ||
 // ===============

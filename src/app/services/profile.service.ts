@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, of } from 'rxjs';
 import { ProfilePreview } from '../interfaces/profile-preview';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
@@ -10,6 +10,12 @@ import { catchError } from 'rxjs/operators';
 })
 export class ProfileService {
   api = 'http://localhost:3000/users';
+  
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
 
 // ===================================
 // || Active Tabs and Display Lists ||
@@ -66,6 +72,12 @@ export class ProfileService {
 
   loadMoreFollowing(username: string, followingCount: number) {
     return this.http.get(`${this.api}/profile/${username}/loadmorefollowing?start=${followingCount}`).pipe(
+      catchError(err => of(err))
+    );
+  };
+
+  updateProfileImage(payload: any) {
+    return this.http.post(`${this.api}/profile/${payload.username}/image`, payload, this.httpOptions).pipe(
       catchError(err => of(err))
     );
   };

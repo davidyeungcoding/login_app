@@ -49,10 +49,14 @@ import * as bootstrap from "bootstrap";
 import { FilePondModule, registerPlugin } from 'ngx-filepond';
 import * as FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import * as FilePondPluginImageResize from 'filepond-plugin-image-resize';
+import * as FilePondPluginFileEncode from 'filepond-plugin-file-encode';
+import FilePondPluginImageCrop from 'filepond-plugin-image-crop';
 
 registerPlugin(
   FilePondPluginImagePreview,
-  FilePondPluginImageResize
+  FilePondPluginImageResize,
+  FilePondPluginFileEncode,
+  FilePondPluginImageCrop
 )
 
 @NgModule({

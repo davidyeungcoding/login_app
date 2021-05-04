@@ -79,16 +79,6 @@ router.post('/authenticate', (req, res, next) => {
 // || Search Bar ||
 // ================
 
-// router.post('/search', (req, res, next) => {
-//   const re = new RegExp(req.body.searchTerm);
-//   const query = {username: re};
-//   user.getSpecific(query, 'name username', (err, doc) => {
-//     if (err) throw err;
-//     return doc.length ? res.json({success: true, msg: doc})
-//     : res.json({success : false, msg: 'No matching users'});
-//   });
-// });
-
 router.post('/search', (req, res, next) => {
   const term = new RegExp(req.body.searchTerm);
   const start = Number(req.query.start);
@@ -150,6 +140,14 @@ router.get('/profile/:username/loadmorefollowing', (req, res, next) => {
     if (err) throw err;
     doc ? res.json({ success: true, msg: doc.following })
     : res.json({ success: false, msg: 'No additional followed profiles'});
+  });
+});
+
+router.post('/profile/:username/image', (req, res, next) => {
+  user.updateProfileImage(req.body, (err, doc) => {
+    if (err) throw err;
+    doc ? res.json({ success: true, msg: 'Image successfully added'})
+    : res.json({ success: false, msg: 'Failed to upload image' });
   });
 });
 

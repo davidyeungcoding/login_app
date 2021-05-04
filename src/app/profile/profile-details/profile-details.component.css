@@ -1,4 +1,4 @@
-.profile-block {
+.profile-segment {
   display: block;
 }
 
@@ -13,4 +13,9 @@
 #followErrorMsg {
   color: red;
   margin: 0;
+}
+
+.profile-image-container {
+  /* width: 150px; */
+  padding-top: 20px;
 }

@@ -20,7 +20,8 @@ const MiniUser = mongoose.Schema({
 const UserSchema = mongoose.Schema({
   username: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   name: {
     type: String,
@@ -33,6 +34,12 @@ const UserSchema = mongoose.Schema({
   password: {
     type: String,
     required: true
+  },
+  profileImage: {
+    type: Buffer
+  },
+  profileImageType: {
+    type: String,
   },
   postCount: {
     type: Number,
@@ -317,6 +324,25 @@ module.exports.removeFollowing = function(user, profile, callback) {
     },
     $inc: {
       followingCount: -1
+    }
+  };
+  User.findOneAndUpdate(filter, query, callback);
+}
+
+// ============
+// || Images ||
+// ============
+
+module.exports.updateProfileImage = (payload, callback) => {
+  const filter = {
+    _id: payload.id,
+    username: payload.username
+  };
+
+  const query = {
+    $set: {
+      profileImage: payload.profileImage,
+      profileImageType: payload.imageType
     }
   };
   User.findOneAndUpdate(filter, query, callback);

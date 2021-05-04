@@ -1,5 +1,12 @@
 <div class="container">
-  <div class="row profile-block">
+  <div class="row profile-segment">
+    <div class="col-4 profile-image-container">
+      <file-pond #myPond
+        [options]="pondOptions"
+        (onaddfile)="pondHandleAddFile($event)">
+      </file-pond>
+    </div>
+
     <div class="col">
       <h2 class="profile-inline">{{ profileData.name }}</h2>
       <p class="profile-inline"
@@ -7,14 +14,14 @@
     </div>
   </div>
 
-  <div class="row profile-block">
+  <div class="row profile-segment">
     <div class="col">
       <p class="visible"
         id="followErrorMsg">{{ followErrorMsg }}</p>
     </div>
   </div>
 
-  <div class="row profile-block">
+  <div class="row profile-segment">
     <div class="col">
       <p class="profile-inline">{{ profileData.followerCount }} Followers</p>
 
@@ -29,6 +36,7 @@
       <ng-template #notFollowing>
         <button type="button"
           class="btn profile-options-btn white-font btn-bounce"
+          [files]="pondFile"
           (click)="onFollow()">
           <i class="far fa-heart white-font"></i></button>
       </ng-template>
@@ -36,6 +44,4 @@
   </div>
 </div>
 
-<file-pond #myPond
-  [options]="pondOptions">
-</file-pond>
+<img id="test" src="">
