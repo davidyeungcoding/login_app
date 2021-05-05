@@ -12,8 +12,10 @@ import { Subscription } from 'rxjs';
 })
 export class DumpScreenComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
-  displayMessage: string;
   private dumpTerm: string;
+  private activeTab: string;
+  private activeList: string;
+  displayMessage: string;
 
   constructor(
     private authService: AuthService,
@@ -23,6 +25,8 @@ export class DumpScreenComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.add(this.profileService.dumpMessage.subscribe(_msg => this.dumpTerm = _msg));
+    this.subscriptions.add(this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab));
+    this.subscriptions.add(this.profileService.activeList.subscribe(_list => this.activeList = _list));
     this.displaySwitch();
   }
 
@@ -32,7 +36,7 @@ export class DumpScreenComponent implements OnInit, OnDestroy {
 
   handleTimedLogout(time: number): void {
     setTimeout(() => {
-      this.authService.logout();
+      this.authService.logout(this.activeTab, this.activeList);
       this.router.navigate(['/home']);
     }, time);
   };

@@ -25,7 +25,7 @@
     <div class="col">
       <p class="profile-inline">{{ profileData.followerCount }} Followers</p>
 
-      <div *ngIf="displayFollowing(); else notFollowing"
+      <div *ngIf="isFollowing; else notFollowing"
         class="profile-inline">
         <button type="button"
           class="btn profile-options-btn white-font btn-bounce"

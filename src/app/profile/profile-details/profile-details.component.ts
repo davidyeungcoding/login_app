@@ -17,10 +17,10 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
   profileData: User;
   private currentUser: any;
   followErrorMsg: string;
-  private isFollowing: boolean;
+  isFollowing: boolean;
 
-  target;
-  targetImage;
+  // target;
+  // targetImage;
   
   constructor(
     private authService: AuthService,
@@ -33,14 +33,14 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.profileService.isFollowing.subscribe(_following => this.isFollowing = _following));
     
     console.log(this.profileData)
-    this.targetImage = this.profileData.profileImage;
-    console.log(this.targetImage)
+    // this.targetImage = this.profileData.profileImage;
+    // console.log(this.targetImage)
     // console.log(JSON.parse(this.targetImage.toString()))
     // console.log(this.targetImage.toString('base64'))
     // this.pondFile = 'this.profileData.profileImage';
     // this.pondFile = this.profileData.profileImage;
     // this.pondFile = `data:${this.profileData.imageType};base64,${this.profileData.profileImage}`;
-    this.target = document.getElementById('test');
+    // this.target = document.getElementById('test');
     // console.log(this.targetImage.data)
     // console.log(`data:${this.profileData.profileImageType};charset-utf-8;base64,${this.targetImage.data}`)
     // this.target.setAttribute('src', `data:${this.profileData.profileImageType};charset-utf-8;base64,${this.targetImage.data}`)
@@ -56,7 +56,7 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
 // =====================
 
   @ViewChild('myPond') myPond: any;
-  pondFile;
+  // pondFile;
   
   pondOptions = {
     class: 'my-filepond',
@@ -85,7 +85,7 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
       imageType: type
     };
     
-    console.log(bufferImage)
+    // console.log(bufferImage)
     // this.target.setAttribute('src', `data:${this.profileData.profileImageType};base64,${this.profileData.profileImage}`);
     
     this.profileService.updateProfileImage(payload).subscribe(_status => {
@@ -102,10 +102,6 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
       if (value.username === this.currentUser.username && value.userId === this.currentUser.id) return true;
     };
     return false;
-  };
-
-  displayFollowing(): boolean {
-    return this.isFollowing;
   };
 
   onFollow() {

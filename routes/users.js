@@ -127,8 +127,7 @@ router.get(`/profile/:username/loadmorefollowers`, (req, res, next) => {
   const start = Number(req.query.start);
   user.loadMoreFollowers(username, start, (err, doc) => {
     if (err) throw err;
-    console.log(doc)
-    return doc ? res.json({ success: true, msg: doc.followers })
+    return doc ? res.json({ success: true, msg: doc.followers, count: doc.followerCount })
     : res.json({ success: false, msg: 'No followers found' });
   });
 });
@@ -138,7 +137,7 @@ router.get('/profile/:username/loadmorefollowing', (req, res, next) => {
   const start = Number(req.query.start);
   user.loadMoreFollowing(username, start, (err, doc) => {
     if (err) throw err;
-    doc ? res.json({ success: true, msg: doc.following })
+    doc ? res.json({ success: true, msg: doc.following, count: doc.followingCount })
     : res.json({ success: false, msg: 'No additional followed profiles'});
   });
 });

@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Post } from '../../../interfaces/post';
 import { PostService } from '../../../services/post.service';
 import { AuthService } from '../../../services/auth.service';
+import { ProfileService } from '../../../services/profile.service';
 import { User } from '../../../interfaces/user';
 import { Subscription } from 'rxjs';
 
@@ -13,15 +14,19 @@ import { Subscription } from 'rxjs';
 })
 export class DisplayPostComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
-  posts: Post[];
   private postCount: number;
+  private activeTab: string;
+  private activeList: string;
+  posts: Post[];
   profileData: User;
   currentUser: any;
   toRemove: any = null;
+  personalProfile: boolean;
 
   constructor(
     private postService: PostService,
-    private authService: AuthService
+    private authService: AuthService,
+    private profileService: ProfileService
   ) { }
 
   ngOnInit(): void {
@@ -29,6 +34,9 @@ export class DisplayPostComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.postService.postCount.subscribe(_count => this.postCount = _count));
     this.subscriptions.add(this.authService.profileData.subscribe(_profile => this.profileData = _profile));
     this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
+    this.subscriptions.add(this.authService.personalProfile.subscribe(_check => this.personalProfile = _check));
+    this.subscriptions.add(this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab));
+    this.subscriptions.add(this.profileService.activeList.subscribe(_list => this.activeList = _list));
   }
 
   ngOnDestroy(): void {
@@ -38,10 +46,6 @@ export class DisplayPostComponent implements OnInit, OnDestroy {
 // =================
 // || HTML Checks ||
 // =================
-  
-  personalProfile(): boolean {
-    return this.authService.personalProfile(this.currentUser, this.profileData);
-  };
 
   endOfPosts(): boolean {
     return this.postCount === this.posts.length;
@@ -98,7 +102,7 @@ export class DisplayPostComponent implements OnInit, OnDestroy {
       });
     } else {
       // handle isexpired
-      if (this.authService.isExpired()) this.authService.logout();
+      if (this.authService.isExpired()) this.authService.logout(this.activeTab, this.activeList);
     };
   };
 

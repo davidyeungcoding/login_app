@@ -60,12 +60,14 @@ export class ObserverVisibilityDirective
   loadMoreFollowing(username: string, followingLength: number): void {
     this.profileService.loadMoreFollowing(username, followingLength).subscribe(_following => {
       if (_following.success) this.followingList.push(..._following.msg);
+      if (this.followingList.length === _following.count) this.profileService.changeEndOfFollowingList(true);
     });
   };
 
   loadMoreFollowers(username: string, followerLength: number): void {
     this.profileService.loadMoreFollowers(username, followerLength).subscribe(_followers => {
       if (_followers.success) this.followerList.push(..._followers.msg);
+      if (this.followerList.length === _followers.count) this.profileService.changeEndOfFollowerList(true);
     });
   };
 

@@ -47,6 +47,10 @@ export class ProfileService {
   followingCount = this.followingCountSource.asObservable();
   private isFollowingSource = new BehaviorSubject<boolean>(false);
   isFollowing = this.isFollowingSource.asObservable();
+  private endOfFollowingListSource = new BehaviorSubject<boolean>(false);
+  endOfFollowingList = this.endOfFollowingListSource.asObservable();
+  private endOfFollowerListSource = new BehaviorSubject<boolean>(false);
+  endOfFollowerList = this.endOfFollowerListSource.asObservable();
 
   constructor(
     private http: HttpClient
@@ -116,5 +120,13 @@ export class ProfileService {
 
   changeIsFollowing(check: boolean): void {
     this.isFollowingSource.next(check);
+  };
+
+  changeEndOfFollowingList(check: boolean): void {
+    this.endOfFollowingListSource.next(check);
+  };
+
+  changeEndOfFollowerList(check: boolean): void {
+    this.endOfFollowerListSource.next(check);
   };
 }

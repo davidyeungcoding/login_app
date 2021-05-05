@@ -13,6 +13,8 @@ import { Subscription } from 'rxjs';
 export class FollowingListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
   private profileData: User;
+  followingList: boolean;
+  endOfFollowingList: boolean;
 
   constructor(
     private authService: AuthService,
@@ -21,20 +23,13 @@ export class FollowingListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.add(this.authService.profileData.subscribe(_profile => this.profileData = _profile));
+    this.subscriptions.add(this.profileService.endOfFollowingList.subscribe(_check => this.endOfFollowingList = _check));
+    this.subscriptions.add(this.profileService.followingList.subscribe(_list => this.followingList = !!_list.length));
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
-
-  followingList(): boolean {
-    return this.profileData.following ? !!Object.keys(this.profileData.following).length
-    : false;
-  };
-
-  endOfFollowingList(): boolean {
-    return Object.keys(this.profileData.following).length === this.profileData.followingCount;
-  };
 
   changeProfileData(username: string): void {
     this.authService.handleRedirectProfile(username);

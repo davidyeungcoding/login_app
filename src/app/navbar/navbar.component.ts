@@ -28,7 +28,7 @@ export class NavbarComponent implements OnInit {
   }
 
   onLogoutClick() {
-    this.authService.logout();
+    this.authService.logout(this.activeTab, this.activeList);
   };
 
   expiredToken() {
