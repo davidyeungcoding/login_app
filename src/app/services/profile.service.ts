@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+import { PostService } from './post.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { ProfilePreview } from '../interfaces/profile-preview';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -47,14 +48,15 @@ export class ProfileService {
   followingCount = this.followingCountSource.asObservable();
   private isFollowingSource = new BehaviorSubject<boolean>(false);
   isFollowing = this.isFollowingSource.asObservable();
-  private endOfFollowingListSource = new BehaviorSubject<boolean>(false);
-  endOfFollowingList = this.endOfFollowingListSource.asObservable();
-  private endOfFollowerListSource = new BehaviorSubject<boolean>(false);
-  endOfFollowerList = this.endOfFollowerListSource.asObservable();
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private postService: PostService
   ) { }
+
+// =================
+// || Reset State ||
+// =================
 
   resetVisible(add: string): void {
     $(`#${add}`).addClass('visible');
@@ -67,6 +69,10 @@ export class ProfileService {
     $('#postTab').addClass('active-tab');
     this.changeActiveTab('postTab');
   };
+
+// ===================
+// || Get More Data ||
+// ===================
 
   loadMoreFollowers(username: string, followerCount: number) {
     return this.http.get(`${this.api}/profile/${username}/loadmorefollowers?start=${followerCount}`).pipe(
@@ -120,13 +126,5 @@ export class ProfileService {
 
   changeIsFollowing(check: boolean): void {
     this.isFollowingSource.next(check);
-  };
-
-  changeEndOfFollowingList(check: boolean): void {
-    this.endOfFollowingListSource.next(check);
-  };
-
-  changeEndOfFollowerList(check: boolean): void {
-    this.endOfFollowerListSource.next(check);
   };
 }

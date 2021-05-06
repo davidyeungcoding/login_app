@@ -12,7 +12,7 @@
       <div class="container">
         <div class="row justify-content-end">
           <div>
-            <button *ngIf="personalProfile"
+            <button *ngIf="currentUser && currentUser.username === profileData.username"
               type="button"
               class="btn opinion btn-bounce"
               (click)="markForDeletion(post)"
@@ -23,7 +23,7 @@
             <button type="button"
               class="btn opinion btn-bounce"
               (click)="onOpinionVoiced(post, 1)">
-              <i *ngIf="checkForOpinion(post, 1); else likeNotSelected"
+              <i *ngIf="post.opinions && post.opinions[currentUser.username] === 1; else likeNotSelected"
                 class="fas fa-arrow-alt-circle-up icon-size white-font"></i>
               <ng-template #likeNotSelected>
                 <i class="far fa-arrow-alt-circle-up icon-size white-font"></i>
@@ -33,7 +33,7 @@
             <button type="button"
               class="btn opinion btn-bounce-reverse"
               (click)="onOpinionVoiced(post, -1)">
-              <i *ngIf="checkForOpinion(post, -1); else dislikeNotSelected"
+              <i *ngIf="post.opinions && post.opinions[currentUser.username] === -1; else dislikeNotSelected"
                 class="fas fa-arrow-alt-circle-down icon-size white-font"></i>
               <ng-template #dislikeNotSelected>
                 <i class="far fa-arrow-alt-circle-down icon-size white-font"></i>
@@ -46,7 +46,7 @@
     </div>
 
     <div class="end-of-content">
-      <div *ngIf="!endOfPosts()"
+      <div *ngIf="profileData.postCount !== posts.length"
         class="loading" appObserverVisibility>
         <div class="ball"></div>
         <div class="ball"></div>

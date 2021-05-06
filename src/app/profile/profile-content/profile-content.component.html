@@ -1,5 +1,5 @@
 <div class="container">
-  <div *ngIf="personalProfile" class="row">
+  <div *ngIf="currentUser.username === profileData.username" class="row">
     <button type="button"
       class="btn profile-options-btn col white-font"
       data-toggle="modal"

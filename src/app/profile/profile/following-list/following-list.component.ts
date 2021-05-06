@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { User } from 'src/app/interfaces/user';
+import { ProfilePreview } from 'src/app/interfaces/profile-preview';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -12,9 +13,8 @@ import { Subscription } from 'rxjs';
 })
 export class FollowingListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
-  private profileData: User;
-  followingList: boolean;
-  endOfFollowingList: boolean;
+  profileData: User;
+  followingList: ProfilePreview[];
 
   constructor(
     private authService: AuthService,
@@ -23,8 +23,7 @@ export class FollowingListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.add(this.authService.profileData.subscribe(_profile => this.profileData = _profile));
-    this.subscriptions.add(this.profileService.endOfFollowingList.subscribe(_check => this.endOfFollowingList = _check));
-    this.subscriptions.add(this.profileService.followingList.subscribe(_list => this.followingList = !!_list.length));
+    this.subscriptions.add(this.profileService.followingList.subscribe(_list => this.followingList = _list));
   }
 
   ngOnDestroy(): void {

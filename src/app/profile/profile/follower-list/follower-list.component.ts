@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { ProfileService } from '../../../services/profile.service';
 import { User } from 'src/app/interfaces/user';
+import { ProfilePreview } from 'src/app/interfaces/profile-preview';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -12,9 +13,8 @@ import { Subscription } from 'rxjs';
 })
 export class FollowerListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
-  private profileData: User;
-  followerList: boolean;
-  endOfFollowerList: boolean;
+  profileData: User;
+  followerList: ProfilePreview[];
 
   constructor(
     private authService: AuthService,
@@ -23,22 +23,12 @@ export class FollowerListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.add(this.authService.profileData.subscribe(_profile => this.profileData = _profile));
-    this.subscriptions.add(this.profileService.followerList.subscribe(_list => this.followerList = !!_list.length));
-    this.subscriptions.add(this.profileService.endOfFollowerList.subscribe(_check => this.endOfFollowerList = _check));
+    this.subscriptions.add(this.profileService.followerList.subscribe(_list => this.followerList = _list));
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
-
-  // followersList(): boolean {
-  //   return this.profileData.followers ? !!Object.keys(this.profileData.followers).length
-  //   : false;
-  // };
-
-  // endOfFollowerList(): boolean {
-  //   return Object.keys(this.profileData.followers).length === this.profileData.followerCount;
-  // };
 
   changeProfileData(username: string): void {
     this.authService.handleRedirectProfile(username);

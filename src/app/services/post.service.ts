@@ -18,9 +18,9 @@ const httpOptions = {
 export class PostService {
   api = 'http://localhost:3000/users';
   
-  postsSource = new BehaviorSubject<Post[]>([]);
+  private postsSource = new BehaviorSubject<Post[]>([]);
   currentPosts = this.postsSource.asObservable();
-  postCountSource = new BehaviorSubject<number>(0);
+  private postCountSource = new BehaviorSubject<number>(0);
   postCount = this.postCountSource.asObservable();
 
   constructor(

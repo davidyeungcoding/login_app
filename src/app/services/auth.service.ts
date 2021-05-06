@@ -18,14 +18,14 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AuthService {
-  authToken: any;
   private localUser = JSON.parse(localStorage.getItem('user'));
-  emptyUser = {
+  private emptyUser = {
     _id: false,
     username: false,
     name: false,
     email: false
   };
+  authToken: any;
   api = 'http://localhost:3000/users';
 
 // =================
@@ -36,8 +36,6 @@ export class AuthService {
   currentUser = this.userSource.asObservable();
   private profileDataSource = new BehaviorSubject<any>({});
   profileData = this.profileDataSource.asObservable();
-  private personalProfileSource = new BehaviorSubject<boolean>(false);
-  personalProfile = this.personalProfileSource.asObservable();
 
   constructor(
     private postService: PostService,
@@ -135,16 +133,9 @@ export class AuthService {
     this.profileDataSource.next(user);
   };
 
-  changePersonalProfile(currentUser, profileUser): void {
-    this.personalProfileSource.next(
-      currentUser.id && !this.isExpired()
-      && currentUser.username === profileUser ? true : false
-    );
-  };
-
-// =============================
-// || Verify Personal Profile ||
-// =============================
+// ====================
+// || Verify Profile ||
+// ====================
 
   visitingProfile(currentUser, profileUser): boolean {
     return currentUser.id && !this.isExpired()
@@ -169,7 +160,6 @@ export class AuthService {
 
     this.getProfile(username, localUser.username, localUser.id).subscribe(_user => {
       if (_user.success) {
-        this.changePersonalProfile(localUser, username);
         this.changeProfileInfo(username, _user.user, redirect);
         this.profileService.changeIsFollowing(_user.follower);
       } else this.redirectDump('/profile-not-found', 'profile');

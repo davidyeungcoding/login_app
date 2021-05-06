@@ -14,14 +14,12 @@ import { Subscription } from 'rxjs';
 })
 export class DisplayPostComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
-  private postCount: number;
   private activeTab: string;
   private activeList: string;
   posts: Post[];
   profileData: User;
   currentUser: any;
   toRemove: any = null;
-  personalProfile: boolean;
 
   constructor(
     private postService: PostService,
@@ -31,10 +29,8 @@ export class DisplayPostComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.add(this.postService.currentPosts.subscribe(_posts => this.posts = _posts));
-    this.subscriptions.add(this.postService.postCount.subscribe(_count => this.postCount = _count));
     this.subscriptions.add(this.authService.profileData.subscribe(_profile => this.profileData = _profile));
     this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
-    this.subscriptions.add(this.authService.personalProfile.subscribe(_check => this.personalProfile = _check));
     this.subscriptions.add(this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab));
     this.subscriptions.add(this.profileService.activeList.subscribe(_list => this.activeList = _list));
   }
@@ -42,14 +38,6 @@ export class DisplayPostComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
-
-// =================
-// || HTML Checks ||
-// =================
-
-  endOfPosts(): boolean {
-    return this.postCount === this.posts.length;
-  };
 
 // ====================
 // || Like & Dislike ||

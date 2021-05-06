@@ -14,8 +14,8 @@ import * as Buffer from 'buffer';
 })
 export class ProfileDetailsComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
-  profileData: User;
   private currentUser: any;
+  profileData: User;
   followErrorMsg: string;
   isFollowing: boolean;
 

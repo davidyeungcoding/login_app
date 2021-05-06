@@ -12,11 +12,10 @@ import { Subscription } from 'rxjs';
 })
 export class ProfileContentComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
-  private profileData: User;
-  private currentUser: any;
   private activeList: string;
   private activeTab: string;
-  personalProfile: boolean;
+  profileData: User;
+  currentUser: any;
 
   constructor(
     private authService: AuthService,
@@ -28,7 +27,6 @@ export class ProfileContentComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
     this.subscriptions.add(this.profileService.activeList.subscribe(_list => this.activeList = _list));
     this.subscriptions.add(this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab));
-    this.subscriptions.add(this.authService.personalProfile.subscribe(_check => this.personalProfile = _check));
   }
 
   ngOnDestroy(): void {

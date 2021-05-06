@@ -1,4 +1,4 @@
-<div *ngIf="followingList; else notFollowing">
+<div *ngIf="!!profileData.followingCount; else notFollowing">
   <div *ngFor="let user of profileData.following"
     class="main-content pointer"
     (click)="changeProfileData(user.username)">
@@ -9,7 +9,7 @@
   </div>
   
   <div class="end-of-content">
-    <div *ngIf="!endOfFollowingList"
+    <div *ngIf="profileData.followingCount !== followingList.length"
       class="loading" appObserverVisibility>
       <div class="ball"></div>
       <div class="ball"></div>

@@ -117,7 +117,7 @@ router.get('/profile/:username/loadmoreposts', (req, res, next) => {
   const start = Number(req.query.start);
   user.loadMorePosts(username, start, (err, doc) => {
     if (err) throw err;
-    doc ? res.json({success: true, msg: doc.posts})
+    doc ? res.json({success: true, msg: doc.posts, count: doc.postCount})
     : res.json({ success: false, msg: 'No posts found' })
   });
 });

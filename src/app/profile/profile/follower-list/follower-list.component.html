@@ -1,4 +1,4 @@
-<div *ngIf="followerList; else noFollowers">
+<div *ngIf="!!profileData.followerCount; else noFollowers">
   <div *ngFor="let user of profileData.followers"
     class="main-content pointer"
     (click)="changeProfileData(user.username)">
@@ -9,7 +9,7 @@
   </div>
   
   <div class="end-of-content">
-    <div *ngIf="!endOfFollowerList"
+    <div *ngIf="profileData.followerCount !== followerList.length"
       class="loading" appObserverVisibility>
       <div class="ball"></div>
       <div class="ball"></div>
@@ -17,7 +17,6 @@
     </div>
   </div>
 </div>
-
 
 <ng-template #noFollowers>
   <div class="main-content">
