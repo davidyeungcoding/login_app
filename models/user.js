@@ -36,7 +36,7 @@ const UserSchema = mongoose.Schema({
     required: true
   },
   profileImage: {
-    type: Buffer
+    type: String
   },
   profileImageType: {
     type: String,

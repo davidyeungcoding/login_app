@@ -20,10 +20,8 @@ const httpOptions = {
 export class AuthService {
   private localUser = JSON.parse(localStorage.getItem('user'));
   private emptyUser = {
-    _id: false,
-    username: false,
-    name: false,
-    email: false
+    id: false,
+    username: false
   };
   authToken: any;
   api = 'http://localhost:3000/users';

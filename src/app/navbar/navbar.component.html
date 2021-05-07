@@ -58,21 +58,21 @@
             routerLink="/home">Home</a>
         </li>
 
-        <li *ngIf="!this.expiredToken()"
+        <li *ngIf="this.currentUser.id"
           class="nav-item"
           routerLinkActive="active">
           <a class="nav-link pointer"
             (click)="onLoadProfile()">My Profile</a>
         </li>
 
-        <li *ngIf="this.expiredToken()"
+        <li *ngIf="!this.currentUser.id"
           class="nav-item"
           routerLinkActive="active">
           <a class="nav-link"
             routerLink="/create-account">Create Account</a>
         </li>
 
-        <li *ngIf="!this.expiredToken()"
+        <li *ngIf="this.currentUser.id"
           class="nav-item">
           <a class="nav-link"
           (click)="onLogoutClick()"

@@ -19,7 +19,6 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
   followErrorMsg: string;
   isFollowing: boolean;
 
-  // target;
   // targetImage;
   
   constructor(
@@ -32,7 +31,9 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
     this.subscriptions.add(this.profileService.isFollowing.subscribe(_following => this.isFollowing = _following));
     
-    console.log(this.profileData)
+    // console.log(this.profileData)
+    // console.log(this.profileData.profileImage)
+    document.getElementById('test').setAttribute('src', `data:${this.profileData.profileImageType};charset-utf-8;base64,${this.profileData.profileImage}`)
     // this.targetImage = this.profileData.profileImage;
     // console.log(this.targetImage)
     // console.log(JSON.parse(this.targetImage.toString()))
@@ -40,11 +41,9 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
     // this.pondFile = 'this.profileData.profileImage';
     // this.pondFile = this.profileData.profileImage;
     // this.pondFile = `data:${this.profileData.imageType};base64,${this.profileData.profileImage}`;
-    // this.target = document.getElementById('test');
     // console.log(this.targetImage.data)
     // console.log(`data:${this.profileData.profileImageType};charset-utf-8;base64,${this.targetImage.data}`)
     // this.target.setAttribute('src', `data:${this.profileData.profileImageType};charset-utf-8;base64,${this.targetImage.data}`)
-    // console.log(this.target)
   }
   
   ngOnDestroy(): void {
@@ -81,12 +80,13 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
     const payload = {
       id: this.profileData._id,
       username: this.profileData.username,
-      profileImage: bufferImage,
+      profileImage: base64Image,
       imageType: type
     };
     
-    // console.log(bufferImage)
+    console.log(typeof(check))
     // this.target.setAttribute('src', `data:${this.profileData.profileImageType};base64,${this.profileData.profileImage}`);
+    // const target = document.getElementById('test').setAttribute('src', `data:${type};charset-utf-8;base64,${base64Image}`)
     
     this.profileService.updateProfileImage(payload).subscribe(_status => {
       if (!!_status) console.log(_status);

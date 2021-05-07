@@ -5,6 +5,7 @@ import { SearchService } from '../services/search.service';
 import { ProfileService } from '../services/profile.service';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { User } from '../interfaces/user';
 
 @Component({
   selector: 'app-navbar',
@@ -14,6 +15,7 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
   private activeList: string;
   private activeTab: string;
+  currentUser: any;
 
   constructor(
     private authService: AuthService,
@@ -25,6 +27,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.profileService.activeList.subscribe(_list => this.activeList = _list);
     this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab);
+    this.authService.currentUser.subscribe(_user => this.currentUser = _user);
   }
 
   onLogoutClick() {
