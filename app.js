@@ -23,10 +23,10 @@ const users = require('./routes/users');
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'src')));
 app.use(bodyParser.urlencoded({
-  limit: '5mb',
+  limit: '2mb',
   extended: false
 }))
-app.use(bodyParser.json({limit: '5mb'}));
+app.use(bodyParser.json({limit: '2mb'}));
 app.use(passport.initialize());
 app.use(passport.session());
 

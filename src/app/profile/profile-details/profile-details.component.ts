@@ -19,7 +19,7 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
   followErrorMsg: string;
   isFollowing: boolean;
 
-  // targetImage;
+  pondFile;
   
   constructor(
     private authService: AuthService,
@@ -31,19 +31,7 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
     this.subscriptions.add(this.profileService.isFollowing.subscribe(_following => this.isFollowing = _following));
     
-    // console.log(this.profileData)
-    // console.log(this.profileData.profileImage)
-    document.getElementById('test').setAttribute('src', `data:${this.profileData.profileImageType};charset-utf-8;base64,${this.profileData.profileImage}`)
-    // this.targetImage = this.profileData.profileImage;
-    // console.log(this.targetImage)
-    // console.log(JSON.parse(this.targetImage.toString()))
-    // console.log(this.targetImage.toString('base64'))
-    // this.pondFile = 'this.profileData.profileImage';
-    // this.pondFile = this.profileData.profileImage;
-    // this.pondFile = `data:${this.profileData.imageType};base64,${this.profileData.profileImage}`;
-    // console.log(this.targetImage.data)
-    // console.log(`data:${this.profileData.profileImageType};charset-utf-8;base64,${this.targetImage.data}`)
-    // this.target.setAttribute('src', `data:${this.profileData.profileImageType};charset-utf-8;base64,${this.targetImage.data}`)
+    this.pondFile = [`data:${this.profileData.profileImageType};charset-utf-8;base64,${this.profileData.profileImage}`];
   }
   
   ngOnDestroy(): void {
@@ -55,7 +43,6 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
 // =====================
 
   @ViewChild('myPond') myPond: any;
-  // pondFile;
   
   pondOptions = {
     class: 'my-filepond',
@@ -63,7 +50,6 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
     imagePreviewHeight: 150,
     imageCropAspectRatio: '1:1',
     imageResizeTargetWidth: 150,
-    ImageResizeTargetHeight: 150,
     stylePanelLayout: 'compact circle',
     styleLoadIndicatorPosition: 'center bottom',
     styleButtonRemoveItemPosition: 'center bottom',

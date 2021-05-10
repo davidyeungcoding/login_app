@@ -51,12 +51,14 @@ import * as FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import * as FilePondPluginImageResize from 'filepond-plugin-image-resize';
 import * as FilePondPluginFileEncode from 'filepond-plugin-file-encode';
 import FilePondPluginImageCrop from 'filepond-plugin-image-crop';
+import * as FilePondPluginImageTransform from 'filepond-plugin-image-transform';
 
 registerPlugin(
   FilePondPluginImagePreview,
   FilePondPluginImageResize,
   FilePondPluginFileEncode,
-  FilePondPluginImageCrop
+  FilePondPluginImageCrop,
+  FilePondPluginImageTransform
 )
 
 @NgModule({

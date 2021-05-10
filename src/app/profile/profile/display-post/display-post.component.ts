@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Post } from '../../../interfaces/post';
 import { PostService } from '../../../services/post.service';
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './display-post.component.html',
   styleUrls: ['./display-post.component.css']
 })
-export class DisplayPostComponent implements OnInit, OnDestroy {
+export class DisplayPostComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
   private activeTab: string;
   private activeList: string;
@@ -20,6 +20,7 @@ export class DisplayPostComponent implements OnInit, OnDestroy {
   profileData: User;
   currentUser: any;
   toRemove: any = null;
+  postArray: any;
 
   constructor(
     private postService: PostService,
@@ -28,26 +29,42 @@ export class DisplayPostComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.subscriptions.add(this.postService.currentPosts.subscribe(_posts => this.posts = _posts));
     this.subscriptions.add(this.authService.profileData.subscribe(_profile => this.profileData = _profile));
     this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
+    this.subscriptions.add(this.postService.currentPosts.subscribe(_posts => this.posts = _posts));
     this.subscriptions.add(this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab));
     this.subscriptions.add(this.profileService.activeList.subscribe(_list => this.activeList = _list));
+    this.subscriptions.add(this.postService.postArray.subscribe(_array => this.postArray = _array));
+  }
+
+  ngAfterViewInit(): void {
+    this.postService.changePostArray(document.getElementsByClassName('profile-image'));
+    this.assignProfileImage();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
+// =========================
+// || Profile Image Setup ||
+// =========================
+
+  assignProfileImage(): void {
+    const image = this.profileData.profileImage;
+    const type = this.profileData.profileImageType;
+    this.profileService.assignProfileImageMulti(image, type, this.postArray);
+  };
+
 // ====================
 // || Like & Dislike ||
 // ====================
 
-  checkForOpinion(post: Post, value): boolean {
-    if (this.currentUser.id && post.opinions && post.opinions[this.currentUser.username]) {
-      return post.opinions[this.currentUser.username] === value;
-    } else return false;
-  };
+  // checkForOpinion(post: Post, value): boolean {
+  //   if (this.currentUser.id && post.opinions && post.opinions[this.currentUser.username]) {
+  //     return post.opinions[this.currentUser.username] === value;
+  //   } else return false;
+  // };
 
   onOpinionVoiced(post: Post, value: number): void {
     if (this.authService.visitingProfile(this.currentUser, this.profileData)) {
@@ -108,6 +125,7 @@ export class DisplayPostComponent implements OnInit, OnDestroy {
       if (doc.success) {
         this.postService.changePost(doc.msg.posts);
         this.postService.changePostCount(doc.msg.postCount);
+        this.profileData.postCount--;
       } else {
         // handle error
       };

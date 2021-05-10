@@ -71,6 +71,18 @@ export class ProfileService {
   };
 
 // ===================
+// || Profile Image ||
+// ===================
+
+  assignProfileImageMulti(image: Buffer, type: string, target: any): void {
+    const profileImage = `data:${type};charset-utf-8;base64,${image}`;
+
+    for (let i = 0; i < target.length; i++) {
+      target[i].setAttribute('src', profileImage);
+    };
+  };
+
+// ===================
 // || Get More Data ||
 // ===================
 
