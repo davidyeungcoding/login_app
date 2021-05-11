@@ -95,7 +95,7 @@ module.exports.getUserForLogin = function(username, callback) {
 module.exports.getUserByUsername = function(username, callback) {
   const selection = {
     posts: {
-      $slice: [0, 3]
+      $slice: [0, 25]
     },
     followers: {
       $slice: [0, 25]

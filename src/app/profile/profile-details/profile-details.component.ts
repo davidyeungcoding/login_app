@@ -5,7 +5,7 @@ import { ProfileService } from '../../services/profile.service';
 import { User } from '../../interfaces/user';
 import { Subscription } from 'rxjs';
 
-import * as Buffer from 'buffer';
+import * as buffer from 'buffer';
 
 @Component({
   selector: 'app-profile-details',
@@ -30,7 +30,6 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.authService.profileData.subscribe(_user => this.profileData = _user));
     this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
     this.subscriptions.add(this.profileService.isFollowing.subscribe(_following => this.isFollowing = _following));
-    
     this.pondFile = [`data:${this.profileData.profileImageType};charset-utf-8;base64,${this.profileData.profileImage}`];
   }
   
@@ -60,7 +59,7 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
   pondHandleAddFile(event: any) {
     const file = this.myPond.getFile();
     const base64Image = file.getFileEncodeBase64String();
-    const bufferImage = Buffer.Buffer.from(base64Image, 'base64');
+    const bufferImage = buffer.Buffer.from(base64Image, 'base64');
     const check = file.getFileEncodeDataURL();
     const type = check.split(';')[0].split(':')[1];
     const payload = {
@@ -70,12 +69,10 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
       imageType: type
     };
     
-    console.log(typeof(check))
-    // this.target.setAttribute('src', `data:${this.profileData.profileImageType};base64,${this.profileData.profileImage}`);
-    // const target = document.getElementById('test').setAttribute('src', `data:${type};charset-utf-8;base64,${base64Image}`)
-    
     this.profileService.updateProfileImage(payload).subscribe(_status => {
-      if (!!_status) console.log(_status);
+      if (!_status.success) {
+        // handle error updating image
+      }
     });
   }
     

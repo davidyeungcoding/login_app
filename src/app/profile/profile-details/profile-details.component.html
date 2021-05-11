@@ -2,6 +2,7 @@
   <div class="row profile-segment">
     <div class="col-4 profile-image-container">
       <file-pond #myPond
+        [files]="pondFile"
         [options]="pondOptions"
         (onaddfile)="pondHandleAddFile($event)">
       </file-pond>

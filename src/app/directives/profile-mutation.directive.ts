@@ -12,7 +12,7 @@ import { User } from '../interfaces/user';
 export class ProfileMutationDirective implements OnInit, AfterViewInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
   private profileMutation: MutationObserver | undefined;
-  private config = {childList: true};
+  private config = {attributes: true, childList: true};
   private profileData: User;
   private postArray: any;
 
@@ -49,6 +49,7 @@ export class ProfileMutationDirective implements OnInit, AfterViewInit, OnDestro
 
   checkForChanges(): void {
     this.profileMutation = new MutationObserver(entry => {
+      console.log(entry)
       if (entry) this.assignProfileImage();
     });
   };
