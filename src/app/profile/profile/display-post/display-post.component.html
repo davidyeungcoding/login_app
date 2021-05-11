@@ -1,4 +1,4 @@
-<div *ngIf="!!posts && posts.length; else noContent">
+<div *ngIf="!!posts && posts.length; else noContent" appProfileMutation>
   <div class="main-content"
     *ngFor="let post of posts">
     <div class="container content-box-main">

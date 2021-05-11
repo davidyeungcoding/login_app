@@ -52,6 +52,7 @@ import * as FilePondPluginImageResize from 'filepond-plugin-image-resize';
 import * as FilePondPluginFileEncode from 'filepond-plugin-file-encode';
 import FilePondPluginImageCrop from 'filepond-plugin-image-crop';
 import * as FilePondPluginImageTransform from 'filepond-plugin-image-transform';
+import { ProfileMutationDirective } from './directives/profile-mutation.directive';
 
 registerPlugin(
   FilePondPluginImagePreview,
@@ -78,6 +79,7 @@ registerPlugin(
     DumpScreenComponent,
     ObserverVisibilityDirective,
     SearchDirectiveDirective,
+    ProfileMutationDirective,
   ],
   imports: [
     BrowserModule,

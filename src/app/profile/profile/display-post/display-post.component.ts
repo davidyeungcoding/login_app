@@ -16,11 +16,11 @@ export class DisplayPostComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
   private activeTab: string;
   private activeList: string;
+  private toRemove: any = null;
+  private postArray: any;
   posts: Post[];
   profileData: User;
   currentUser: any;
-  toRemove: any = null;
-  postArray: any;
 
   constructor(
     private postService: PostService,
