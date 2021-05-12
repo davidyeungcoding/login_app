@@ -2,7 +2,9 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import { AuthService } from '../../services/auth.service';
 import { ProfileService } from '../../services/profile.service';
+import { PostService } from 'src/app/services/post.service';
 import { User } from '../../interfaces/user';
+import { Post } from '../../interfaces/post';
 import { Subscription } from 'rxjs';
 
 import * as buffer from 'buffer';
@@ -15,21 +17,23 @@ import * as buffer from 'buffer';
 export class ProfileDetailsComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
   private currentUser: any;
+  private postArray: Post[];
   profileData: User;
   followErrorMsg: string;
   isFollowing: boolean;
-
-  pondFile;
+  pondFile: any;
   
   constructor(
     private authService: AuthService,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private postService: PostService
   ) { }
   
   ngOnInit(): void {
     this.subscriptions.add(this.authService.profileData.subscribe(_user => this.profileData = _user));
     this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
     this.subscriptions.add(this.profileService.isFollowing.subscribe(_following => this.isFollowing = _following));
+    this.subscriptions.add(this.postService.postArray.subscribe(_posts => this.postArray = _posts));
     this.pondFile = [`data:${this.profileData.profileImageType};charset-utf-8;base64,${this.profileData.profileImage}`];
   }
   
@@ -53,13 +57,13 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
     styleLoadIndicatorPosition: 'center bottom',
     styleButtonRemoveItemPosition: 'center bottom',
     credits: false,
-    acceptedFileTypes: 'image/jpeg, image/png'
+    acceptedFileTypes: ['image/jpeg', 'image/png']
   }
 
   pondHandleAddFile(event: any) {
     const file = this.myPond.getFile();
     const base64Image = file.getFileEncodeBase64String();
-    const bufferImage = buffer.Buffer.from(base64Image, 'base64');
+    // const bufferImage = buffer.Buffer.from(base64Image, 'base64');
     const check = file.getFileEncodeDataURL();
     const type = check.split(';')[0].split(':')[1];
     const payload = {
@@ -70,7 +74,9 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
     };
     
     this.profileService.updateProfileImage(payload).subscribe(_status => {
-      if (!_status.success) {
+      if (_status.success) {
+        this.profileService.assignProfileImageMulti(base64Image, type, this.postArray);
+      } else {
         // handle error updating image
       }
     });

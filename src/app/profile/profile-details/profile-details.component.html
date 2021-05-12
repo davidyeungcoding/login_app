@@ -1,6 +1,6 @@
 <div class="container">
-  <div class="row profile-segment">
-    <div class="col-4 profile-image-container">
+  <div class="row profile-details-main">
+    <div class="col-sm-auto profile-image-container">
       <file-pond #myPond
         [files]="pondFile"
         [options]="pondOptions"
@@ -8,26 +8,28 @@
       </file-pond>
     </div>
 
-    <div class="col">
-      <h2 class="profile-inline">{{ profileData.name }}</h2>
-      <p class="profile-inline"
-        id="profile-username">@{{ profileData.username }}</p>
+    <div class="col profile-hero-content">
+      <div class="row">
+        <h2 class="profile-names">{{ profileData.name }}</h2>
+      </div>
+      <div class="row">
+        <p class="profile-names">@{{ profileData.username }}</p>
+      </div>
     </div>
   </div>
 
-  <div class="row profile-segment">
+  <div class="row">
     <div class="col">
       <p class="visible"
         id="followErrorMsg">{{ followErrorMsg }}</p>
     </div>
   </div>
 
-  <div class="row profile-segment">
+  <div class="row">
     <div class="col">
-      <p class="profile-inline">{{ profileData.followerCount }} Followers</p>
+      <p class="profile-follower-info">{{ profileData.followerCount }} Followers</p>
 
-      <div *ngIf="isFollowing; else notFollowing"
-        class="profile-inline">
+      <div *ngIf="isFollowing; else notFollowing">
         <button type="button"
           class="btn profile-options-btn white-font btn-bounce"
           (click)="onUnfollow()">

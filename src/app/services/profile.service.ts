@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { PostService } from './post.service';
+// import { PostService } from './post.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { ProfilePreview } from '../interfaces/profile-preview';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -51,7 +51,7 @@ export class ProfileService {
 
   constructor(
     private http: HttpClient,
-    private postService: PostService
+    // private postService: PostService
   ) { }
 
 // =================

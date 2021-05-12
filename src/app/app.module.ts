@@ -53,13 +53,15 @@ import * as FilePondPluginFileEncode from 'filepond-plugin-file-encode';
 import FilePondPluginImageCrop from 'filepond-plugin-image-crop';
 import * as FilePondPluginImageTransform from 'filepond-plugin-image-transform';
 import { ProfileMutationDirective } from './directives/profile-mutation.directive';
+import * as FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 
 registerPlugin(
   FilePondPluginImagePreview,
   FilePondPluginImageResize,
   FilePondPluginFileEncode,
   FilePondPluginImageCrop,
-  FilePondPluginImageTransform
+  FilePondPluginImageTransform,
+  FilePondPluginFileValidateType
 )
 
 @NgModule({
