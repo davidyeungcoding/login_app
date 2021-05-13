@@ -44,4 +44,8 @@ export class ProfileContentComponent implements OnInit, OnDestroy {
       this.profileService.changeActiveTab(tabId);
     };
   };
+
+  addProfileImage(listId: string, tabId: string): void {
+    this.onMakeActive(listId, tabId);
+  };
 }

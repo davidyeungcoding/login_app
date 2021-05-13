@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import { AuthService } from '../../services/auth.service';
 import { ProfileService } from '../../services/profile.service';
@@ -14,14 +14,14 @@ import * as buffer from 'buffer';
   templateUrl: './profile-details.component.html',
   styleUrls: ['./profile-details.component.css']
 })
-export class ProfileDetailsComponent implements OnInit, OnDestroy {
+export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
-  private currentUser: any;
   private postArray: Post[];
-  profileData: User;
+  currentUser: any;
+  profileData: User | undefined;
   followErrorMsg: string;
   isFollowing: boolean;
-  pondFile: any;
+  pondFile: any = undefined;
   
   constructor(
     private authService: AuthService,
@@ -30,15 +30,25 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
   ) { }
   
   ngOnInit(): void {
+    console.log('ngOnInit')
     this.subscriptions.add(this.authService.profileData.subscribe(_user => this.profileData = _user));
     this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
     this.subscriptions.add(this.profileService.isFollowing.subscribe(_following => this.isFollowing = _following));
     this.subscriptions.add(this.postService.postArray.subscribe(_posts => this.postArray = _posts));
-    this.pondFile = [`data:${this.profileData.profileImageType};charset-utf-8;base64,${this.profileData.profileImage}`];
+
+    console.log(this.profileData);
+    if (this.profileData.profileImage) this.pondFile = [`data:${this.profileData.profileImageType};charset-utf-8;base64,${this.profileData.profileImage}`];
+  }
+  
+  ngAfterViewInit(): void {
   }
   
   ngOnDestroy(): void {
+    console.log('ngOnDestroy')
     this.subscriptions.unsubscribe();
+    this.authService.changeProfileData(undefined);
+    if (this.pondFile) this.pondFile = undefined;
+    console.log(this.profileData)
   }
     
 // =====================
@@ -50,7 +60,7 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
   pondOptions = {
     class: 'my-filepond',
     labelIdle: 'Drop Image Here',
-    imagePreviewHeight: 150,
+    imagePreviewWidth: 150,
     imageCropAspectRatio: '1:1',
     imageResizeTargetWidth: 150,
     stylePanelLayout: 'compact circle',
@@ -63,7 +73,6 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy {
   pondHandleAddFile(event: any) {
     const file = this.myPond.getFile();
     const base64Image = file.getFileEncodeBase64String();
-    // const bufferImage = buffer.Buffer.from(base64Image, 'base64');
     const check = file.getFileEncodeDataURL();
     const type = check.split(';')[0].split(':')[1];
     const payload = {

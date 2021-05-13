@@ -2,16 +2,22 @@
   <div class="row profile-details-main">
     <div class="col-sm-auto profile-image-container">
       <file-pond #myPond
+        *ngIf="currentUser.id && currentUser.id === profileData._id; else visitingView"
         [files]="pondFile"
         [options]="pondOptions"
         (onaddfile)="pondHandleAddFile($event)">
       </file-pond>
+
+      <ng-template #visitingView>
+        <img class="profile-image" alt="Profile Image">
+      </ng-template>
     </div>
 
-    <div class="col profile-hero-content">
+    <div class="col profile-hero-detail">
       <div class="row">
         <h2 class="profile-names">{{ profileData.name }}</h2>
       </div>
+
       <div class="row">
         <p class="profile-names">@{{ profileData.username }}</p>
       </div>
@@ -29,7 +35,7 @@
     <div class="col">
       <p class="profile-follower-info">{{ profileData.followerCount }} Followers</p>
 
-      <div *ngIf="isFollowing; else notFollowing">
+      <div *ngIf="isFollowing; else notFollowing" class="follower-count">
         <button type="button"
           class="btn profile-options-btn white-font btn-bounce"
           (click)="onUnfollow()">
@@ -39,7 +45,6 @@
       <ng-template #notFollowing>
         <button type="button"
           class="btn profile-options-btn white-font btn-bounce"
-          [files]="pondFile"
           (click)="onFollow()">
           <i class="far fa-heart white-font"></i></button>
       </ng-template>

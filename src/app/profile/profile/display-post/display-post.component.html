@@ -1,6 +1,6 @@
 <div *ngIf="!!posts && posts.length; else noContent" appProfileMutation>
-  <div class="main-content"
-    *ngFor="let post of posts">
+  <div *ngFor="let post of posts"
+    class="main-content">
     <div class="container content-box-main">
       <div class="row">
         <div class="col-sm-auto post-image-container">
@@ -9,7 +9,7 @@
             alt="Profile Image">
         </div>
 
-        <div class="col">
+        <div class="col post-hero-detail">
           <div class="row">
             <h4 class="post-details">{{ profileData.name }} </h4>
           </div>

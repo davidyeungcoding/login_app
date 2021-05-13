@@ -1,5 +1,5 @@
 <div class="container">
-  <div *ngIf="currentUser.username === profileData.username" class="row">
+  <div *ngIf="currentUser.id === profileData._id" class="row">
     <button type="button"
       class="btn profile-options-btn col white-font"
       data-toggle="modal"
@@ -13,12 +13,12 @@
     <button type="button"
       class="btn profile-options-btn col white-font"
       id="followingTab"
-      (click)="onMakeActive('followingList', 'followingTab')">Follwing</button>
+      (click)="addProfileImage('followingList', 'followingTab')">Follwing</button>
 
     <button type="button"
       class="btn profile-options-btn col white-font"
       id="followerTab"
-      (click)="onMakeActive('followerList', 'followerTab')">Followers</button>
+      (click)="addProfileImage('followerList', 'followerTab')">Followers</button>
       
     <button type="button"
       class="btn profile-options-btn col white-font"

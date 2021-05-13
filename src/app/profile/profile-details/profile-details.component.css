@@ -1,3 +1,8 @@
+.profile-image {
+  border-radius: 50%;
+  width: 120px;
+}
+
 .profile-details-main {
   padding-top: 15px;
 }
@@ -7,7 +12,7 @@
   width: auto;
 }
 
-.profile-hero-content {
+.profile-hero-detail {
   padding-top: 30px;
 }
 
@@ -26,4 +31,8 @@
 
 .profile-image-container {
   width: 150px;
+}
+
+.follower-count {
+  display: inline;
 }
