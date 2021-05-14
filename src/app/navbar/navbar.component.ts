@@ -15,6 +15,7 @@ import { User } from '../interfaces/user';
 export class NavbarComponent implements OnInit {
   private activeList: string;
   private activeTab: string;
+  private isEditing: boolean;
   currentUser: any;
 
   constructor(
@@ -28,10 +29,11 @@ export class NavbarComponent implements OnInit {
     this.profileService.activeList.subscribe(_list => this.activeList = _list);
     this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab);
     this.authService.currentUser.subscribe(_user => this.currentUser = _user);
+    this.profileService.isEditing.subscribe(_state => this.isEditing = _state);
   }
 
   onLogoutClick() {
-    this.authService.logout(this.activeTab, this.activeList);
+    this.authService.logout(this.activeTab, this.activeList, this.isEditing);
   };
 
   expiredToken() {
@@ -42,7 +44,7 @@ export class NavbarComponent implements OnInit {
     let username = JSON.parse(localStorage.getItem('user')).username;
     this.profileService.resetActiveTab(this.activeTab);
     this.profileService.resetVisible(this.activeList);
-    if (this.router.url !== `/profile/${username}`) this.authService.handleRedirectProfile(username);
+    if (this.router.url !== `/profile/${username}`) this.authService.handleRedirectProfile(username, this.isEditing);
   };
 
   onSubmitSearch(searchForm: NgForm, searchBar: string) {

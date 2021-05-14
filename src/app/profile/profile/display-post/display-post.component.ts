@@ -18,6 +18,7 @@ export class DisplayPostComponent implements OnInit, AfterViewInit, OnDestroy {
   private activeList: string;
   private toRemove: any = null;
   private postArray: any;
+  private isEditing: boolean;
   posts: Post[];
   profileData: User;
   currentUser: any;
@@ -35,6 +36,7 @@ export class DisplayPostComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.add(this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab));
     this.subscriptions.add(this.profileService.activeList.subscribe(_list => this.activeList = _list));
     this.subscriptions.add(this.postService.postArray.subscribe(_array => this.postArray = _array));
+    this.subscriptions.add(this.profileService.isEditing.subscribe(_state => this.isEditing = _state));
   }
 
   ngAfterViewInit(): void {
@@ -107,7 +109,7 @@ export class DisplayPostComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     } else {
       // handle isexpired
-      if (this.authService.isExpired()) this.authService.logout(this.activeTab, this.activeList);
+      if (this.authService.isExpired()) this.authService.logout(this.activeTab, this.activeList, this.isEditing);
     };
   };
 

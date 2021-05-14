@@ -1,16 +1,26 @@
 <div class="container">
   <div class="row profile-details-main">
     <div class="col-sm-auto profile-image-container">
+      <img class="profile-image"
+        id="profileImagePreview"
+        alt="Profile Image">
+      
       <file-pond #myPond
+        id="filePondElement"
+        [options]="pondOptions"
+        (onaddfile)="pondHandleAddFile()">
+      </file-pond>
+      <!-- <file-pond #myPond
         *ngIf="currentUser.id && currentUser.id === profileData._id; else visitingView"
+        id="filePondElement"
         [files]="pondFile"
         [options]="pondOptions"
         (onaddfile)="pondHandleAddFile($event)">
-      </file-pond>
+      </file-pond> -->
 
-      <ng-template #visitingView>
+      <!-- <ng-template #visitingView>
         <img class="profile-image" alt="Profile Image">
-      </ng-template>
+      </ng-template> -->
     </div>
 
     <div class="col profile-hero-detail">
@@ -20,6 +30,28 @@
 
       <div class="row">
         <p class="profile-names">@{{ profileData.username }}</p>
+      </div>
+      
+      <div *ngIf="currentUser.id === profileData._id"
+        class="row">
+        <div class="edit-options-container"
+          id="initEdit"
+          (click)="onEdit()">
+          <i class="fas fa-edit edit-options edit-options-icon"></i>
+          <p class="edit-options edit-options-text">Edit</p>
+        </div>
+
+        <div class="edit-options-container resolveEdit"
+          (click)="onSave()">
+          <i class="fas fa-check-circle edit-options edit-options-icon"></i>
+          <p class="edit-options edit-options-text">Save</p>
+        </div>
+
+        <div class="edit-options-container resolveEdit"
+          (click)="onCancel()">
+          <i class="fas fa-times-circle edit-options edit-options-icon"></i>
+          <p class="edit-options edit-options-text">Cancel</p>
+        </div>
       </div>
     </div>
   </div>

@@ -104,7 +104,6 @@ export class AuthService {
   };
 
   changeProfileInfo(username: string, user: User, redirect: boolean): void {
-    console.log(username)
     this.changeProfileData(user);
     this.postService.changePost(user.posts);
     this.postService.changePostCount(user.postCount);
@@ -145,7 +144,8 @@ export class AuthService {
 // || Logout & Redirect ||
 // =======================
 
-  logout(activeTab: string, activeList: string): void {
+  logout(activeTab: string, activeList: string, isEditing: boolean): void {
+    if (isEditing) this.profileService.resetEditState();
     this.profileService.resetActiveTab(activeTab);
     this.profileService.resetVisible(activeList);
     this.authToken = null;
@@ -153,9 +153,10 @@ export class AuthService {
     localStorage.clear();
   };
 
-  handleRedirectProfile(username: string, redirect: boolean = true): void {
+  handleRedirectProfile(username: string, isEditing: boolean, redirect: boolean = true): void {
     const localUser = !!localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))
     : this.emptyUser;
+    if (isEditing) this.profileService.resetEditState();
 
     this.getProfile(username, localUser.username, localUser.id).subscribe(_user => {
       if (_user.success) {

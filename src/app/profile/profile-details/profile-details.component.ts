@@ -17,11 +17,14 @@ import * as buffer from 'buffer';
 export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
   private postArray: Post[];
+  private payload: any = undefined;
+  private type: string;
+  private base64Image: Buffer;
+  private isEditing: boolean;
   currentUser: any;
   profileData: User | undefined;
   followErrorMsg: string;
   isFollowing: boolean;
-  pondFile: any = undefined;
   
   constructor(
     private authService: AuthService,
@@ -30,25 +33,20 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
   ) { }
   
   ngOnInit(): void {
-    console.log('ngOnInit')
     this.subscriptions.add(this.authService.profileData.subscribe(_user => this.profileData = _user));
     this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
     this.subscriptions.add(this.profileService.isFollowing.subscribe(_following => this.isFollowing = _following));
     this.subscriptions.add(this.postService.postArray.subscribe(_posts => this.postArray = _posts));
-
-    console.log(this.profileData);
-    if (this.profileData.profileImage) this.pondFile = [`data:${this.profileData.profileImageType};charset-utf-8;base64,${this.profileData.profileImage}`];
+    this.subscriptions.add(this.profileService.isEditing.subscribe(_state => this.isEditing = _state));
   }
   
   ngAfterViewInit(): void {
   }
   
   ngOnDestroy(): void {
-    console.log('ngOnDestroy')
     this.subscriptions.unsubscribe();
     this.authService.changeProfileData(undefined);
-    if (this.pondFile) this.pondFile = undefined;
-    console.log(this.profileData)
+    if (this.isEditing) this.profileService.resetEditState();
   }
     
 // =====================
@@ -59,7 +57,7 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
   
   pondOptions = {
     class: 'my-filepond',
-    labelIdle: 'Drop Image Here',
+    labelIdle: 'Drag & Drop your file or <span class="filepond--label-action"> Browse </span>',
     imagePreviewWidth: 150,
     imageCropAspectRatio: '1:1',
     imageResizeTargetWidth: 150,
@@ -70,26 +68,47 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
     acceptedFileTypes: ['image/jpeg', 'image/png']
   }
 
-  pondHandleAddFile(event: any) {
+  pondHandleAddFile() {
     const file = this.myPond.getFile();
-    const base64Image = file.getFileEncodeBase64String();
+    this.base64Image = file.getFileEncodeBase64String();
     const check = file.getFileEncodeDataURL();
-    const type = check.split(';')[0].split(':')[1];
-    const payload = {
+    this.type = check.split(';')[0].split(':')[1];
+    this.payload = {
       id: this.profileData._id,
       username: this.profileData.username,
-      profileImage: base64Image,
-      imageType: type
+      profileImage: this.base64Image,
+      imageType: this.type
     };
-    
-    this.profileService.updateProfileImage(payload).subscribe(_status => {
+  };
+
+// ================================
+// || Edit Profile Image Options ||
+// ================================
+
+  onEdit(): void {
+    this.profileService.changeIsEditing(true);
+    $('#initEdit').css('display', 'none');
+    $('#profileImagePreview').css('display', 'none');
+    $('#filePondElement').css('display', 'inline');
+    $('.resolveEdit').css('display', 'inline');
+  };
+  
+  onSave(): void {
+    this.profileService.resetEditState();
+    if (!this.payload) return;
+
+    this.profileService.updateProfileImage(this.payload).subscribe(_status => {
       if (_status.success) {
-        this.profileService.assignProfileImageMulti(base64Image, type, this.postArray);
+        this.profileService.assignProfileImageMulti(this.base64Image, this.type, this.postArray);
       } else {
-        // handle error updating image
-      }
+        // handle failed upload
+      };
     });
-  }
+  };
+  
+  onCancel(): void {
+    this.profileService.resetEditState();
+  };
     
 // ===============
 // || Following ||
@@ -123,7 +142,7 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
           
           setTimeout(() => {
             $('#followErrorMsg').addClass('visible');
-            this.authService.handleRedirectProfile(this.currentUser.username);
+            this.authService.handleRedirectProfile(this.currentUser.username, this.isEditing);
           }, 4000);
         };
       });
@@ -160,7 +179,7 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
 
           setTimeout(() => {
             $('#followErrorMsg').addClass('visible');
-            this.authService.handleRedirectProfile(this.currentUser.username);
+            this.authService.handleRedirectProfile(this.currentUser.username, this.isEditing);
           }, 4000);
         };
       });

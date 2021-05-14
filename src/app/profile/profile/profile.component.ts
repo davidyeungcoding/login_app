@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
+  private isEditing: boolean;
   profileData: User;
 
   constructor(
@@ -24,6 +25,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions.add(this.authService.profileData.subscribe(user => this.profileData = user));
     this.subscriptions.add(this.profileService.changeActiveList('postList'));
+    this.subscriptions.add(this.profileService.isEditing.subscribe(_state => this.isEditing = _state));
     if (!this.profileData.username
       || this.profileData.username !== this.route.snapshot.paramMap.get('username')) this.getProfileData();
   }
@@ -34,6 +36,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   getProfileData(): void {
     let username = this.route.snapshot.paramMap.get('username');
-    this.authService.handleRedirectProfile(username, false);
+    this.authService.handleRedirectProfile(username, this.isEditing, false);
   };
 }

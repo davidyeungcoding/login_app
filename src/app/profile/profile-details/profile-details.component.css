@@ -1,6 +1,11 @@
 .profile-image {
   border-radius: 50%;
   width: 120px;
+  outline: 1px solid red;
+}
+
+#filePondElement {
+  display: none;
 }
 
 .profile-details-main {
@@ -14,10 +19,36 @@
 
 .profile-hero-detail {
   padding-top: 30px;
+  outline: 1px solid red;
 }
 
 .profile-names {
   margin: 0;
+}
+
+.edit-options-container {
+  padding-left: 0;
+}
+
+.edit-options-container:hover {
+  cursor: pointer;
+}
+
+.resolveEdit {
+  display: none;
+}
+
+.edit-options {
+  display: inline-block;
+  margin: 0;
+}
+
+.edit-options-icon {
+  margin-right: 3px;
+}
+
+.resolveEdit:nth-of-type(3) {
+  margin-left: 10px;
 }
 
 .profile-follower-info {

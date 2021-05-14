@@ -15,6 +15,7 @@ export class DumpScreenComponent implements OnInit, OnDestroy {
   private dumpTerm: string;
   private activeTab: string;
   private activeList: string;
+  private isEditing: boolean;
   displayMessage: string;
 
   constructor(
@@ -27,6 +28,7 @@ export class DumpScreenComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.profileService.dumpMessage.subscribe(_msg => this.dumpTerm = _msg));
     this.subscriptions.add(this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab));
     this.subscriptions.add(this.profileService.activeList.subscribe(_list => this.activeList = _list));
+    this.subscriptions.add(this.profileService.isEditing.subscribe(_state => this.isEditing = _state));
     this.displaySwitch();
   }
 
@@ -36,7 +38,7 @@ export class DumpScreenComponent implements OnInit, OnDestroy {
 
   handleTimedLogout(time: number): void {
     setTimeout(() => {
-      this.authService.logout(this.activeTab, this.activeList);
+      this.authService.logout(this.activeTab, this.activeList, this.isEditing);
       this.router.navigate(['/home']);
     }, time);
   };

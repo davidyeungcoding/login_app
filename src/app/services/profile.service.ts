@@ -34,6 +34,13 @@ export class ProfileService {
   private dumpMessageSource = new BehaviorSubject<string>('');
   dumpMessage = this.dumpMessageSource.asObservable();
 
+// ==================
+// || Edit Profile ||
+// ==================
+
+  private isEditingSource = new BehaviorSubject<boolean>(false);
+  isEditing = this.isEditingSource.asObservable();
+
 // ========================================
 // || Follower and Following Information ||
 // ========================================
@@ -68,6 +75,14 @@ export class ProfileService {
     $(`#${tab}`).removeClass('active-tab');
     $('#postTab').addClass('active-tab');
     this.changeActiveTab('postTab');
+  };
+
+  resetEditState(): void {
+    this.changeIsEditing(false);
+    $('#initEdit').css('display', 'inline');
+    $('#profileImagePreview').css('display', 'inline');
+    $('#filePondElement').css('display', 'none');
+    $('.resolveEdit').css('display', 'none');
   };
 
 // ===================
@@ -138,5 +153,9 @@ export class ProfileService {
 
   changeIsFollowing(check: boolean): void {
     this.isFollowingSource.next(check);
+  };
+
+  changeIsEditing(state: boolean): void {
+    this.isEditingSource.next(state);
   };
 }

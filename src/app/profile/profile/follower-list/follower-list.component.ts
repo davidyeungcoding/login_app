@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 })
 export class FollowerListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
+  private isEditing: boolean;
   profileData: User;
   followerList: ProfilePreview[];
 
@@ -24,6 +25,7 @@ export class FollowerListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions.add(this.authService.profileData.subscribe(_profile => this.profileData = _profile));
     this.subscriptions.add(this.profileService.followerList.subscribe(_list => this.followerList = _list));
+    this.subscriptions.add(this.profileService.isEditing.subscribe(_state => this.isEditing = _state));
   }
 
   ngOnDestroy(): void {
@@ -31,7 +33,7 @@ export class FollowerListComponent implements OnInit, OnDestroy {
   }
 
   changeProfileData(username: string): void {
-    this.authService.handleRedirectProfile(username);
+    this.authService.handleRedirectProfile(username, this.isEditing);
     this.profileService.resetVisible('followerList');
     this.profileService.resetActiveTab('followerTab');
   };
