@@ -14,8 +14,14 @@ const MiniUser = mongoose.Schema({
   username: {
     type: String,
     required: true
+  },
+  profileImage: {
+    type: String
+  },
+  profileImageType: {
+    type: String
   }
-})
+}, {_id: false})
 
 const UserSchema = mongoose.Schema({
   username: {
@@ -116,8 +122,19 @@ module.exports.loadMoreSearchResults = function(term, start, callback) {
   const selection = {
     username: 1,
     name: 1
-  }
+  };
   User.find({username: term}, selection, callback).skip(start).limit(25);
+}
+
+module.exports.getProfilePreview = function(regex, callback) {
+  const selection = {
+    userId: `$_id`,
+    name: 1,
+    username: 1,
+    profileImage: 1,
+    profileImageType: 1
+  };
+  User.aggregate([{$match: {username: regex}}, {$project: selection}], callback)
 }
 
 // =======================

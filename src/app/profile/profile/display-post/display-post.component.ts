@@ -41,7 +41,7 @@ export class DisplayPostComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.postService.changePostArray(document.getElementsByClassName('profile-image'));
-    this.assignProfileImage();
+    if (this.profileData.profileImage) this.assignProfileImage();
   }
 
   ngOnDestroy(): void {

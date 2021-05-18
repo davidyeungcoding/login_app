@@ -3,6 +3,7 @@
     <div class="col-sm-auto profile-image-container">
       <img class="profile-image"
         id="profileImagePreview"
+        src="../../../assets/default_image.jpg"
         alt="Profile Image">
       
       <file-pond #myPond
@@ -10,17 +11,6 @@
         [options]="pondOptions"
         (onaddfile)="pondHandleAddFile()">
       </file-pond>
-      <!-- <file-pond #myPond
-        *ngIf="currentUser.id && currentUser.id === profileData._id; else visitingView"
-        id="filePondElement"
-        [files]="pondFile"
-        [options]="pondOptions"
-        (onaddfile)="pondHandleAddFile($event)">
-      </file-pond> -->
-
-      <!-- <ng-template #visitingView>
-        <img class="profile-image" alt="Profile Image">
-      </ng-template> -->
     </div>
 
     <div class="col profile-hero-detail">

@@ -22,6 +22,20 @@ const user = require('../models/user');
 
 module.exports = router;
 
+// ======================
+// || Global Functions ||
+// ======================
+
+const buildRegExp = userArray => {
+  let regex = '';
+
+  for (let i = 0; i < userArray.length; i++) {
+    regex += i === 0 ? `^${userArray[i].username}$` : `|^${userArray[i].username}$`;
+  };
+
+  return regex;
+};
+
 // ====================
 // || Create Account ||
 // ====================
@@ -101,6 +115,35 @@ router.get('/profile/:username', (req, res, next) => {
   user.getUserByUsername(profileUsername, (err, profile) => {
     if (err) throw err;
     if (profile) {
+
+      // ====================
+      // || Follower Setup ||
+      // ====================
+
+      let followers = profile.followers;
+      const followersRegex = new RegExp(buildRegExp(followers));
+      
+      if (followers && followers.length) {
+        user.getProfilePreview(followersRegex, (err, _followers) => {
+          if (err) throw err;
+          profile.followers = _followers;
+        });
+      };
+      
+      // =====================
+      // || Following Setup ||
+      // =====================
+
+      let following = profile.following;
+      const followingRegex = new RegExp(buildRegExp(following));
+      
+      if (following && following.length) {
+        user.getProfilePreview(followingRegex, (err, _following) => {
+          if (err) throw err;
+          profile.following = _following;
+        });
+      };
+
       user.isFollowing(currentUsername, currentId, profileUsername, (err, doc) => {
         if (err) throw err;
         return doc ? res.json({ success: true, user: profile, follower: true })

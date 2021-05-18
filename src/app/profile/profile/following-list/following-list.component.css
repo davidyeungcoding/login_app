@@ -1,0 +1,18 @@
+.profile-preview-container {
+  padding-right: 0;
+}
+
+.profile-image {
+  border-radius: 50%;
+  height: 75px;
+  margin-right: 10px;
+  outline: 1px solid red;
+}
+
+.profile-preview-hero-details {
+  padding-top: 7px;
+}
+
+.profile-preview-details {
+  outline: 1px solid red;
+}

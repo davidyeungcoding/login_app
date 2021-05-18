@@ -157,9 +157,11 @@ export class AuthService {
     const localUser = !!localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))
     : this.emptyUser;
     if (isEditing) this.profileService.resetEditState();
+    $('#profileImagePreview').attr('src', '../../../assets/default_image.jpg');
 
     this.getProfile(username, localUser.username, localUser.id).subscribe(_user => {
       if (_user.success) {
+        console.log(_user.user)
         this.changeProfileInfo(username, _user.user, redirect);
         this.profileService.changeIsFollowing(_user.follower);
       } else this.redirectDump('/profile-not-found', 'profile');
