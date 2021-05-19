@@ -40,6 +40,10 @@ export class ProfileService {
 
   private isEditingSource = new BehaviorSubject<boolean>(false);
   isEditing = this.isEditingSource.asObservable();
+  private initialFollowingLoadSource = new BehaviorSubject<boolean>(true);
+  initialFollowingLoad = this.initialFollowingLoadSource.asObservable();
+  private initialFollowerLoadSource = new BehaviorSubject<boolean>(true);
+  initialFollowerLoad = this.initialFollowerLoadSource.asObservable();
 
 // ========================================
 // || Follower and Following Information ||
@@ -85,6 +89,11 @@ export class ProfileService {
     $('.resolveEdit').css('display', 'none');
   };
 
+  resetDefaultProfileImage(): void {
+    $('#profileImage').attr('src', '../../../assets/default_image.jpg');
+    $('#profileImagePreview').attr('src', '../../../assets/default_image.jpg');
+  };
+
 // ===================
 // || Profile Image ||
 // ===================
@@ -94,6 +103,16 @@ export class ProfileService {
 
     for (let i = 0; i < target.length; i++) {
       target[i].setAttribute('src', profileImage);
+    };
+  };
+
+  assignFollowImage(target: any): void {
+    for (let i = 0; i < target.length; i++) {
+      if (target[i].attributes[3]) {
+        const image = target[i].attributes[3].textContent;
+        const type = target[i].attributes[4].textContent;
+        target[i].setAttribute('src', `data:${type};charset-utf-8;base64,${image}`);
+      } else target[i].setAttribute('src', '../../../../assets/default_image.jpg');
     };
   };
 
@@ -157,5 +176,13 @@ export class ProfileService {
 
   changeIsEditing(state: boolean): void {
     this.isEditingSource.next(state);
+  };
+
+  changeInitialFollowingLoad(state: boolean): void {
+    this.initialFollowingLoadSource.next(state);
+  };
+
+  changeInitialFollowerLoad(state: boolean): void {
+    this.initialFollowerLoadSource.next(state);
   };
 }

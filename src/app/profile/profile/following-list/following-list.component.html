@@ -5,8 +5,9 @@
     <div class="container content-box-main">
       <div class="row">
         <div class="col-sm-auto profile-preview-container">
-          <img class="profile-image"
-            src="../../../../assets/default_image.jpg"
+          <img class="profile-image following-profile-image"
+            [attr.data-src]="user.profileImage"
+            [attr.data-type]="user.profileImageType"
             alt="Profile Image">
         </div>
   

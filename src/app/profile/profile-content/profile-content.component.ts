@@ -14,6 +14,8 @@ export class ProfileContentComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
   private activeList: string;
   private activeTab: string;
+  private initialFollowingLoad: boolean;
+  private initialFollowerLoad: boolean;
   profileData: User;
   currentUser: any;
 
@@ -27,10 +29,14 @@ export class ProfileContentComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
     this.subscriptions.add(this.profileService.activeList.subscribe(_list => this.activeList = _list));
     this.subscriptions.add(this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab));
+    this.subscriptions.add(this.profileService.initialFollowingLoad.subscribe(_state => this.initialFollowingLoad = _state));
+    this.subscriptions.add(this.profileService.initialFollowerLoad.subscribe(_state => this.initialFollowerLoad = _state));
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+    if (!this.initialFollowingLoad) this.profileService.changeInitialFollowingLoad(true);
+    if (!this.initialFollowerLoad) this.profileService.changeInitialFollowerLoad(true);
   }
 
   onMakeActive(listId: string, tabId: string): void {
@@ -47,5 +53,19 @@ export class ProfileContentComponent implements OnInit, OnDestroy {
 
   addProfileImage(listId: string, tabId: string): void {
     this.onMakeActive(listId, tabId);
+
+    switch (listId) {
+      case 'followingList':
+        if (this.initialFollowingLoad) {
+          this.profileService.assignFollowImage($('.following-profile-image'));
+          this.profileService.changeInitialFollowingLoad(false);
+        };
+        break;
+      case 'followerList':
+        if (this.initialFollowerLoad) {
+          this.profileService.assignFollowImage($('.follower-profile-image'));
+          this.profileService.changeInitialFollowerLoad(false);
+        };
+    };
   };
 }

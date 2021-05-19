@@ -148,7 +148,7 @@ router.get('/profile/:username', (req, res, next) => {
         if (err) throw err;
         return doc ? res.json({ success: true, user: profile, follower: true })
         : res.json({ success: true, user: profile, follower: false });
-      })
+      });
     } else {
       res.json({ success: false, msg: `Unable to retrieve user profile for ${profileUsername}`});
     };
