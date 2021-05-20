@@ -170,8 +170,17 @@ router.get(`/profile/:username/loadmorefollowers`, (req, res, next) => {
   const start = Number(req.query.start);
   user.loadMoreFollowers(username, start, (err, doc) => {
     if (err) throw err;
-    return doc ? res.json({ success: true, msg: doc.followers, count: doc.followerCount })
-    : res.json({ success: false, msg: 'No followers found' });
+
+    if (doc) {
+      const regex = new RegExp(buildRegExp(doc.followers));
+      
+      if (doc.followers && doc.followers.length) {
+        user.getProfilePreview(regex, (err, _followers) => {
+          if (err) throw err;
+          return res.json({ success: true, msg: _followers, count: doc.followerCount });
+        });
+      } else return res.json({ success: false, msg: 'No followers found'});
+    };
   });
 });
 

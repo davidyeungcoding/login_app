@@ -106,8 +106,8 @@ export class ProfileService {
     };
   };
 
-  assignFollowImage(target: any): void {
-    for (let i = 0; i < target.length; i++) {
+  assignFollowImage(target: any, start: number = 0): void {
+    for (let i = start; i < target.length; i++) {
       if (target[i].attributes[3]) {
         const image = target[i].attributes[3].textContent;
         const type = target[i].attributes[4].textContent;

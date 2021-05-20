@@ -1,3 +1,9 @@
+.profile-image-container {
+  width: 150px;
+  height: 120px;
+  outline: 1px solid red;
+}
+
 .profile-image {
   border-radius: 50%;
   width: 120px;
@@ -18,7 +24,7 @@
 }
 
 .profile-hero-detail {
-  padding-top: 30px;
+  padding-top: 25px;
   outline: 1px solid red;
 }
 
@@ -58,10 +64,6 @@
 #followErrorMsg {
   color: red;
   margin: 0;
-}
-
-.profile-image-container {
-  width: 150px;
 }
 
 .follower-count {

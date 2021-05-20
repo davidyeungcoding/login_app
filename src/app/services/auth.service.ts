@@ -6,6 +6,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from '../interfaces/user';
 import { PostService } from './post.service';
 import { Router } from '@angular/router';
+
 import { ProfileService } from './profile.service';
 
 const httpOptions = {
@@ -40,7 +41,7 @@ export class AuthService {
     private profileService: ProfileService,
     private router: Router,
     private http: HttpClient,
-    private jwtHelper: JwtHelperService,
+    private jwtHelper: JwtHelperService
   ) { }
 
 // =====================
@@ -160,7 +161,7 @@ export class AuthService {
     if (username !== localUser.username) {
       this.profileService.changeInitialFollowingLoad(true);
       this.profileService.changeInitialFollowerLoad(true);
-    }
+    };
     this.profileService.resetDefaultProfileImage();
 
     this.getProfile(username, localUser.username, localUser.id).subscribe(_user => {
