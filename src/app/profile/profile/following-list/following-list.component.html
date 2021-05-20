@@ -1,4 +1,4 @@
-<div *ngIf="!!profileData.followingCount; else notFollowing">
+<div *ngIf="!!profileData.followingCount; else notFollowing" appFollowingMutation>
   <div *ngFor="let user of profileData.following"
     class="main-content pointer"
     (click)="changeProfileData(user.username)">

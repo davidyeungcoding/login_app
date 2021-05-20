@@ -33,10 +33,7 @@ export class FollowerMutationDirective implements OnInit, AfterViewInit, OnDestr
     this.followerMutation = new MutationObserver(entry => {
       const target = $('.follower-profile-image');
       const start = target.length - entry.length;
-      if (entry && start > 0) this.profileService.assignFollowImage(target, target.length - entry.length);
+      if (entry && start > 0) this.profileService.assignFollowImage(target, start);
     });
-  };
-
-  clearFollowerMutation(): void {
   };
 }

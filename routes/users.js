@@ -171,16 +171,13 @@ router.get(`/profile/:username/loadmorefollowers`, (req, res, next) => {
   user.loadMoreFollowers(username, start, (err, doc) => {
     if (err) throw err;
 
-    if (doc) {
+    if (doc && doc.followers && doc.followers.length) {
       const regex = new RegExp(buildRegExp(doc.followers));
-      
-      if (doc.followers && doc.followers.length) {
-        user.getProfilePreview(regex, (err, _followers) => {
-          if (err) throw err;
-          return res.json({ success: true, msg: _followers, count: doc.followerCount });
-        });
-      } else return res.json({ success: false, msg: 'No followers found'});
-    };
+      user.getProfilePreview(regex, (err, _followers) => {
+        if (err) throw err;
+        return res.json({ success: true, msg: _followers, count: doc.followerCount });
+      });
+    } else return res.json({ success: false, msg: 'No followers found'});
   });
 });
 
@@ -189,8 +186,15 @@ router.get('/profile/:username/loadmorefollowing', (req, res, next) => {
   const start = Number(req.query.start);
   user.loadMoreFollowing(username, start, (err, doc) => {
     if (err) throw err;
-    doc ? res.json({ success: true, msg: doc.following, count: doc.followingCount })
-    : res.json({ success: false, msg: 'No additional followed profiles'});
+
+    if (doc && doc.following && doc.following.length) {
+      const regex = new RegExp(buildRegExp(doc.following));
+
+      user.getProfilePreview(regex, (err, _following) => {
+        if (err) throw err;
+        return res.json({ success: true, msg: _following, count: doc.followingCount });
+      });
+    } else res.json({ success: false, msg: 'No additional followed profiles'});
   });
 });
 

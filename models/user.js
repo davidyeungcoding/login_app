@@ -107,7 +107,7 @@ module.exports.getUserByUsername = function(username, callback) {
       $slice: [0, 25]
     },
     following: {
-      $slice: [0, 1]
+      $slice: [0, 25]
     },
     password: 0
   };
