@@ -56,6 +56,7 @@ import { ProfileMutationDirective } from './directives/profile-mutation.directiv
 import * as FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import { FollowerMutationDirective } from './directives/follower-mutation.directive';
 import { FollowingMutationDirective } from './directives/following-mutation.directive';
+import { SearchMutationDirective } from './directives/search-mutation.directive';
 
 registerPlugin(
   FilePondPluginImagePreview,
@@ -86,6 +87,7 @@ registerPlugin(
     ProfileMutationDirective,
     FollowerMutationDirective,
     FollowingMutationDirective,
+    SearchMutationDirective,
   ],
   imports: [
     BrowserModule,

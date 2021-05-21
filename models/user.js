@@ -121,9 +121,12 @@ module.exports.getSpecific = function(query, selection, callback) {
 module.exports.loadMoreSearchResults = function(term, start, callback) {
   const selection = {
     username: 1,
-    name: 1
+    name: 1,
+    followerCount: 1,
+    profileImage: 1,
+    profileImageType: 1
   };
-  User.find({username: term}, selection, callback).skip(start).limit(25);
+  User.find({username: term}, selection, callback).skip(start).limit(3);
 }
 
 module.exports.getProfilePreview = function(regex, callback) {

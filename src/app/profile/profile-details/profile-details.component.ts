@@ -99,7 +99,7 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
 
     this.profileService.updateProfileImage(this.payload).subscribe(_status => {
       if (_status.success) {
-        this.profileService.assignProfileImageMulti(this.base64Image, this.type, this.postArray);
+        this.profileService.assignPostProfileImage(this.base64Image, this.type, this.postArray);
       } else {
         // handle failed upload
       };

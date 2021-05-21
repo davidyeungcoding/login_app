@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 
 import { SearchService } from '../services/search.service';
 import { AuthService } from '../services/auth.service';
 import { ProfileService } from '../services/profile.service';
-import { ProfilePreview } from '../interfaces/profile-preview';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -11,11 +10,11 @@ import { Subscription } from 'rxjs';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-export class SearchComponent implements OnInit, OnDestroy {
+export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
   private isEditing: boolean;
   searchTerm: string;
-  searchResults: ProfilePreview[];
+  searchResults: any;
   endOfResults: boolean;
 
   constructor(
@@ -29,6 +28,10 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.searchService.currentSearchTerm.subscribe(_term => this.searchTerm = _term));
     this.subscriptions.add(this.searchService.endOfResults.subscribe(_status => this.endOfResults = _status));
     this.subscriptions.add(this.profileService.isEditing.subscribe(_state => this.isEditing = _state));
+  }
+
+  ngAfterViewInit(): void {
+    this.profileService.assignProfilePreviewImage($('.search-profile-image'));
   }
 
   ngOnDestroy(): void {

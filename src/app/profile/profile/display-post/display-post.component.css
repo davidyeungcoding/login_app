@@ -2,13 +2,6 @@
   padding-right: 0;
 }
 
-.profile-image {
-  border-radius: 50%;
-  height: 75px;
-  margin-right: 10px;
-  outline: 1px solid red;
-}
-
 .post-hero-detail {
   padding-top: 7px;
 }

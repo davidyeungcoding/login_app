@@ -1,11 +1,35 @@
 <div class="main-content-container">
-  <div *ngIf="searchResults.length; else no_results">
+  <div *ngIf="searchResults.length; else no_results" appSearchMutation>
     <div *ngFor="let result of searchResults"
       class="main-content pointer"
       (click)="changeProfileData(result.username)">
       <div class="container content-box-main">
-        <h4>@{{ result.username }}</h4>
-        <p>{{ result.name }}</p>
+        <div class="row">
+          <div class="col-sm-auto search-profile-image-container">
+            <img class="profile-image search-profile-image"
+              [attr.data-src]="result.profileImage"
+              [attr.data-type]="result.profileImageType"
+              alt="Profile Image">
+          </div>
+
+          <div class="col profile-preview-hero-details">
+            <div class="row">
+              <h4 class="profile-preview-details">{{ result.name }}</h4>
+            </div>
+
+            <div class="row">
+              <p class="profile-preview-details">@{{ result.username }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col profile-preview-additional-info">
+            <div class="row">
+              <p class="profile-preview-details">{{ result.followerCount }} Followers</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   

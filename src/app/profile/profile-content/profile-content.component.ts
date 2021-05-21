@@ -57,13 +57,13 @@ export class ProfileContentComponent implements OnInit, OnDestroy {
     switch (listId) {
       case 'followingList':
         if (this.initialFollowingLoad) {
-          this.profileService.assignFollowImage($('.following-profile-image'));
+          this.profileService.assignProfilePreviewImage($('.following-profile-image'));
           this.profileService.changeInitialFollowingLoad(false);
         };
         break;
       case 'followerList':
         if (this.initialFollowerLoad) {
-          this.profileService.assignFollowImage($('.follower-profile-image'));
+          this.profileService.assignProfilePreviewImage($('.follower-profile-image'));
           this.profileService.changeInitialFollowerLoad(false);
         };
     };

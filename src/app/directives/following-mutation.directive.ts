@@ -30,10 +30,10 @@ export class FollowingMutationDirective implements OnInit, AfterViewInit, OnDest
   }
 
   checkForChanges(): void {
-    this.followingMutation = new MutationObserver(event => {
+    this.followingMutation = new MutationObserver(entry => {
       const target = $('.following-profile-image');
-      const start = target.length - event.length;
-      if (event && start > 0) this.profileService.assignFollowImage(target, start);
+      const start = target.length - entry.length;
+      if (entry && start > 0) this.profileService.assignProfilePreviewImage(target, start);
     })
   }
 }

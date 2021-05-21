@@ -98,7 +98,7 @@ export class ProfileService {
 // || Profile Image ||
 // ===================
 
-  assignProfileImageMulti(image: Buffer, type: string, target: any): void {
+  assignPostProfileImage(image: Buffer, type: string, target: any): void {
     const profileImage = `data:${type};charset-utf-8;base64,${image}`;
 
     for (let i = 0; i < target.length; i++) {
@@ -106,8 +106,12 @@ export class ProfileService {
     };
   };
 
-  assignFollowImage(target: any, start: number = 0): void {
+  assignProfilePreviewImage(target: any, start: number = 0): void {
+    console.log('==========Inside assignProfilePreviewImage==========')
+    console.log('=============Target=============')
+    console.log(target)
     for (let i = start; i < target.length; i++) {
+      console.log(`i: ${i}`);
       if (target[i].attributes[3]) {
         const image = target[i].attributes[3].textContent;
         const type = target[i].attributes[4].textContent;

@@ -1,7 +1,6 @@
 import { AfterViewInit, Directive, ElementRef, OnDestroy, OnInit } from '@angular/core';
 
 import { SearchService } from '../services/search.service';
-import { ProfilePreview } from '../interfaces/profile-preview';
 import { Subscription } from 'rxjs';
 
 @Directive({
@@ -11,7 +10,7 @@ export class SearchDirectiveDirective implements OnInit, AfterViewInit, OnDestro
   private subscriptions: Subscription = new Subscription();
   private searchObserver: IntersectionObserver | undefined;
   private term: string;
-  private searchResults: ProfilePreview[];
+  private searchResults: any;
 
   constructor(
     private searchService: SearchService,
@@ -43,7 +42,7 @@ export class SearchDirectiveDirective implements OnInit, AfterViewInit, OnDestro
         this.searchService.getUsers({searchTerm: this.term}, this.searchResults.length).subscribe(_result => {
           _result.success ? this.searchResults.push(..._result.msg)
           : this.searchService.changeEndOfResults(true);
-          if (this.searchResults.length % 25 !== 0 || _result.msg.length === 0) this.searchService.changeEndOfResults(true);
+          if (this.searchResults.length % 3 !== 0 || _result.msg.length === 0) this.searchService.changeEndOfResults(true);
         });
       };
     });
