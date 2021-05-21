@@ -27,8 +27,8 @@ export class SearchService {
 
   constructor(private http: HttpClient) { }
 
-  getUsers(term: object, start: number) {
-    return this.http.post(`${this.api}/search?start=${start}`, term, httpOptions).pipe(
+  getUsers(term: string, start: number) {
+    return this.http.get(`${this.api}/search?term=${term}&start=${start}`).pipe(
       catchError(err => of(err))
     );
   };

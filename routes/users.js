@@ -93,8 +93,8 @@ router.post('/authenticate', (req, res, next) => {
 // || Search Bar ||
 // ================
 
-router.post('/search', (req, res, next) => {
-  const term = new RegExp(req.body.searchTerm);
+router.get('/search', (req, res, next) => {
+  const term = new RegExp(req.query.term);
   const start = Number(req.query.start);
   user.loadMoreSearchResults(term, start, (err, doc) => {
     if (err) throw err;

@@ -39,7 +39,7 @@ export class SearchDirectiveDirective implements OnInit, AfterViewInit, OnDestro
   checkVisible() {
     this.searchObserver = new IntersectionObserver(entry => {
       if (entry[0].intersectionRatio > 0) {
-        this.searchService.getUsers({searchTerm: this.term}, this.searchResults.length).subscribe(_result => {
+        this.searchService.getUsers(this.term, this.searchResults.length).subscribe(_result => {
           _result.success ? this.searchResults.push(..._result.msg)
           : this.searchService.changeEndOfResults(true);
           if (this.searchResults.length % 3 !== 0 || _result.msg.length === 0) this.searchService.changeEndOfResults(true);

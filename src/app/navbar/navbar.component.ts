@@ -50,11 +50,10 @@ export class NavbarComponent implements OnInit {
   onSubmitSearch(searchForm: NgForm, searchBar: string) {
     this.searchService.resetSearch();
     const term = searchForm.value.searchTerm.trim();
-    searchForm.value.searchTerm = term;
     this.searchService.changeSearchTerm(term);
     if (!term.length) return;
 
-    this.searchService.getUsers(searchForm.value, 0).subscribe(data => {
+    this.searchService.getUsers(term, 0).subscribe(data => {
       data.success ? this.searchService.changeSearchResults(data.msg)
       : this.searchService.changeEndOfResults(true);
       
