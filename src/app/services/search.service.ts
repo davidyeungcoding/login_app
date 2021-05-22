@@ -1,16 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { ProfilePreview } from '../interfaces/profile-preview';
-
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json'
-  })
-};
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +17,13 @@ export class SearchService {
   currentSearchTerm = this.searchTermSource.asObservable();
   private endOfResultsSource = new BehaviorSubject<boolean>(false);
   endOfResults = this.endOfResultsSource.asObservable();
+
+// =====================
+// || Search Mutation ||
+// =====================
+
+  private stepSource = new BehaviorSubject<number>(3);
+  step = this.stepSource.asObservable();
 
   constructor(private http: HttpClient) { }
 

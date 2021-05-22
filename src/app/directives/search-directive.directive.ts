@@ -11,6 +11,7 @@ export class SearchDirectiveDirective implements OnInit, AfterViewInit, OnDestro
   private searchObserver: IntersectionObserver | undefined;
   private term: string;
   private searchResults: any;
+  private step: number;
 
   constructor(
     private searchService: SearchService,
@@ -21,6 +22,7 @@ export class SearchDirectiveDirective implements OnInit, AfterViewInit, OnDestro
     this.checkVisible();
     this.subscriptions.add(this.searchService.currentSearchTerm.subscribe(_term => this.term = _term));
     this.subscriptions.add(this.searchService.searchResults.subscribe(_results => this.searchResults = _results));
+    this.subscriptions.add(this.searchService.step.subscribe(_step => this.step = _step));
   }
   
   ngAfterViewInit() {
@@ -42,7 +44,7 @@ export class SearchDirectiveDirective implements OnInit, AfterViewInit, OnDestro
         this.searchService.getUsers(this.term, this.searchResults.length).subscribe(_result => {
           _result.success ? this.searchResults.push(..._result.msg)
           : this.searchService.changeEndOfResults(true);
-          if (this.searchResults.length % 3 !== 0 || _result.msg.length === 0) this.searchService.changeEndOfResults(true);
+          if (_result.msg.length === 0) this.searchService.changeEndOfResults(true);
         });
       };
     });

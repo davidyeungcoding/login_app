@@ -107,11 +107,7 @@ export class ProfileService {
   };
 
   assignProfilePreviewImage(target: any, start: number = 0): void {
-    console.log('==========Inside assignProfilePreviewImage==========')
-    console.log('=============Target=============')
-    console.log(target)
     for (let i = start; i < target.length; i++) {
-      console.log(`i: ${i}`);
       if (target[i].attributes[3]) {
         const image = target[i].attributes[3].textContent;
         const type = target[i].attributes[4].textContent;
