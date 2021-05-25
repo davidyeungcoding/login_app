@@ -22,10 +22,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.add(this.authService.currentUser.subscribe(_currentUser => this.currentUser = _currentUser));
+    $('.side-content-container').css('display', 'none');
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+    $('.side-content-container').css('display', 'inline');
   }
 
   onLoginSubmit(loginForm: NgForm) {

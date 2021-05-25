@@ -1,3 +1,7 @@
+:root {
+  --color-background-dark: black;
+}
+
 /* ================== */
 /* || Form Styling || */
 /* ================== */
@@ -22,6 +26,10 @@
 /* ============ */
 /* || Button || */
 /* ============ */
+
+.search-btn {
+  border-radius: 0 5px 5px 0;
+}
 
 .btn-container-holder {
   text-align: center;
@@ -67,6 +75,10 @@
 /* ================== */
 /* || main-content || */
 /* ================== */
+
+.main-view {
+  padding: 0;
+}
 
 .main-content {
   border-top: solid;
@@ -174,7 +186,7 @@ body {
   color: white;
 }
 
-@media only screen and (min-width: 541px) {
+/* @media only screen and (min-width: 541px) {
   .main-content-container {
     margin: 0 10%;
   }
@@ -190,4 +202,4 @@ body {
   .main-content-container {
     margin: 0 30%;
   }
-}
+} */

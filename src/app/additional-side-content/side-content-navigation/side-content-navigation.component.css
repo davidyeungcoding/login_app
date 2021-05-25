@@ -1,0 +1,9 @@
+.side-form {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+#sideSearchInput {
+  border-radius: 5px 0 0 5px;
+}

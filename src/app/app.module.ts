@@ -57,6 +57,8 @@ import * as FilePondPluginFileValidateType from 'filepond-plugin-file-validate-t
 import { FollowerMutationDirective } from './directives/follower-mutation.directive';
 import { FollowingMutationDirective } from './directives/following-mutation.directive';
 import { SearchMutationDirective } from './directives/search-mutation.directive';
+import { AdditionalSideContentComponent } from './additional-side-content/additional-side-content.component';
+import { SideContentNavigationComponent } from './additional-side-content/side-content-navigation/side-content-navigation.component';
 
 registerPlugin(
   FilePondPluginImagePreview,
@@ -88,6 +90,8 @@ registerPlugin(
     FollowerMutationDirective,
     FollowingMutationDirective,
     SearchMutationDirective,
+    AdditionalSideContentComponent,
+    SideContentNavigationComponent,
   ],
   imports: [
     BrowserModule,

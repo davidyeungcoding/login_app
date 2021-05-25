@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col">
+    <form #sideSearchForm="ngForm"
+      class="side-form"
+      (ngSubmit)="onSubmitSearch(sideSearchForm)">
+      <input type="search"
+        class="form-control"
+        id="sideSearchInput"
+        placeholder="Search for User"
+        aria-label="Search"
+        name="searchTerm"
+        ngModel>
+        
+      <button type="submit"
+        class="btn btn-outline-light search-btn"><i class="fas fa-search"></i></button>
+    </form>
+  </div>
+</div>

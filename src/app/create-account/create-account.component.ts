@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { ValidateService } from '../services/validate.service';
   templateUrl: './create-account.component.html',
   styleUrls: ['./create-account.component.css']
 })
-export class CreateAccountComponent implements OnInit {
+export class CreateAccountComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
@@ -21,6 +21,11 @@ export class CreateAccountComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    $('.side-content-container').css('display', 'none');
+  }
+
+  ngOnDestroy(): void {
+    $('.side-content-container').css('display', 'inline');
   }
 
   onRegisterSubmit(createAccount: NgForm) {

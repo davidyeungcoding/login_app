@@ -23,6 +23,26 @@ const MiniUser = mongoose.Schema({
   }
 }, {_id: false})
 
+const Post = mongoose.Schema({
+  timestamp: {
+    type: String,
+    required: true
+  },
+  content: {
+    type: String,
+    required: true
+  },
+  likes: {
+    type: Number,
+    default: 0
+  },
+  dislikes: {
+    type: Number,
+    default: 0
+  },
+  opinions: {}
+})
+
 const UserSchema = mongoose.Schema({
   username: {
     type: String,
@@ -51,27 +71,7 @@ const UserSchema = mongoose.Schema({
     type: Number,
     default: 0
   },
-  posts: [
-    mongoose.Schema({
-      timestamp: {
-        type: String,
-        required: true
-      },
-      content: {
-        type: String,
-        required: true
-      },
-      likes: {
-        type: Number,
-        default: 0
-      },
-      dislikes: {
-        type: Number,
-        default: 0
-      },
-      opinions: {}
-    })
-  ],
+  posts: [Post],
   followerCount: {
     type: Number,
     default: 0
@@ -126,7 +126,7 @@ module.exports.loadMoreSearchResults = function(term, start, callback) {
     profileImage: 1,
     profileImageType: 1
   };
-  User.find({username: term}, selection, callback).skip(start).limit(3);
+  User.find({username: term}, selection, callback).skip(start).limit(25);
 }
 
 module.exports.getProfilePreview = function(regex, callback) {

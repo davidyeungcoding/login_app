@@ -36,15 +36,16 @@ export class SearchMutationDirective implements OnInit, AfterViewInit, OnDestroy
   checkForChanges(): void {
     this.searchMutation = new MutationObserver(entry => {
       const target = $('.search-profile-image');
-
+      
       if (target.length) {
+        const modifier = target.length % this.step ? 0 : 1;
+        
         const start = target.length <= this.step ? 0
-        : target.length % this.step ? Math.floor(target.length / this.step) * this.step
-        : (Math.floor(target.length / this.step) - 1) * this.step;
+        : (Math.floor(target.length / this.step) - modifier) * this.step;
         
         if (entry.length === 1 && entry[0].removedNodes.length) return;
         this.profileService.assignProfilePreviewImage(target, start);
-      }
+      };
     });
   };
 }

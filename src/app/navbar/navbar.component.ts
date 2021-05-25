@@ -5,7 +5,6 @@ import { SearchService } from '../services/search.service';
 import { ProfileService } from '../services/profile.service';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { User } from '../interfaces/user';
 
 @Component({
   selector: 'app-navbar',

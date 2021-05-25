@@ -22,7 +22,7 @@ export class SearchService {
 // || Search Mutation ||
 // =====================
 
-  private stepSource = new BehaviorSubject<number>(3);
+  private stepSource = new BehaviorSubject<number>(25);
   step = this.stepSource.asObservable();
 
   constructor(private http: HttpClient) { }
