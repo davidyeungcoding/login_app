@@ -6,13 +6,13 @@
 
         <p class="side-description">Get started here and create an account!</p>
         
-        <div class="btn-container-holder spacer">
+        <div class="btn-container-holder">
           <button type="button"
             class="btn btn-outline-light btn-style side-btn-style"
             routerLink="/create-account">Create Account</button>
         </div>
 
-        <h4>Already Have An Account?</h4>
+        <h4 class="spacer">Already Have An Account?</h4>
 
         <p class="side-description">Click here to login!</p>
 
@@ -23,12 +23,37 @@
             data-target="#sideLogin"
             aria-controls="sideForm"
             aria-expanded="false"
-            aria-label="Toggle login">Login</button>
+            aria-label="Toggle login">Log In</button>
         </div>
         
-        <div class="collapse"
+        <div class="collapse spacer"
           id="sideLogin">
-          <p>Stuff</p>
+          <form #loginForm="ngForm"
+            (ngSubmit)="onLoginSubmit(loginForm)">
+            <div class="form-group col-sm-12">
+              <label for="loginUsername">Username:</label>
+              <input type="text"
+                class="form-control"
+                id="loginUsername"
+                name="username"
+                ngModel>
+            </div>
+
+            <div class="form-group col-sm-12">
+              <label for="sideLoginPassword">Password:</label>
+              <input type="text"
+                class="form-control"
+                id="sideLoginPassword"
+                name="password"
+                ngModel>
+            </div>
+
+            <div class="btn-container-holder">
+              <button type="submit"
+                class="btn btn-outline-light btn-style side-btn-style">Submit
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
