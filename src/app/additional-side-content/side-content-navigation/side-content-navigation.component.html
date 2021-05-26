@@ -1,10 +1,10 @@
 <div class="row">
-  <div class="col">
+  <div class="col side-form-content-container">
     <form #sideSearchForm="ngForm"
       class="side-form"
       (ngSubmit)="onSubmitSearch(sideSearchForm)">
       <input type="search"
-        class="form-control"
+        class="form-control text-area-style"
         id="sideSearchInput"
         placeholder="Search for User"
         aria-label="Search"
@@ -12,7 +12,7 @@
         ngModel>
         
       <button type="submit"
-        class="btn btn-outline-light search-btn"><i class="fas fa-search"></i></button>
+        class="btn btn-outline-light search-btn btn-style"><i class="fas fa-search"></i></button>
     </form>
   </div>
 </div>

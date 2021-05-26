@@ -1,5 +1,12 @@
 :root {
-  --color-background-dark: black;
+  --hue: 197;
+  --color-background-darker: hsl(var(--hue), 0%, 0%);
+  --color-background-dark: hsl(var(--hue), 0%, 7%);
+  --color-background-light: hsl(var(--hue), 0%, 20%);
+  --color-background-lighter: hsl(var(--hue), 0%, 30%);
+  --color-text-darker: hsl(var(--hue), 0%, 25%);
+  --color-text-dark: hsl(var(--hue), 0%, 40%);
+  --color-text-light: hsl(var(--hue), 0%, 100%);
 }
 
 /* ================== */
@@ -23,12 +30,37 @@
   margin: 5% 10%;
 }
 
+textarea {
+  resize: none;
+}
+
+/* new stuff below */
+
+.text-area-style, .text-area-style:focus {
+  background-color: var(--color-background-light);
+  color: var(--color-text-light);
+}
+
 /* ============ */
 /* || Button || */
 /* ============ */
 
+.btn-style {
+  background-color: var(--color-background-light);
+  border-radius: 5px;
+}
+
+.btn-style:hover, .btn-style:focus {
+  background-color: var(--color-background-lighter);
+  color: var(--color-text-light);
+}
+
 .search-btn {
   border-radius: 0 5px 5px 0;
+}
+
+.side-btn-style {
+  width: 100%;
 }
 
 .btn-container-holder {
@@ -67,10 +99,10 @@
 /* || Links || */
 /* =========== */
 
-.clear-link, .clear-link:hover {
+/* .clear-link, .clear-link:hover {
   text-decoration: none;
-  color: white;
-}
+  color: var(--color-text-light);
+} */
 
 /* ================== */
 /* || main-content || */
@@ -78,6 +110,8 @@
 
 .main-view {
   padding: 0;
+  max-width: 720px;
+  margin: 0 auto;
 }
 
 .main-content {
@@ -100,6 +134,26 @@
   border-top: solid;
   border-width: 1px;
   text-align: center;
+}
+
+/* ================== */
+/* || Side Content || */
+/* ================== */
+
+.side-content-segment {
+  background-color: var(--color-background-dark);
+  padding: 1.75rem 1rem;
+  margin-top: 1.25rem;
+  border: 1px solid var(--color-background-lighter);
+  border-radius: 10px;
+}
+
+.side-description {
+  color: var(--color-text-dark);
+}
+
+.spacer {
+  margin-bottom: 1rem;
 }
 
 /* ============= */
@@ -173,17 +227,19 @@
   cursor: pointer;
 }
 
-textarea {
-  resize: none;
-}
-
 body {
-  background-color: #41626F;
+  background-color: var(--color-background-darker);
   color: white;
 }
 
 .white-font {
   color: white;
+}
+
+@media only screen and (min-width: 1005px) {
+  .main-view {
+    padding: 0 15px;
+  }
 }
 
 /* @media only screen and (min-width: 541px) {
