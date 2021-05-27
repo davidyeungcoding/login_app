@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="container side-content-segment">
+    <div class="row">
+      <div class="col">
+        <h4>Are You New Here?</h4>
+
+        <p class="side-description">Get started here and create an account!</p>
+        
+        <div class="btn-container-holder">
+          <button type="button"
+            class="btn btn-outline-light btn-style side-btn-style"
+            routerLink="/create-account">Create Account</button>
+        </div>
+
+        <h4 class="spacer">Already Have An Account?</h4>
+
+        <p class="side-description">Log in here!</p>
+        
+        <form #loginForm="ngForm"
+          (ngSubmit)="onLoginSubmit(loginForm)">
+          <div class="form-group col-sm-12">
+            <p class="error-msg"
+              id="sideLoginError">Username and password do not match<br></p>
+
+            <label for="sideLoginUsername">Username:</label>
+            <input type="text"
+              class="form-control"
+              id="sideLoginUsername"
+              name="username"
+              ngModel>
+          </div>
+
+          <div class="form-group col-sm-12">
+            <label for="sideLoginPassword">Password:</label>
+            <input type="text"
+              class="form-control"
+              id="sideLoginPassword"
+              name="password"
+              ngModel>
+          </div>
+
+          <div class="btn-container-holder">
+            <button type="submit"
+              class="btn btn-outline-light btn-style side-btn-style">Log In</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

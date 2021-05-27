@@ -60,6 +60,7 @@ import { SearchMutationDirective } from './directives/search-mutation.directive'
 import { AdditionalSideContentComponent } from './additional-side-content/additional-side-content.component';
 import { SideContentNavigationComponent } from './additional-side-content/side-content-navigation/side-content-navigation.component';
 import { SideProfileSectionComponent } from './additional-side-content/side-profile-section/side-profile-section.component';
+import { SideVisitorViewComponent } from './additional-side-content/side-visitor-view/side-visitor-view.component';
 
 registerPlugin(
   FilePondPluginImagePreview,
@@ -94,6 +95,7 @@ registerPlugin(
     AdditionalSideContentComponent,
     SideContentNavigationComponent,
     SideProfileSectionComponent,
+    SideVisitorViewComponent,
   ],
   imports: [
     BrowserModule,

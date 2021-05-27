@@ -1,4 +1,5 @@
 <div class="container side-content">
   <app-side-content-navigation></app-side-content-navigation>
-  <app-side-profile-section></app-side-profile-section>
+  <app-side-visitor-view *ngIf="!currentUser || !currentUser.id"></app-side-visitor-view>
+  <app-side-profile-section *ngIf="currentUser && currentUser.id"></app-side-profile-section>
 </div>

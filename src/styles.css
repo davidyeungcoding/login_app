@@ -41,6 +41,15 @@ textarea {
   color: var(--color-text-light);
 }
 
+/* =================== */
+/* || Error Message || */
+/* =================== */
+
+.error-msg {
+  color: red;
+  display: none;
+}
+
 /* ============ */
 /* || Button || */
 /* ============ */
@@ -60,7 +69,7 @@ textarea {
 }
 
 .side-btn-style {
-  width: 100%;
+  width: 65%;
 }
 
 .btn-container-holder {

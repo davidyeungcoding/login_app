@@ -1,0 +1,7 @@
+.side-btn-style {
+  width: 100%;
+}
+
+.side-nav:nth-of-type(1) {
+  padding-right: 0;
+}

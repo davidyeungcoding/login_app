@@ -66,12 +66,6 @@ export class AuthService {
     );
   };
 
-  // getVisitingProfile(profileUsername, username: string, id: string) {
-  //   return this.http.get(`${this.api}/profile/${profileUsername}/visiting?currentUsername=${username}&currentId=${id}`).pipe(
-  //     catchError(err => of(err))
-  //   );
-  // };
-
   followUser(payload) {
     return this.http.put(`${this.api}/profile/${payload.profileUsername}/follow`, payload, httpOptions).pipe(
       catchError(err => of(err))
