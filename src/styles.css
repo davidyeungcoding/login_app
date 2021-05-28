@@ -124,8 +124,7 @@ textarea {
 }
 
 .main-content {
-  border-top: solid;
-  border-width: 1px;
+  border-top: 1px solid;
   padding: 1% 2%;
 }
 
@@ -221,8 +220,24 @@ textarea {
 }
 
 /* =========== */
+/* || Fonts || */
+/* =========== */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Oswald', sans-serif;
+}
+
+p, button, a {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* =========== */
 /* || Other || */
 /* =========== */
+
+html {
+  scroll-behavior: smooth;
+}
 
 .align-right {
   text-align: right;

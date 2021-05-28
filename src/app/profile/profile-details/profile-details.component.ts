@@ -76,9 +76,16 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
     this.payload = {
       id: this.profileData._id,
       username: this.profileData.username,
-      profileImage: this.base64Image,
+      profileImage: buffer.Buffer.from(this.base64Image),
+      // profileImage: this.base64Image,
       imageType: this.type
     };
+
+    // const test = buffer.Buffer.from(this.base64Image);
+    // console.log(test)
+    // const test2 = test.toString();
+    // console.log(test2)
+    // $('#test').attr('src', `data:${this.type};charset-utf-8;base64,${test2}`)
   };
 
 // ================================

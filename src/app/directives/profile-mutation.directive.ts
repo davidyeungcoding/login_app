@@ -42,7 +42,7 @@ export class ProfileMutationDirective implements OnInit, AfterViewInit, OnDestro
   }
 
   assignProfileImage(): void {
-    const image = this.profileData.profileImage;
+    const image = this.profileService.convertBufferToString(this.profileData.profileImage.data);
     const type = this.profileData.profileImageType;
     this.profileService.assignPostProfileImage(image, type, this.postArray);
   };

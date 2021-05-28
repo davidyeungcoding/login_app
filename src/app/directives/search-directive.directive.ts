@@ -1,6 +1,8 @@
 import { AfterViewInit, Directive, ElementRef, OnDestroy, OnInit } from '@angular/core';
 
 import { SearchService } from '../services/search.service';
+import { ProfileService } from '../services/profile.service';
+
 import { Subscription } from 'rxjs';
 
 @Directive({
@@ -15,6 +17,7 @@ export class SearchDirectiveDirective implements OnInit, AfterViewInit, OnDestro
 
   constructor(
     private searchService: SearchService,
+    private profileService: ProfileService,
     private element: ElementRef
   ) { }
 
@@ -42,9 +45,17 @@ export class SearchDirectiveDirective implements OnInit, AfterViewInit, OnDestro
     this.searchObserver = new IntersectionObserver(entry => {
       if (entry[0].intersectionRatio > 0) {
         this.searchService.getUsers(this.term, this.searchResults.length).subscribe(_result => {
-          _result.success ? this.searchResults.push(..._result.msg)
-          : this.searchService.changeEndOfResults(true);
-          if (_result.msg.length === 0) this.searchService.changeEndOfResults(true);
+          if (_result.success) {
+            if (_result.msg.length === 0) {
+              this.searchService.changeEndOfResults(true);
+            } else {
+              for (let i = 0; i < _result.msg.length; i++) {
+                if (_result.msg[i].profileImage) _result.msg[i].profileImage = this.profileService.convertBufferToString(_result.msg[i].profileImage.data);
+              };
+  
+              this.searchResults.push(..._result.msg);
+            };
+          } else this.searchService.changeEndOfResults(true);
         });
       };
     });

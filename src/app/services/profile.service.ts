@@ -98,7 +98,17 @@ export class ProfileService {
 // || Profile Image ||
 // ===================
 
-  assignPostProfileImage(image: Buffer, type: string, target: any): void {
+  convertBufferToString(buffer: any): string {
+    let res = '';
+
+    for (let i = 0; i < buffer.length; i++) {
+      res += String.fromCharCode(buffer[i]);
+    };
+
+    return res;
+  };
+
+  assignPostProfileImage(image: any, type: string, target: any): void {
     const profileImage = `data:${type};charset-utf-8;base64,${image}`;
 
     for (let i = 0; i < target.length; i++) {
@@ -107,8 +117,10 @@ export class ProfileService {
   };
 
   assignProfilePreviewImage(target: any, start: number = 0): void {
+    // console.log(target)
     for (let i = start; i < target.length; i++) {
       if (target[i].attributes[3]) {
+        // console.log(target[i].dataset.src)
         const image = target[i].attributes[3].textContent;
         const type = target[i].attributes[4].textContent;
         target[i].setAttribute('src', `data:${type};charset-utf-8;base64,${image}`);

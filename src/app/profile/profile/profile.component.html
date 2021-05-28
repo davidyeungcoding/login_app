@@ -1,5 +1,19 @@
 <div class="main-content-container">
   <div *ngIf='!!profileData.username; else profileNotFound'>
+    <div class="container jump-holder">
+      <div class="row jump-row">
+        <div class="col">
+          <h4 class="jump-content-name"
+            (click)="onMoveToTop()">{{ profileData.name }}</h4>
+        </div>
+  
+        <div class="col follow-btn-holder">
+          <button type="button"
+            class="btn btn-outline-light btn-style">Follow</button>
+        </div>
+      </div>
+    </div>
+
     <div class="container" *ngIf="profileData">
       <app-profile-details></app-profile-details>
       <app-profile-content></app-profile-content>

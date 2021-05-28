@@ -5,7 +5,7 @@ export interface User {
   _id: string,
   username: string,
   name: string,
-  profileImage: Buffer,
+  profileImage: any,
   profileImageType: string,
   email: string,
   postCount: number,

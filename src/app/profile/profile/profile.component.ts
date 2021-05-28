@@ -38,4 +38,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     let username = this.route.snapshot.paramMap.get('username');
     this.authService.handleRedirectProfile(username, this.isEditing, false);
   };
+
+  onMoveToTop(): void {
+    document.documentElement.scrollTop = 0;
+  };
 }

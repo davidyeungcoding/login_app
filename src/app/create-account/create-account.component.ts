@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+
 import { AuthService } from '../services/auth.service';
+import { ValidateService } from '../services/validate.service';
+
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FlashMessagesService } from 'angular2-flash-messages';
-
-import { ValidateService } from '../services/validate.service';
 
 @Component({
   selector: 'app-create-account',
@@ -48,6 +49,5 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
         this.router.navigate(['/create-account']);
       };
     });
-  }
-  
+  };
 }
