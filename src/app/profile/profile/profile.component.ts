@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { AuthService } from '../../services/auth.service';
 import { ProfileService } from 'src/app/services/profile.service';
+
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../interfaces/user';
 import { Subscription } from 'rxjs';
@@ -26,6 +27,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.authService.profileData.subscribe(user => this.profileData = user));
     this.subscriptions.add(this.profileService.changeActiveList('postList'));
     this.subscriptions.add(this.profileService.isEditing.subscribe(_state => this.isEditing = _state));
+
     if (!this.profileData.username
       || this.profileData.username !== this.route.snapshot.paramMap.get('username')) this.getProfileData();
   }

@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { AuthService } from '../../../services/auth.service';
 import { ProfileService } from '../../../services/profile.service';
+
 import { User } from 'src/app/interfaces/user';
 import { ProfilePreview } from 'src/app/interfaces/profile-preview';
 import { Subscription } from 'rxjs';

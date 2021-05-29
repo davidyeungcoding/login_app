@@ -85,7 +85,7 @@ export class ProfileService {
     this.changeIsEditing(false);
     $('#initEdit').css('display', 'inline');
     $('#profileImagePreview').css('display', 'inline');
-    $('#filePondElement').css('display', 'none');
+    $('#filePondProfileImage').css('display', 'none');
     $('.resolveEdit').css('display', 'none');
   };
 
@@ -110,6 +110,8 @@ export class ProfileService {
 
   assignPostProfileImage(image: any, type: string, target: any): void {
     const profileImage = `data:${type};charset-utf-8;base64,${image}`;
+    console.log('>>>Inside assignPostProfileImage<<<');
+    console.log(target)
 
     for (let i = 0; i < target.length; i++) {
       target[i].setAttribute('src', profileImage);
@@ -117,10 +119,8 @@ export class ProfileService {
   };
 
   assignProfilePreviewImage(target: any, start: number = 0): void {
-    // console.log(target)
     for (let i = start; i < target.length; i++) {
       if (target[i].attributes[3]) {
-        // console.log(target[i].dataset.src)
         const image = target[i].attributes[3].textContent;
         const type = target[i].attributes[4].textContent;
         target[i].setAttribute('src', `data:${type};charset-utf-8;base64,${image}`);

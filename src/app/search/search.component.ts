@@ -3,6 +3,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { SearchService } from '../services/search.service';
 import { AuthService } from '../services/auth.service';
 import { ProfileService } from '../services/profile.service';
+
 import { Subscription } from 'rxjs';
 
 @Component({

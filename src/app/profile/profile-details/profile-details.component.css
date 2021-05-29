@@ -8,8 +8,12 @@
   height: 120px;
 }
 
-#filePondElement {
+#filePondProfileImage {
   display: none;
+}
+
+.banner-container {
+  padding: 0;
 }
 
 .profile-details-main {

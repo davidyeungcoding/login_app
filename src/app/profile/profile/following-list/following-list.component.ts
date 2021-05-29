@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 
 import { AuthService } from '../../../services/auth.service';
 import { ProfileService } from 'src/app/services/profile.service';
+
 import { User } from 'src/app/interfaces/user';
 import { ProfilePreview } from 'src/app/interfaces/profile-preview';
 import { Subscription } from 'rxjs';
@@ -36,8 +37,8 @@ export class FollowingListComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   changeProfileData(username: string): void {
-    this.authService.handleRedirectProfile(username, this.isEditing);
     this.profileService.resetVisible('followingList');
     this.profileService.resetActiveTab('followingTab');
+    this.authService.handleRedirectProfile(username, this.isEditing);
   };
 }

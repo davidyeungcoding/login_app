@@ -162,6 +162,8 @@ export class AuthService {
       if (_user.success) {
         this.changeProfileInfo(username, _user.user, redirect);
         this.profileService.changeIsFollowing(_user.follower);
+        console.log('>>>>>handleRedirectProfile<<<<<');
+        console.log($('.personal-profile-image'));
       } else this.redirectDump('/profile-not-found', 'profile');
     });
   };

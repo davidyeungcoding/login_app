@@ -61,11 +61,17 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  bannerImage: {
+    type: Buffer
+  },
+  bannerImageType: {
+    type: String
+  },
   profileImage: {
     type: Buffer
   },
   profileImageType: {
-    type: String,
+    type: String
   },
   postCount: {
     type: Number,

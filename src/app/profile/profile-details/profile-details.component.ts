@@ -2,11 +2,9 @@ import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular
 
 import { AuthService } from '../../services/auth.service';
 import { ProfileService } from '../../services/profile.service';
-import { PostService } from 'src/app/services/post.service';
-import { User } from '../../interfaces/user';
-import { Post } from '../../interfaces/post';
-import { Subscription } from 'rxjs';
 
+import { User } from '../../interfaces/user';
+import { Subscription } from 'rxjs';
 import * as buffer from 'buffer';
 
 @Component({
@@ -16,7 +14,6 @@ import * as buffer from 'buffer';
 })
 export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
-  private postArray: Post[];
   private payload: any = undefined;
   private type: string;
   private base64Image: Buffer;
@@ -28,15 +25,13 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
   
   constructor(
     private authService: AuthService,
-    private profileService: ProfileService,
-    private postService: PostService
+    private profileService: ProfileService
   ) { }
   
   ngOnInit(): void {
     this.subscriptions.add(this.authService.profileData.subscribe(_user => this.profileData = _user));
     this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
     this.subscriptions.add(this.profileService.isFollowing.subscribe(_following => this.isFollowing = _following));
-    this.subscriptions.add(this.postService.postArray.subscribe(_posts => this.postArray = _posts));
     this.subscriptions.add(this.profileService.isEditing.subscribe(_state => this.isEditing = _state));
   }
   
@@ -54,8 +49,21 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
 // =====================
 
   @ViewChild('myPond') myPond: any;
+  @ViewChild('pondBanner') pondBanner: any;
+
+  bannerOptions = {
+    class: 'my-filepond',
+    labelIdle: 'Drag & Drop your file or <span class="filepond--label-action"> Browse </span>',
+    imagePreviewWidth: 720,
+    imageCropAspectRatio: '4:1',
+    imageResizeTargetWidth: 720,
+    stylePanelLayout: 'compact',
+    styleLoadIndicatorPosition: 'center bottom',
+    credits: false,
+    acceptedFileTypes: ['image/jpeg', 'image/png']
+  }
   
-  pondOptions = {
+  profileImageOptions = {
     class: 'my-filepond',
     labelIdle: 'Drag & Drop your file or <span class="filepond--label-action"> Browse </span>',
     imagePreviewWidth: 150,
@@ -68,24 +76,17 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
     acceptedFileTypes: ['image/jpeg', 'image/png']
   }
 
-  pondHandleAddFile() {
-    const file = this.myPond.getFile();
-    this.base64Image = file.getFileEncodeBase64String();
+  pondHandleAddFile(pondFile: any, source: string) {
+    const file = pondFile.getFile();
     const check = file.getFileEncodeDataURL();
+    this.base64Image = file.getFileEncodeBase64String();
     this.type = check.split(';')[0].split(':')[1];
     this.payload = {
       id: this.profileData._id,
       username: this.profileData.username,
       profileImage: buffer.Buffer.from(this.base64Image),
-      // profileImage: this.base64Image,
       imageType: this.type
     };
-
-    // const test = buffer.Buffer.from(this.base64Image);
-    // console.log(test)
-    // const test2 = test.toString();
-    // console.log(test2)
-    // $('#test').attr('src', `data:${this.type};charset-utf-8;base64,${test2}`)
   };
 
 // ================================
@@ -96,7 +97,7 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
     this.profileService.changeIsEditing(true);
     $('#initEdit').css('display', 'none');
     $('#profileImagePreview').css('display', 'none');
-    $('#filePondElement').css('display', 'inline');
+    $('#filePondProfileImage').css('display', 'inline');
     $('.resolveEdit').css('display', 'inline');
   };
   
@@ -106,7 +107,7 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
 
     this.profileService.updateProfileImage(this.payload).subscribe(_status => {
       if (_status.success) {
-        this.profileService.assignPostProfileImage(this.base64Image, this.type, this.postArray);
+        this.profileService.assignPostProfileImage(this.base64Image, this.type, $('.personal-profile-image'));
       } else {
         // handle failed upload
       };

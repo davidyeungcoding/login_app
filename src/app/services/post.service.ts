@@ -22,8 +22,6 @@ export class PostService {
   currentPosts = this.postsSource.asObservable();
   private postCountSource = new BehaviorSubject<number>(0);
   postCount = this.postCountSource.asObservable();
-  private postArraySource = new BehaviorSubject<any>([]);
-  postArray = this.postArraySource.asObservable();
 
   constructor(
     private http: HttpClient
@@ -82,9 +80,5 @@ export class PostService {
 
   changePostCount(count: number): void {
     this.postCountSource.next(count);
-  };
-
-  changePostArray(array: any): void {
-    this.postArraySource.next(array);
   };
 }

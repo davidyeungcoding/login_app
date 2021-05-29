@@ -1,9 +1,10 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 
-import { Post } from '../../../interfaces/post';
 import { PostService } from '../../../services/post.service';
 import { AuthService } from '../../../services/auth.service';
 import { ProfileService } from '../../../services/profile.service';
+
+import { Post } from '../../../interfaces/post';
 import { User } from '../../../interfaces/user';
 import { Subscription } from 'rxjs';
 
@@ -17,7 +18,6 @@ export class DisplayPostComponent implements OnInit, AfterViewInit, OnDestroy {
   private activeTab: string;
   private activeList: string;
   private toRemove: any = null;
-  private postArray: any;
   private isEditing: boolean;
   posts: Post[];
   profileData: User;
@@ -35,12 +35,10 @@ export class DisplayPostComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.add(this.postService.currentPosts.subscribe(_posts => this.posts = _posts));
     this.subscriptions.add(this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab));
     this.subscriptions.add(this.profileService.activeList.subscribe(_list => this.activeList = _list));
-    this.subscriptions.add(this.postService.postArray.subscribe(_array => this.postArray = _array));
     this.subscriptions.add(this.profileService.isEditing.subscribe(_state => this.isEditing = _state));
   }
-
+  
   ngAfterViewInit(): void {
-    this.postService.changePostArray(document.getElementsByClassName('personal-profile-image'));
     if (this.profileData.profileImage) this.assignProfileImage();
   }
 
@@ -55,7 +53,7 @@ export class DisplayPostComponent implements OnInit, AfterViewInit, OnDestroy {
   assignProfileImage(): void {
     const image = this.profileService.convertBufferToString(this.profileData.profileImage.data);
     const type = this.profileData.profileImageType;
-    this.profileService.assignPostProfileImage(image, type, this.postArray);
+    this.profileService.assignPostProfileImage(image, type, $('.personal-profile-image'));
   };
 
 // ====================

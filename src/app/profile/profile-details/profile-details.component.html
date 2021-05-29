@@ -1,3 +1,16 @@
+<div class="row">
+  <!-- <img class="banner"
+    src=""
+    alt="Banner Image"> -->
+  <div class="col banner-container">
+    <file-pond #pondBanner
+      id="filePondBanner"
+      [options]="bannerOptions"
+      (onaddfile)="pondHandleAddFile(pondBanner, 'profileBanner')">
+    </file-pond>
+  </div>
+</div>
+
 <div class="container">
   <div class="row profile-details-main">
     <div class="col-sm-auto profile-image-container">
@@ -7,9 +20,9 @@
         alt="Profile Image">
       
       <file-pond #myPond
-        id="filePondElement"
-        [options]="pondOptions"
-        (onaddfile)="pondHandleAddFile()">
+        id="filePondProfileImage"
+        [options]="profileImageOptions"
+        (onaddfile)="pondHandleAddFile(myPond, 'profileImage')">
       </file-pond>
     </div>
 
@@ -73,5 +86,3 @@
     </div>
   </div>
 </div>
-
-<!-- <img id="test"> -->

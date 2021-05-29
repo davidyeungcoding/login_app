@@ -2,7 +2,7 @@ import { AfterViewInit, Directive, ElementRef, OnDestroy, OnInit } from '@angula
 
 import { ProfileService } from '../services/profile.service';
 import { AuthService } from '../services/auth.service';
-import { PostService } from '../services/post.service';
+
 import { Subscription } from 'rxjs';
 import { User } from '../interfaces/user';
 
@@ -14,19 +14,16 @@ export class ProfileMutationDirective implements OnInit, AfterViewInit, OnDestro
   private profileMutation: MutationObserver | undefined;
   private config = {attributes: true, childList: true};
   private profileData: User;
-  private postArray: any;
 
   constructor(
     private element: ElementRef,
     private profileService: ProfileService,
-    private authService: AuthService,
-    private postService: PostService
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
     this.checkForChanges();
     this.subscriptions.add(this.authService.profileData.subscribe(_user => this.profileData = _user));
-    this.subscriptions.add(this.postService.postArray.subscribe(_posts => this.postArray = _posts));
   }
 
   ngAfterViewInit(): void {
@@ -42,13 +39,16 @@ export class ProfileMutationDirective implements OnInit, AfterViewInit, OnDestro
   }
 
   assignProfileImage(): void {
+    console.log('||||||||||||assignProfileImage()||||||||||||')
     const image = this.profileService.convertBufferToString(this.profileData.profileImage.data);
     const type = this.profileData.profileImageType;
-    this.profileService.assignPostProfileImage(image, type, this.postArray);
+    this.profileService.assignPostProfileImage(image, type, $('.personal-profile-image'));
   };
 
   checkForChanges(): void {
     this.profileMutation = new MutationObserver(entry => {
+      console.log('<<<<<Mutation Here>>>>>')
+      console.log(entry)
       if (entry && this.profileData.profileImage) this.assignProfileImage();
     });
   };
