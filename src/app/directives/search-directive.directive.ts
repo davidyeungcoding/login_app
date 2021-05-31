@@ -50,7 +50,7 @@ export class SearchDirectiveDirective implements OnInit, AfterViewInit, OnDestro
               this.searchService.changeEndOfResults(true);
             } else {
               for (let i = 0; i < _result.msg.length; i++) {
-                if (_result.msg[i].profileImage) _result.msg[i].profileImage = this.profileService.convertBufferToString(_result.msg[i].profileImage.data);
+                if (_result.msg[i].profileImage) _result.msg[i].profileImage = _result.msg[i].profileImage;
               };
   
               this.searchResults.push(..._result.msg);

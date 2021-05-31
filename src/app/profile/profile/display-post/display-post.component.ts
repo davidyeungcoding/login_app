@@ -51,9 +51,8 @@ export class DisplayPostComponent implements OnInit, AfterViewInit, OnDestroy {
 // =========================
 
   assignProfileImage(): void {
-    const image = this.profileService.convertBufferToString(this.profileData.profileImage.data);
-    const type = this.profileData.profileImageType;
-    this.profileService.assignPostProfileImage(image, type, $('.personal-profile-image'));
+    const image = this.profileData.profileImage;
+    this.profileService.assignPostProfileImage(image, $('.personal-profile-image'));
   };
 
 // ====================

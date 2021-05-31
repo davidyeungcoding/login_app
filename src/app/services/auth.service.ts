@@ -123,6 +123,11 @@ export class AuthService {
   };
 
   changeProfileData(user: any): void {
+    if (user && user.profileImage) user.profileImage = this.profileService.convertBufferToString(user.profileImage.data);
+    if (this.profileService.initialFollowingLoad && user.following
+      && user.following.length) this.profileService.updateListImage(user.following);
+    if (this.profileService.initialFollowerLoad && user.followers
+      && user.followers.length) this.profileService.updateListImage(user.followers);
     this.profileDataSource.next(user);
   };
 
@@ -162,8 +167,6 @@ export class AuthService {
       if (_user.success) {
         this.changeProfileInfo(username, _user.user, redirect);
         this.profileService.changeIsFollowing(_user.follower);
-        console.log('>>>>>handleRedirectProfile<<<<<');
-        console.log($('.personal-profile-image'));
       } else this.redirectDump('/profile-not-found', 'profile');
     });
   };

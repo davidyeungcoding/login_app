@@ -34,6 +34,6 @@ export class FollowingMutationDirective implements OnInit, AfterViewInit, OnDest
       const target = $('.following-profile-image');
       const start = target.length - entry.length;
       if (entry && start > 0) this.profileService.assignProfilePreviewImage(target, start);
-    })
-  }
+    });
+  };
 }

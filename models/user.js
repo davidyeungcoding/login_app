@@ -16,10 +16,7 @@ const MiniUser = mongoose.Schema({
     required: true
   },
   profileImage: {
-    type: String
-  },
-  profileImageType: {
-    type: String
+    type: Buffer
   }
 }, {_id: false})
 
@@ -64,14 +61,8 @@ const UserSchema = mongoose.Schema({
   bannerImage: {
     type: Buffer
   },
-  bannerImageType: {
-    type: String
-  },
   profileImage: {
     type: Buffer
-  },
-  profileImageType: {
-    type: String
   },
   postCount: {
     type: Number,
@@ -110,10 +101,10 @@ module.exports.getUserByUsername = function(username, callback) {
       $slice: [0, 25]
     },
     followers: {
-      $slice: [0, 25]
+      $slice: [0, 2]
     },
     following: {
-      $slice: [0, 25]
+      $slice: [0, 2]
     },
     password: 0
   };
@@ -129,8 +120,7 @@ module.exports.loadMoreSearchResults = function(term, start, callback) {
     username: 1,
     name: 1,
     followerCount: 1,
-    profileImage: 1,
-    profileImageType: 1
+    profileImage: 1
   };
   User.find({username: term}, selection, callback).skip(start).limit(25);
 }
@@ -140,8 +130,7 @@ module.exports.getProfilePreview = function(regex, callback) {
     userId: `$_id`,
     name: 1,
     username: 1,
-    profileImage: 1,
-    profileImageType: 1
+    profileImage: 1
   };
   User.aggregate([{$match: {username: regex}}, {$project: selection}], callback)
 }
@@ -234,19 +223,10 @@ module.exports.loadMorePosts = function(username, start, callback) {
   User.findOne({username: username}, selection, callback);
 }
 
-module.exports.loadMoreFollowers = function(username, start, callback) {
+module.exports.loadMore = function(username, start, target, callback) {
   const selection = {
-    followers: {
-      $slice: [start, 25]
-    }
-  };
-  User.findOne({username: username}, selection, callback);
-}
-
-module.exports.loadMoreFollowing = function(username, start, callback) {
-  const selection = {
-    following: {
-      $slice: [start, 25]
+    [`${target}`]: {
+      $slice: [start, 2]
     }
   };
   User.findOne({username: username}, selection, callback);
@@ -365,11 +345,8 @@ module.exports.updateProfileImage = (payload, callback) => {
     username: payload.username
   };
 
-  const query = {
-    $set: {
-      profileImage: payload.profileImage,
-      profileImageType: payload.imageType
-    }
-  };
+  const query = { $set: {} };
+  if (payload.bannerImage) query.$set.bannerImage = payload.bannerImage;
+  if (payload.profileImage) query.$set.profileImage = payload.profileImage;
   User.findOneAndUpdate(filter, query, callback);
 }

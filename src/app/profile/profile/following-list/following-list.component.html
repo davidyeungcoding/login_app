@@ -1,4 +1,4 @@
-<div *ngIf="!!profileData.followingCount; else notFollowing" appFollowingMutation>
+<div *ngIf="!!profileData.followingCount; else notFollowing">
   <div *ngFor="let user of profileData.following"
     class="main-content pointer"
     (click)="changeProfileData(user.username)">
@@ -6,8 +6,7 @@
       <div class="row">
         <div class="col-sm-auto profile-preview-container">
           <img class="profile-image following-profile-image"
-            [attr.data-src]="user.profileImage"
-            [attr.data-type]="user.profileImageType"
+            src="{{ user.profileImage }}"
             alt="Profile Image">
         </div>
   

@@ -81,6 +81,7 @@ export class ProfileService {
     this.changeActiveTab('postTab');
   };
 
+  // IMPORTANT: need to rework below to handle new profile image handling
   resetEditState(): void {
     this.changeIsEditing(false);
     $('#initEdit').css('display', 'inline');
@@ -108,22 +109,24 @@ export class ProfileService {
     return res;
   };
 
-  assignPostProfileImage(image: any, type: string, target: any): void {
-    const profileImage = `data:${type};charset-utf-8;base64,${image}`;
-    console.log('>>>Inside assignPostProfileImage<<<');
-    console.log(target)
+  updateListImage(list: ProfilePreview[]): void {
+    for (let i = 0; i < list.length; i++) {
+      list[i].profileImage = list[i].profileImage ? this.convertBufferToString(list[i].profileImage.data)
+      : '../../../../assets/default_image.jpg';
+    };
+  };
 
+  assignPostProfileImage(image: any, target: any): void {
     for (let i = 0; i < target.length; i++) {
-      target[i].setAttribute('src', profileImage);
+      target[i].setAttribute('src', image);
     };
   };
 
   assignProfilePreviewImage(target: any, start: number = 0): void {
     for (let i = start; i < target.length; i++) {
       if (target[i].attributes[3]) {
-        const image = target[i].attributes[3].textContent;
-        const type = target[i].attributes[4].textContent;
-        target[i].setAttribute('src', `data:${type};charset-utf-8;base64,${image}`);
+        const image = target[i].attributes[3].value;
+        target[i].setAttribute('src', image);
       } else target[i].setAttribute('src', '../../../../assets/default_image.jpg');
     };
   };
@@ -132,14 +135,8 @@ export class ProfileService {
 // || Get More Data ||
 // ===================
 
-  loadMoreFollowers(username: string, followerCount: number) {
-    return this.http.get(`${this.api}/profile/${username}/loadmorefollowers?start=${followerCount}`).pipe(
-      catchError(err => of(err))
-    );
-  };
-
-  loadMoreFollowing(username: string, followingCount: number) {
-    return this.http.get(`${this.api}/profile/${username}/loadmorefollowing?start=${followingCount}`).pipe(
+  loadMore(username: string, target: string, followingCount: number) {
+    return this.http.get(`${this.api}/profile/${username}/loadmore?list=${target}&start=${followingCount}`).pipe(
       catchError(err => of(err))
     );
   };

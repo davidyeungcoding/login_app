@@ -14,9 +14,6 @@ import * as buffer from 'buffer';
 })
 export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
-  private payload: any = undefined;
-  private type: string;
-  private base64Image: Buffer;
   private isEditing: boolean;
   currentUser: any;
   profileData: User | undefined;
@@ -48,7 +45,7 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
 // || FilePond Values ||
 // =====================
 
-  @ViewChild('myPond') myPond: any;
+  @ViewChild('pondProfile') pondProfile: any;
   @ViewChild('pondBanner') pondBanner: any;
 
   bannerOptions = {
@@ -76,17 +73,30 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
     acceptedFileTypes: ['image/jpeg', 'image/png']
   }
 
-  pondHandleAddFile(pondFile: any, source: string) {
-    const file = pondFile.getFile();
-    const check = file.getFileEncodeDataURL();
-    this.base64Image = file.getFileEncodeBase64String();
-    this.type = check.split(';')[0].split(':')[1];
-    this.payload = {
-      id: this.profileData._id,
-      username: this.profileData.username,
-      profileImage: buffer.Buffer.from(this.base64Image),
-      imageType: this.type
-    };
+  pondHandleAddFile() { // IMPORTANT: to be removed from component
+    // consider removing this and create the payload in save()
+    // const bannerFile = this.pondBanner.getFile();
+    // const bannerCheck = bannerFile.getFileEncodeDataURL();
+    // const banner64 = bannerFile.getFileEncodeBase64String();
+    // const profileFile = this.myPond.getFile();
+    // const profileCheck = profileFile.getFileEncodeDataURL();
+    // const profile64 = profileFile.getFileEncodeBase64String();
+
+    // const file = pondFile.getFile();
+    // const check = file.getFileEncodeDataURL();
+    // this.base64Image = file.getFileEncodeBase64String();
+    // this.type = check.split(';')[0].split(':')[1];
+    
+    // this.imagePayload = {
+    //   id: this.profileData._id,
+    //   username: this.profileData.username,
+    //   profileImage: buffer.Buffer.from(this.base64Image),
+    //   imageType: this.type
+    // };
+
+    // console.log(this.pondBanner.getFile().getFileEncodeDataURL())
+    // console.log(!!this.pondProfile.getFile())
+  //   console.log(this.buildPayload());
   };
 
 // ================================
@@ -100,14 +110,30 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
     $('#filePondProfileImage').css('display', 'inline');
     $('.resolveEdit').css('display', 'inline');
   };
+
+  buildPayload(): any {
+    let payload: any = {
+      id: this.profileData._id,
+      username: this.profileData.username
+    };
+
+    const profileFile = this.pondProfile.getFile();
+    const bannerFile = this.pondBanner.getFile();
+    if (!profileFile && !bannerFile) return false;
+    if (profileFile) payload.profileImage = buffer.Buffer.from(profileFile.getFileEncodeDataURL());
+    if (bannerFile) payload.bannerImage = buffer.Buffer.from(bannerFile.getFileEncodeDataURL());
+    return payload;
+  };
   
   onSave(): void {
+    const payload = this.buildPayload();
     this.profileService.resetEditState();
-    if (!this.payload) return;
+    if (!payload) return;
 
-    this.profileService.updateProfileImage(this.payload).subscribe(_status => {
+    this.profileService.updateProfileImage(payload).subscribe(_status => {
       if (_status.success) {
-        this.profileService.assignPostProfileImage(this.base64Image, this.type, $('.personal-profile-image'));
+        // IMPORTANT: rework below code to account for new profile and banner image handling
+        if (payload.profileImage) this.profileService.assignPostProfileImage(payload.profileImage, $('.personal-profile-image'));
       } else {
         // handle failed upload
       };

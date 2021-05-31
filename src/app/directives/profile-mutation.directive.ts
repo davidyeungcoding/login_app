@@ -39,16 +39,12 @@ export class ProfileMutationDirective implements OnInit, AfterViewInit, OnDestro
   }
 
   assignProfileImage(): void {
-    console.log('||||||||||||assignProfileImage()||||||||||||')
-    const image = this.profileService.convertBufferToString(this.profileData.profileImage.data);
-    const type = this.profileData.profileImageType;
-    this.profileService.assignPostProfileImage(image, type, $('.personal-profile-image'));
+    const image = this.profileData.profileImage;
+    this.profileService.assignPostProfileImage(image, $('.personal-profile-image'));
   };
 
   checkForChanges(): void {
     this.profileMutation = new MutationObserver(entry => {
-      console.log('<<<<<Mutation Here>>>>>')
-      console.log(entry)
       if (entry && this.profileData.profileImage) this.assignProfileImage();
     });
   };

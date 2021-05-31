@@ -30,7 +30,7 @@ export class SideContentNavigationComponent implements OnInit {
     this.searchService.getUsers(term, 0).subscribe(_result => {
       if (_result.success) {
         for (let i = 0; i < _result.msg.length; i++) {
-          if (_result.msg[i].profileImage) _result.msg[i].profileImage = this.profileService.convertBufferToString(_result.msg[i].profileImage.data)
+          if (_result.msg[i].profileImage) _result.msg[i].profileImage = this.profileService.convertBufferToString(_result.msg[i].profileImage.data);
         };
 
         this.searchService.changeSearchResults(_result.msg);

@@ -165,41 +165,42 @@ router.get('/profile/:username/loadmoreposts', (req, res, next) => {
   });
 });
 
-router.get(`/profile/:username/loadmorefollowers`, (req, res, next) => {
+router.get('/profile/:username/loadmore', (req, res, next) => {
   const username = req.params.username;
   const start = Number(req.query.start);
-  user.loadMoreFollowers(username, start, (err, doc) => {
+  const target = req.query.list;
+
+  user.loadMore(username, start, target, (err, doc) => {
     if (err) throw err;
+    const list = target === 'followers' ? doc.followers : doc.following;
+    const count = target === 'followers' ? doc.followerCount : doc.followingCount;
 
-    if (doc && doc.followers && doc.followers.length) {
-      const regex = new RegExp(buildRegExp(doc.followers));
-      user.getProfilePreview(regex, (err, _followers) => {
+    if (doc && list && list.length) {
+      const regex = new RegExp(buildRegExp(list));
+
+      user.getProfilePreview(regex, (err, _list) => {
         if (err) throw err;
-        return res.json({ success: true, msg: _followers, count: doc.followerCount });
+
+        for (let i = 0; i < _list.length; i++) {
+          if (_list[i].profileImage) _list[i].profileImage = _list[i].profileImage.buffer;
+        };
+
+        return res.json({ success: true, msg: _list, count: count});
       });
-    } else return res.json({ success: false, msg: 'No followers found'});
-  });
-});
-
-router.get('/profile/:username/loadmorefollowing', (req, res, next) => {
-  const username = req.params.username;
-  const start = Number(req.query.start);
-  user.loadMoreFollowing(username, start, (err, doc) => {
-    if (err) throw err;
-
-    if (doc && doc.following && doc.following.length) {
-      const regex = new RegExp(buildRegExp(doc.following));
-
-      user.getProfilePreview(regex, (err, _following) => {
-        if (err) throw err;
-        return res.json({ success: true, msg: _following, count: doc.followingCount });
-      });
-    } else res.json({ success: false, msg: 'No additional followed profiles'});
+    } else res.json({ success: false, msg: 'end of list'});
   });
 });
 
 router.post('/profile/:username/image', (req, res, next) => {
-  user.updateProfileImage(req.body, (err, doc) => {
+  let payload = {
+    id: req.body.id,
+    username: req.body.username,
+  };
+
+  if (req.body.bannerImage) payload.bannerImage = req.body.bannerImage;
+  if (req.body.profileImage) payload.profileImage = req.body.profileImage;
+
+  user.updateProfileImage(payload, (err, doc) => {
     if (err) throw err;
     doc ? res.json({ success: true, msg: 'Image successfully added'})
     : res.json({ success: false, msg: 'Failed to upload image' });
