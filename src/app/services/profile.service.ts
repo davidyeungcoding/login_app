@@ -101,19 +101,15 @@ export class ProfileService {
 
   convertBufferToString(buffer: any): string {
     let res = '';
-
-    for (let i = 0; i < buffer.length; i++) {
-      res += String.fromCharCode(buffer[i]);
-    };
-
+    buffer.forEach(_element => res += String.fromCharCode(_element));
     return res;
   };
 
   updateListImage(list: ProfilePreview[]): void {
-    for (let i = 0; i < list.length; i++) {
-      list[i].profileImage = list[i].profileImage ? this.convertBufferToString(list[i].profileImage.data)
+    list.forEach(_profile => {
+      _profile.profileImage = _profile.profileImage ? this.convertBufferToString(_profile.profileImage.data)
       : '../../../../assets/default_image.jpg';
-    };
+    });
   };
 
   assignPostProfileImage(image: any, target: any): void {

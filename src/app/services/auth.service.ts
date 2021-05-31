@@ -123,11 +123,14 @@ export class AuthService {
   };
 
   changeProfileData(user: any): void {
-    if (user && user.profileImage) user.profileImage = this.profileService.convertBufferToString(user.profileImage.data);
-    if (this.profileService.initialFollowingLoad && user.following
-      && user.following.length) this.profileService.updateListImage(user.following);
-    if (this.profileService.initialFollowerLoad && user.followers
-      && user.followers.length) this.profileService.updateListImage(user.followers);
+    if (user) {
+      if (user.profileImage) user.profileImage = this.profileService.convertBufferToString(user.profileImage.data);
+      if (this.profileService.initialFollowingLoad && user.following
+        && user.following.length) this.profileService.updateListImage(user.following);
+      if (this.profileService.initialFollowerLoad && user.followers
+        && user.followers.length) this.profileService.updateListImage(user.followers);
+    };
+    
     this.profileDataSource.next(user);
   };
 

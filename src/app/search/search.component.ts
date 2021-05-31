@@ -32,7 +32,6 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.profileService.assignProfilePreviewImage($('.search-profile-image'));
   }
 
   ngOnDestroy(): void {

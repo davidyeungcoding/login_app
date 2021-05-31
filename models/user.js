@@ -101,10 +101,10 @@ module.exports.getUserByUsername = function(username, callback) {
       $slice: [0, 25]
     },
     followers: {
-      $slice: [0, 2]
+      $slice: [0, 25]
     },
     following: {
-      $slice: [0, 2]
+      $slice: [0, 25]
     },
     password: 0
   };
@@ -122,7 +122,7 @@ module.exports.loadMoreSearchResults = function(term, start, callback) {
     followerCount: 1,
     profileImage: 1
   };
-  User.find({username: term}, selection, callback).skip(start).limit(25);
+  User.find({username: term}, selection, callback).skip(start).limit(2);
 }
 
 module.exports.getProfilePreview = function(regex, callback) {
@@ -226,7 +226,7 @@ module.exports.loadMorePosts = function(username, start, callback) {
 module.exports.loadMore = function(username, start, target, callback) {
   const selection = {
     [`${target}`]: {
-      $slice: [start, 2]
+      $slice: [start, 25]
     }
   };
   User.findOne({username: username}, selection, callback);
