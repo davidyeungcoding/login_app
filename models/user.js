@@ -122,7 +122,7 @@ module.exports.loadMoreSearchResults = function(term, start, callback) {
     followerCount: 1,
     profileImage: 1
   };
-  User.find({username: term}, selection, callback).skip(start).limit(2);
+  User.find({username: term}, selection, callback).skip(start).limit(25);
 }
 
 module.exports.getProfilePreview = function(regex, callback) {

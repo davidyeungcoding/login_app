@@ -81,19 +81,18 @@ export class ProfileService {
     this.changeActiveTab('postTab');
   };
 
-  // IMPORTANT: need to rework below to handle new profile image handling
   resetEditState(): void {
     this.changeIsEditing(false);
     $('#initEdit').css('display', 'inline');
-    $('#profileImagePreview').css('display', 'inline');
-    $('#filePondProfileImage').css('display', 'none');
+    $('.profile-image-control').css('display', 'inline');
+    $('.pond-image-control').css('display', 'none');
     $('.resolveEdit').css('display', 'none');
   };
 
-  resetDefaultProfileImage(): void {
-    $('#profileImage').attr('src', '../../../assets/default_image.jpg');
-    $('#profileImagePreview').attr('src', '../../../assets/default_image.jpg');
-  };
+  // resetDefaultProfileImage(): void {
+  //   $('#profileImage').attr('src', '../../../assets/default_image.jpg');
+  //   $('#profileImagePreview').attr('src', '../../../assets/default_image.jpg');
+  // };
 
 // ===================
 // || Profile Image ||
@@ -112,7 +111,7 @@ export class ProfileService {
     });
   };
 
-  assignPostProfileImage(image: any, target: any): void {
+  assignProfileImage(image: any, target: any): void {
     for (let i = 0; i < target.length; i++) {
       target[i].setAttribute('src', image);
     };

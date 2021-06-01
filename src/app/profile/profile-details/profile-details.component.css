@@ -1,3 +1,21 @@
+/* ============ */
+/* || Images || */
+/* ============ */
+
+.banner-container {
+  padding: 0;
+}
+
+.banner {
+  padding: 0;
+  width: auto;
+  height: auto;
+}
+
+.pond-image-control {
+  display: none;
+}
+
 .profile-image-container {
   width: 150px;
   height: 120px;
@@ -8,13 +26,9 @@
   height: 120px;
 }
 
-#filePondProfileImage {
-  display: none;
-}
-
-.banner-container {
-  padding: 0;
-}
+/* =========== */
+/* || Other || */
+/* =========== */
 
 .profile-details-main {
   padding-top: 15px;

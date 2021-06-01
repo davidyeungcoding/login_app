@@ -1,29 +1,33 @@
 <div class="row">
-  <!-- <img class="banner"
-    src=""
-    alt="Banner Image"> -->
   <div class="col banner-container">
-    <file-pond #pondBanner
-      id="filePondBanner"
-      [options]="bannerOptions"
-      (onaddfile)="pondHandleAddFile()">
-    </file-pond>
+    <img class="col banner profile-image-control"
+      id="bannerImagePreview"
+      src="{{ profileData.bannerImage }}"
+      alt="Banner Image">
+
+    <div class="pond-image-control">
+      <file-pond #pondBanner
+        id="filePondBanner"
+        [options]="bannerOptions">
+      </file-pond>
+    </div>
   </div>
 </div>
 
 <div class="container">
   <div class="row profile-details-main">
     <div class="col-sm-auto profile-image-container">
-      <img class="profile-image personal-profile-image"
+      <img class="profile-image personal-profile-image profile-image-control"
         id="profileImagePreview"
-        src="../../../assets/default_image.jpg"
+        src="{{ profileData.profileImage }}"
         alt="Profile Image">
       
-      <file-pond #pondProfile
-        id="filePondProfileImage"
-        [options]="profileImageOptions"
-        (onaddfile)="pondHandleAddFile()">
-      </file-pond>
+      <div class="pond-image-control">
+        <file-pond #pondProfile
+          id="filePondProfileImage"
+          [options]="profileImageOptions">
+        </file-pond>
+      </div>
     </div>
 
     <div class="col profile-hero-detail">

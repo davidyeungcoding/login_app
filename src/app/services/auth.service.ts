@@ -106,6 +106,24 @@ export class AuthService {
     this.profileService.changeFollowingCount(user.followingCount);
     this.profileService.changeFollowerList(user.followers);
     this.profileService.changeFollowerCount(user.followerCount);
+
+    // =================
+    // || Image Setup ||
+    // =================
+
+    user.bannerImage = user.bannerImage ? this.profileService.convertBufferToString(user.bannerImage.data)
+    : '../assets/default_banner.jpg';
+    user.profileImage = user.profileImage ? this.profileService.convertBufferToString(user.profileImage.data)
+    : '../assets/default_image.jpg';
+    if (this.profileService.initialFollowingLoad && user.following
+      && user.following.length) this.profileService.updateListImage(user.following);
+    if (this.profileService.initialFollowerLoad && user.followers
+      && user.followers.length) this.profileService.updateListImage(user.followers);
+
+    // ===================
+    // || Redirect User ||
+    // ===================
+
     if (redirect) this.router.navigate([`/profile/${username}`]);
   };
 
@@ -123,13 +141,6 @@ export class AuthService {
   };
 
   changeProfileData(user: any): void {
-    if (user) {
-      if (user.profileImage) user.profileImage = this.profileService.convertBufferToString(user.profileImage.data);
-      if (this.profileService.initialFollowingLoad && user.following
-        && user.following.length) this.profileService.updateListImage(user.following);
-      if (this.profileService.initialFollowerLoad && user.followers
-        && user.followers.length) this.profileService.updateListImage(user.followers);
-    };
     
     this.profileDataSource.next(user);
   };
@@ -164,7 +175,7 @@ export class AuthService {
       this.profileService.changeInitialFollowingLoad(true);
       this.profileService.changeInitialFollowerLoad(true);
     };
-    this.profileService.resetDefaultProfileImage();
+    // this.profileService.resetDefaultProfileImage();
 
     this.getProfile(username, localUser.username, localUser.id).subscribe(_user => {
       if (_user.success) {

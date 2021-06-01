@@ -52,13 +52,15 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
     class: 'my-filepond',
     labelIdle: 'Drag & Drop your file or <span class="filepond--label-action"> Browse </span>',
     imagePreviewWidth: 720,
-    imageCropAspectRatio: '4:1',
+    imagePreviewHeight: 240,
+    imageCropAspectRatio: '6:2',
     imageResizeTargetWidth: 720,
+    imageResizeTargetHeight: 240,
     stylePanelLayout: 'compact',
     styleLoadIndicatorPosition: 'center bottom',
     credits: false,
     acceptedFileTypes: ['image/jpeg', 'image/png']
-  }
+  };
   
   profileImageOptions = {
     class: 'my-filepond',
@@ -71,32 +73,6 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
     styleButtonRemoveItemPosition: 'center bottom',
     credits: false,
     acceptedFileTypes: ['image/jpeg', 'image/png']
-  }
-
-  pondHandleAddFile() { // IMPORTANT: to be removed from component
-    // consider removing this and create the payload in save()
-    // const bannerFile = this.pondBanner.getFile();
-    // const bannerCheck = bannerFile.getFileEncodeDataURL();
-    // const banner64 = bannerFile.getFileEncodeBase64String();
-    // const profileFile = this.myPond.getFile();
-    // const profileCheck = profileFile.getFileEncodeDataURL();
-    // const profile64 = profileFile.getFileEncodeBase64String();
-
-    // const file = pondFile.getFile();
-    // const check = file.getFileEncodeDataURL();
-    // this.base64Image = file.getFileEncodeBase64String();
-    // this.type = check.split(';')[0].split(':')[1];
-    
-    // this.imagePayload = {
-    //   id: this.profileData._id,
-    //   username: this.profileData.username,
-    //   profileImage: buffer.Buffer.from(this.base64Image),
-    //   imageType: this.type
-    // };
-
-    // console.log(this.pondBanner.getFile().getFileEncodeDataURL())
-    // console.log(!!this.pondProfile.getFile())
-  //   console.log(this.buildPayload());
   };
 
 // ================================
@@ -106,8 +82,8 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
   onEdit(): void {
     this.profileService.changeIsEditing(true);
     $('#initEdit').css('display', 'none');
-    $('#profileImagePreview').css('display', 'none');
-    $('#filePondProfileImage').css('display', 'inline');
+    $('.profile-image-control').css('display', 'none');
+    $('.pond-image-control').css('display', 'inline');
     $('.resolveEdit').css('display', 'inline');
   };
 
@@ -132,8 +108,8 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
 
     this.profileService.updateProfileImage(payload).subscribe(_status => {
       if (_status.success) {
-        // IMPORTANT: rework below code to account for new profile and banner image handling
-        if (payload.profileImage) this.profileService.assignPostProfileImage(payload.profileImage, $('.personal-profile-image'));
+        if (payload.profileImage) this.profileService.assignProfileImage(payload.profileImage, $('.personal-profile-image'));
+        if (payload.bannerImage) this.profileService.assignProfileImage(payload.bannerImage, $('#bannerImagePreview'));
       } else {
         // handle failed upload
       };

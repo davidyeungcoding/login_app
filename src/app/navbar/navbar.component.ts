@@ -54,8 +54,11 @@ export class NavbarComponent implements OnInit {
     if (!term.length) return;
 
     this.searchService.getUsers(term, 0).subscribe(data => {
-      data.success ? this.searchService.changeSearchResults(data.msg)
-      : this.searchService.changeEndOfResults(true);
+      if (data.success && data.msg.length) {
+        this.searchService.changeEndOfResults(false);
+        this.profileService.updateListImage(data.msg);
+        this.searchService.changeSearchResults(data.msg);
+      } else this.searchService.changeEndOfResults(true);
       
       if (this.router.url !== '/search') this.router.navigate(['/search']);
       this.searchService.clearSearchBar(searchBar, searchForm);
