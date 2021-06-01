@@ -59,7 +59,7 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
     stylePanelLayout: 'compact',
     styleLoadIndicatorPosition: 'center bottom',
     credits: false,
-    acceptedFileTypes: ['image/jpeg', 'image/png']
+    acceptedFileTypes: ['image/jpeg']
   };
   
   profileImageOptions = {
@@ -72,7 +72,7 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
     styleLoadIndicatorPosition: 'center bottom',
     styleButtonRemoveItemPosition: 'center bottom',
     credits: false,
-    acceptedFileTypes: ['image/jpeg', 'image/png']
+    acceptedFileTypes: ['image/jpeg']
   };
 
 // ================================
@@ -155,7 +155,6 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
   onFollow(payload: any): void {
     this.authService.followUser(payload).subscribe(_user => {
       if (_user.success) {
-        // this.authService.changeProfileData(_user.msg);
         this.profileData.followerCount++;
         this.profileService.changeIsFollowing(true);
       } else {
@@ -167,7 +166,6 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
   onUnfollow(payload: any): void {
     this.authService.unfollow(payload).subscribe(_user => {
       if (_user.success) {
-        // this.authService.changeProfileData(_user.msg);
         this.profileData.followerCount--;
         this.profileService.changeIsFollowing(false);
       } else {

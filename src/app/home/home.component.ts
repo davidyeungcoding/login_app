@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.profileService.isEditing.subscribe(_state => this.isEditing = _state));
     $('.side-content-container').css('display', 'none');
     const localUser = JSON.parse(localStorage.getItem('user'));
-    if (localUser.id) this.authService.handleRedirectProfile(localUser.username, this.isEditing);
+    if (localUser) this.authService.handleRedirectProfile(localUser.username, this.isEditing);
   }
 
   ngOnDestroy(): void {
