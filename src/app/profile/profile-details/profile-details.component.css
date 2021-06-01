@@ -30,6 +30,10 @@
 /* || Other || */
 /* =========== */
 
+#followErrorMsg {
+  display: none;
+}
+
 .profile-details-main {
   padding-top: 15px;
 }

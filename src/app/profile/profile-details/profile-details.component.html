@@ -65,8 +65,7 @@
 
   <div class="row">
     <div class="col">
-      <p class="visible"
-        id="followErrorMsg">{{ followErrorMsg }}</p>
+      <p id="followErrorMsg">{{ followErrorMsg }}</p>
     </div>
   </div>
 
@@ -77,14 +76,14 @@
       <div *ngIf="isFollowing; else notFollowing" class="follower-count">
         <button type="button"
           class="btn profile-options-btn white-font btn-bounce"
-          (click)="onUnfollow()">
+          (click)="handleFollowAction('unfollow')">
           <i class="fas fa-heart white-font"></i></button>
       </div>
 
       <ng-template #notFollowing>
         <button type="button"
           class="btn profile-options-btn white-font btn-bounce"
-          (click)="onFollow()">
+          (click)="handleFollowAction('follow')">
           <i class="far fa-heart white-font"></i></button>
       </ng-template>
     </div>

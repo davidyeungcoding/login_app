@@ -141,7 +141,6 @@ export class AuthService {
   };
 
   changeProfileData(user: any): void {
-    
     this.profileDataSource.next(user);
   };
 

@@ -131,70 +131,66 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
     return false;
   };
 
-  onFollow() {
-    if (this.authService.visitingProfile(this.currentUser, this.profileData)) {
-      const payload = {
-        followerId: this.currentUser.id,
-        followerName: this.currentUser.name,
-        followerUsername: this.currentUser.username,
-        profileId: this.profileData._id,
-        profileName: this.profileData.name,
-        profileUsername: this.profileData.username
-      };
+  errorFollow(msg: string, redirect: boolean): void {
+    this.followErrorMsg = msg;
+    $('#followErrorMsg').css('display', 'inline');
 
-      this.authService.followUser(payload).subscribe(_user => {
-        if (_user.success) {
-          this.authService.changeProfileData(_user.msg);
-          this.profileService.changeIsFollowing(true);
-        } else {
-          this.followErrorMsg = _user.msg;
-          $('#followErrorMsg').removeClass('visible');
-          
-          setTimeout(() => {
-            $('#followErrorMsg').addClass('visible');
-            this.authService.handleRedirectProfile(this.currentUser.username, this.isEditing);
-          }, 4000);
-        };
-      });
-    } else if (!!localStorage.getItem('id_token') && this.authService.isExpired()) {
-      this.authService.redirectDump('/session-timed-out', 'session');
-    } else if (!localStorage.getItem('id_token')) {
-      this.followErrorMsg = 'You must be logged in before following.';
-      $('#followErrorMsg').removeClass('visible');
+    setTimeout(() => {
+      $('#followErrorMsg').css('display', 'none');
+      if (redirect) this.authService.handleRedirectProfile(this.currentUser.username, this.isEditing);
+    }, 3000);
+  };
 
-      setTimeout(() => {
-        $('#followErrorMsg').addClass('visible');
-      }, 4000);
+  followerPayload(): any {
+    return {
+      followerId: this.currentUser.id,
+      followerName: this.currentUser.name,
+      followerUsername: this.currentUser.username,
+      profileId: this.profileData._id,
+      profileName: this.profileData.name,
+      profileUsername: this.profileData.username
     };
   };
 
-  onUnfollow() {
-    if (!this.authService.isExpired()) {
-      const payload = {
-        followerId: this.currentUser.id,
-        followerNane: this.currentUser.name,
-        followerUsername: this.currentUser.username,
-        profileId: this.profileData._id,
-        profileName: this.profileData.name,
-        profileUsername: this.profileData.username
+  onFollow(payload: any): void {
+    this.authService.followUser(payload).subscribe(_user => {
+      if (_user.success) {
+        // this.authService.changeProfileData(_user.msg);
+        this.profileData.followerCount++;
+        this.profileService.changeIsFollowing(true);
+      } else {
+        this.errorFollow(_user.msg, true);
       };
-  
-      this.authService.unfollow(payload).subscribe(_user => {
-        if (_user.success) {
-          this.authService.changeProfileData(_user.msg);
-          this.profileService.changeIsFollowing(false);
-        } else {
-          this.followErrorMsg = _user.msg;
-          $('#followErrorMsg').removeClass('visible');
+    });
+  };
 
-          setTimeout(() => {
-            $('#followErrorMsg').addClass('visible');
-            this.authService.handleRedirectProfile(this.currentUser.username, this.isEditing);
-          }, 4000);
-        };
-      });
+  onUnfollow(payload: any): void {
+    this.authService.unfollow(payload).subscribe(_user => {
+      if (_user.success) {
+        // this.authService.changeProfileData(_user.msg);
+        this.profileData.followerCount--;
+        this.profileService.changeIsFollowing(false);
+      } else {
+        this.errorFollow(_user.msg, true);
+      };
+    });
+  };
+
+  handleFollowAction(action: string) {
+    if (this.authService.visitingProfile(this.currentUser, this.profileData) && !this.authService.isExpired()) {
+      const payload = this.followerPayload();
+
+      switch (action) {
+        case 'follow':
+          this.onFollow(payload);
+          break;
+        case 'unfollow':
+          this.onUnfollow(payload);
+      };
     } else if (!!localStorage.getItem('id_token') && this.authService.isExpired()) {
       this.authService.redirectDump('/session-timed-out', 'session');
+    } else if (!localStorage.getItem('id_token')) {
+      this.errorFollow('You must be logged in before following.', false);
     };
   };
 }
