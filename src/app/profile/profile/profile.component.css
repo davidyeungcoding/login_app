@@ -1,15 +1,6 @@
-/* .profile-options-btn {
-  transition: .8s ease-out;
-  border-radius: 0;
+.follow-btn {
+  padding: 4px;
 }
-
-.profile-options-btn:hover {
-  background-color: #A2A3A6;
-} */
-
-/* .profile-content {
-  padding-left: 2em;
-} */
 
 .jump-holder {
   background-color: var(--color-background-darker);

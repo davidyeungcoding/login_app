@@ -1,10 +1,32 @@
 .profile-options-btn {
-  transition: .8s ease-out;
+  height: 50px;
+  top: 1px;
   border-radius: 0;
+  padding: 6px 0;
+  box-sizing: border-box;
+  transition: color .3s ease-out;
+}
+
+.profile-options-btn:hover {
+  color: var(--color-secondary);
+}
+
+.profile-options-btn::after {
+  content: '';
+  display: block;
+  margin: 14px auto 0;
+  height: 5px;
+  width: 0;
+  background-color: transparent;
+  transition: .3s;
+}
+
+.profile-options-btn:hover::after {
+  width: 100%;
+  background-color: var(--color-secondary);
 }
 
 .active-tab {
-  background-color: #498687;
-  transition: .8s ease-out;
-  color: white;
+  border-bottom: 5px solid var(--color-secondary);
+  transition: .2s ease-out;
 }

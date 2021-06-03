@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 export class ProfileComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
   private isEditing: boolean;
+  isFollowing: boolean;
   profileData: User;
 
   constructor(
@@ -27,6 +28,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.authService.profileData.subscribe(user => this.profileData = user));
     this.subscriptions.add(this.profileService.changeActiveList('postList'));
     this.subscriptions.add(this.profileService.isEditing.subscribe(_state => this.isEditing = _state));
+    this.subscriptions.add(this.profileService.isFollowing.subscribe(_state => this.isFollowing = _state));
 
     if (!this.profileData.username
       || this.profileData.username !== this.route.snapshot.paramMap.get('username')) this.getProfileData();

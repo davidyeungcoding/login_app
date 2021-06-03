@@ -125,13 +125,6 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
 // || Following ||
 // ===============
 
-  checkFollowing(): boolean {
-    for(const [key, value] of Object.entries(this.profileData.followers)) {
-      if (value.username === this.currentUser.username && value.userId === this.currentUser.id) return true;
-    };
-    return false;
-  };
-
   errorFollow(msg: string, redirect: boolean): void {
     this.followErrorMsg = msg;
     $('#followErrorMsg').css('display', 'inline');
