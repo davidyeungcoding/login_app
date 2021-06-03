@@ -7,6 +7,7 @@
   --color-text-darker: hsl(var(--hue), 0%, 25%);
   --color-text-dark: hsl(var(--hue), 0%, 40%);
   --color-text-light: hsl(var(--hue), 0%, 100%);
+  --warning: hsl(0, 100%, 50%);
 }
 
 /* ================== */
@@ -46,8 +47,7 @@ textarea {
 /* =================== */
 
 .error-msg {
-  color: red;
-  display: none;
+  color: var(--warning);
 }
 
 /* ============ */
@@ -208,7 +208,6 @@ textarea {
   border-radius: 50%;
   margin-right: 10px;
   height: 75px;
-  outline: 1px solid red;
 }
 
 .profile-preview-hero-details {

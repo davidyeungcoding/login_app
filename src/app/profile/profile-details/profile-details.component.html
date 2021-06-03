@@ -1,83 +1,86 @@
 <div class="row">
-  <div class="col banner-container">
-    <img class="col banner profile-image-control"
-      id="bannerImagePreview"
-      src="{{ profileData.bannerImage }}"
-      alt="Banner Image">
-
-    <div class="pond-image-control">
-      <file-pond #pondBanner
-        id="filePondBanner"
-        [options]="bannerOptions">
-      </file-pond>
+  <div class="col pond-image-control">
+    <file-pond #pondBanner
+      id="filePondBanner"
+      [options]="bannerOptions">
+    </file-pond>
+  
+    <div class="container">
+      <div class="row profile-details-main">
+        <div class="col-sm-auto pond-image-container">
+          <file-pond #pondProfile
+            id="filePondProfileImage"
+            [options]="profileImageOptions">
+          </file-pond>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
+<div class="row image-container">
+  <div class="col-sm-12 banner-container">
+    <img class="col banner profile-image-control"
+      id="bannerImagePreview"
+      src="{{ profileData.bannerImage }}"
+      alt="Banner Image">
+  </div>
+
+  <div class="profile-image-container">
+    <img class="profile-image personal-profile-image profile-image-control"
+      id="profileImagePreview"
+      src="{{ profileData.profileImage }}"
+      alt="Profile Image">
+  </div>
+</div>
+
 <div class="container">
-  <div class="row profile-details-main">
-    <div class="col-sm-auto profile-image-container">
-      <img class="profile-image personal-profile-image profile-image-control"
-        id="profileImagePreview"
-        src="{{ profileData.profileImage }}"
-        alt="Profile Image">
-      
-      <div class="pond-image-control">
-        <file-pond #pondProfile
-          id="filePondProfileImage"
-          [options]="profileImageOptions">
-        </file-pond>
-      </div>
-    </div>
-
-    <div class="col profile-hero-detail">
-      <div class="row">
+  <div class="row">
+    <div class="col">
+      <div class="row profile-hero-detail">
         <h2 class="profile-names">{{ profileData.name }}</h2>
-      </div>
 
-      <div class="row">
-        <p class="profile-names">@{{ profileData.username }}</p>
-      </div>
+        <h5 class="profile-names profile-hero-element">@{{ profileData.username }}</h5>
       
-      <div *ngIf="currentUser.id === profileData._id"
-        class="row">
-        <div class="edit-options-container"
-          id="initEdit"
-          (click)="onEdit()">
-          <i class="fas fa-edit edit-options edit-options-icon"></i>
-          <p class="edit-options edit-options-text">Edit</p>
-        </div>
+        <div *ngIf="currentUser.id === profileData._id"
+          class="profile-hero-element edit-options-container">
+          <div class="edit-options-control"
+            id="initEdit"
+            (click)="onEdit()">
+            <i class="fas fa-edit edit-options edit-options-icon"></i>
+            <p class="edit-options edit-options-text">Edit</p>
+          </div>
 
-        <div class="edit-options-container resolveEdit"
-          (click)="onSave()">
-          <i class="fas fa-check-circle edit-options edit-options-icon"></i>
-          <p class="edit-options edit-options-text">Save</p>
-        </div>
+          <div class="edit-options-control resolveEdit"
+            (click)="onSave()">
+            <i class="fas fa-check-circle edit-options edit-options-icon"></i>
+            <p class="edit-options edit-options-text">Save</p>
+          </div>
 
-        <div class="edit-options-container resolveEdit"
-          (click)="onCancel()">
-          <i class="fas fa-times-circle edit-options edit-options-icon"></i>
-          <p class="edit-options edit-options-text">Cancel</p>
+          <div class="edit-options-control resolveEdit"
+            (click)="onCancel()">
+            <i class="fas fa-times-circle edit-options edit-options-icon"></i>
+            <p class="edit-options edit-options-text">Cancel</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
+  
   <div class="row">
-    <div class="col">
-      <p id="followErrorMsg">{{ followErrorMsg }}</p>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
+    <div class="col follow-container">
       <p class="profile-follower-info">{{ profileData.followerCount }} Followers</p>
-
+      
       <div *ngIf="isFollowing; else notFollowing" class="follower-count">
         <button type="button"
           class="btn profile-options-btn white-font btn-bounce"
           (click)="handleFollowAction('unfollow')">
           <i class="fas fa-heart white-font"></i></button>
+      </div>
+      
+      <div>
+        <p class="error-msg"
+          id="followErrorMsg">{{ followErrorMsg }}</p>
       </div>
 
       <ng-template #notFollowing>

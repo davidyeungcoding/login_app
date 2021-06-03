@@ -85,6 +85,7 @@ export class ProfileService {
     this.changeIsEditing(false);
     $('#initEdit').css('display', 'inline');
     $('.profile-image-control').css('display', 'inline');
+    $('.image-container').css('padding-bottom', '100px');
     $('.pond-image-control').css('display', 'none');
     $('.resolveEdit').css('display', 'none');
   };

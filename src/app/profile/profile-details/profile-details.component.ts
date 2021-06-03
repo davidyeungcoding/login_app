@@ -65,9 +65,9 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
   profileImageOptions = {
     class: 'my-filepond',
     labelIdle: 'Drag & Drop your file or <span class="filepond--label-action"> Browse </span>',
-    imagePreviewWidth: 150,
+    imagePreviewWidth: 200,
     imageCropAspectRatio: '1:1',
-    imageResizeTargetWidth: 150,
+    imageResizeTargetWidth: 200,
     stylePanelLayout: 'compact circle',
     styleLoadIndicatorPosition: 'center bottom',
     styleButtonRemoveItemPosition: 'center bottom',
@@ -83,6 +83,7 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
     this.profileService.changeIsEditing(true);
     $('#initEdit').css('display', 'none');
     $('.profile-image-control').css('display', 'none');
+    $('.image-container').css('padding-bottom', '0px');
     $('.pond-image-control').css('display', 'inline');
     $('.resolveEdit').css('display', 'inline');
   };

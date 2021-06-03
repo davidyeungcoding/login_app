@@ -32,6 +32,7 @@ export class SideContentNavigationComponent implements OnInit {
         this.searchService.changeEndOfResults(false);
         this.profileService.updateListImage(_result.msg);
         this.searchService.changeSearchResults(_result.msg);
+        document.documentElement.scrollTop = 0;
       } else this.searchService.changeEndOfResults(true);
 
       if (this.router.url !== '/search') this.router.navigate(['/search']);

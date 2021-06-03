@@ -2,66 +2,102 @@
 /* || Images || */
 /* ============ */
 
+.pond-image-control {
+  display: none;
+  padding: 0;
+}
+
+.pond-image-container {
+  width: 200px;
+  padding: 0;
+  margin: auto;
+}
+
+.image-container {
+  align-items: flex-end;
+  padding-bottom: 100px;
+}
+
 .banner-container {
   padding: 0;
 }
 
 .banner {
-  padding: 0;
   width: auto;
-  height: auto;
-}
-
-.pond-image-control {
-  display: none;
+  height: 100%;
+  padding: 0;
+  object-fit: cover;
 }
 
 .profile-image-container {
-  width: 150px;
-  height: 120px;
-  outline: 1px solid red;
+  position: absolute;
+  left: calc(50% - 100px);
 }
 
 .profile-image {
-  height: 120px;
+  height: 200px;
+  border: 5px solid var(--color-background-darker);
+  position: relative;
+  top: 100px;
+  margin: 0;
 }
 
-/* =========== */
-/* || Other || */
-/* =========== */
+@media only screen and (min-width: 576px) {
+  .pond-image-container {
+    margin: 0;
+    left: 5%;
+  }
+
+  .profile-image-container {
+    left: 5%;
+  }
+}
+
+/* ==================== */
+/* || Error Handling || */
+/* ==================== */
 
 #followErrorMsg {
   display: none;
+  margin: 0;
 }
 
-.profile-details-main {
-  padding-top: 15px;
-}
-
-.profile-segment {
-  display: inline-block;
-  width: auto;
-}
+/* ========================== */
+/* || Profile Main Details || */
+/* ========================== */
 
 .profile-hero-detail {
-  padding-top: 25px;
-  outline: 1px solid red;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 15px;
+  justify-content: center;
 }
 
 .profile-names {
   margin: 0;
 }
 
+.profile-hero-element {
+  padding: 0 10px;
+}
+
+@media only screen and (min-width: 576px) {
+  .profile-hero-detail {
+    justify-content: flex-start;
+  }
+}
+
+/* =================== */
+/* || Edit Controls || */
+/* =================== */
+
 .edit-options-container {
-  padding-left: 0;
+  padding: 0;
+  margin-top: 10px;
 }
 
-.edit-options-container:hover {
+.edit-options-control:hover {
   cursor: pointer;
-}
-
-.resolveEdit {
-  display: none;
 }
 
 .edit-options {
@@ -73,19 +109,30 @@
   margin-right: 3px;
 }
 
+.resolveEdit {
+  display: none;
+}
+
 .resolveEdit:nth-of-type(3) {
   margin-left: 10px;
 }
 
-.profile-follower-info {
-  display: inline;
+/* =================== */
+/* || Follower Info || */
+/* =================== */
+
+.follow-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-#followErrorMsg {
-  color: red;
+.profile-follower-info {
   margin: 0;
 }
 
-.follower-count {
-  display: inline;
+@media only screen and (min-width: 576px) {
+  .follow-container {
+    justify-content: flex-start;
+  }
 }
