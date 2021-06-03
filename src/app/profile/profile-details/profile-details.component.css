@@ -57,9 +57,23 @@
 /* || Error Handling || */
 /* ==================== */
 
+.error-msg-container {
+  margin: auto;
+  justify-content: center;
+  text-align: center;
+}
+
 #followErrorMsg {
   display: none;
   margin: 0;
+  padding-top: 10px;
+}
+
+@media only screen and (min-width: 576px) {
+  .error-msg-container {
+    justify-content: flex-start;
+    text-align: left;
+  }
 }
 
 /* ========================== */
@@ -69,8 +83,8 @@
 .profile-hero-detail {
   display: flex;
   align-items: flex-end;
-  padding: 0 15px;
   justify-content: center;
+  padding: 0 15px;
 }
 
 .profile-names {

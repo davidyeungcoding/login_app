@@ -1,27 +1,27 @@
 <div class="container">
   <div *ngIf="currentUser.id === profileData._id" class="row">
     <button type="button"
-      class="btn profile-options-btn col white-font"
+      class="btn profile-options-btn col primary-font-color"
       data-toggle="modal"
       data-target="#postModal">New Post</button>
 
     <button type="button"
-      class="btn profile-options-btn col white-font active-tab"
+      class="btn profile-options-btn col primary-font-color active-tab"
       id="postTab"
       (click)="onMakeActive('postList', 'postTab')">My Posts</button>
 
     <button type="button"
-      class="btn profile-options-btn col white-font"
+      class="btn profile-options-btn col primary-font-color"
       id="followingTab"
       (click)="addProfileImage('followingList', 'followingTab')">Follwing</button>
 
     <button type="button"
-      class="btn profile-options-btn col white-font"
+      class="btn profile-options-btn col primary-font-color"
       id="followerTab"
       (click)="addProfileImage('followerList', 'followerTab')">Followers</button>
       
     <button type="button"
-      class="btn profile-options-btn col white-font"
+      class="btn profile-options-btn col primary-font-color"
       id="mentionsTab"
       (click)="onMakeActive('mentionsList', 'mentionsTab')">Mentions</button>
   </div>

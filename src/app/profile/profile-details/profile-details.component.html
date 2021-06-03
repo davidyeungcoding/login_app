@@ -67,27 +67,25 @@
     </div>
   </div>
   
+  <div class="row error-msg-container">
+    <p class="error-msg"
+      id="followErrorMsg">{{ followErrorMsg }}</p>
+  </div>
+
   <div class="row">
     <div class="col follow-container">
       <p class="profile-follower-info">{{ profileData.followerCount }} Followers</p>
       
-      <div *ngIf="isFollowing; else notFollowing" class="follower-count">
+      <div class="follower-count">
         <button type="button"
-          class="btn profile-options-btn white-font btn-bounce"
-          (click)="handleFollowAction('unfollow')">
-          <i class="fas fa-heart white-font"></i></button>
+          class="btn profile-options-btn primary-font-color btn-bounce"
+          (click)="handleFollowAction()">
+          <i *ngIf="isFollowing; else notFollowing" class="fas fa-heart primary-font-color"></i>
+        </button>
       </div>
-      
-      <div>
-        <p class="error-msg"
-          id="followErrorMsg">{{ followErrorMsg }}</p>
-      </div>
-
+        
       <ng-template #notFollowing>
-        <button type="button"
-          class="btn profile-options-btn white-font btn-bounce"
-          (click)="handleFollowAction('follow')">
-          <i class="far fa-heart white-font"></i></button>
+        <i class="far fa-heart primary-font-color"></i>
       </ng-template>
     </div>
   </div>

@@ -175,17 +175,10 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
     });
   };
 
-  handleFollowAction(action: string) {
+  handleFollowAction() {
     if (this.authService.visitingProfile(this.currentUser, this.profileData) && !this.authService.isExpired()) {
       const payload = this.followerPayload();
-
-      switch (action) {
-        case 'follow':
-          this.onFollow(payload);
-          break;
-        case 'unfollow':
-          this.onUnfollow(payload);
-      };
+      this.isFollowing ? this.onUnfollow(payload) : this.onFollow(payload);
     } else if (!!localStorage.getItem('id_token') && this.authService.isExpired()) {
       this.authService.redirectDump('/session-timed-out', 'session');
     } else if (!localStorage.getItem('id_token')) {

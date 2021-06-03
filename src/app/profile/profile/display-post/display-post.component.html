@@ -32,17 +32,17 @@
             (click)="markForDeletion(post)"
             data-toggle="modal"
             data-target="#deleteConfirmation">
-            <i class="far fa-trash-alt icon-size white-font"></i>
+            <i class="far fa-trash-alt icon-size primary-font-color"></i>
           </button>
 
           <button type="button"
             class="btn opinion btn-bounce"
             (click)="onOpinionVoiced(post, 1)">
             <i *ngIf="post.opinions && post.opinions[currentUser.username] === 1; else likeNotSelected"
-              class="fas fa-arrow-alt-circle-up icon-size white-font"></i>
+              class="fas fa-arrow-alt-circle-up icon-size primary-font-color"></i>
 
             <ng-template #likeNotSelected>
-              <i class="far fa-arrow-alt-circle-up icon-size white-font"></i>
+              <i class="far fa-arrow-alt-circle-up icon-size primary-font-color"></i>
             </ng-template>
           </button>
 
@@ -52,10 +52,10 @@
             class="btn opinion btn-bounce-reverse"
             (click)="onOpinionVoiced(post, -1)">
             <i *ngIf="post.opinions && post.opinions[currentUser.username] === -1; else dislikeNotSelected"
-              class="fas fa-arrow-alt-circle-down icon-size white-font"></i>
+              class="fas fa-arrow-alt-circle-down icon-size primary-font-color"></i>
 
             <ng-template #dislikeNotSelected>
-              <i class="far fa-arrow-alt-circle-down icon-size white-font"></i>
+              <i class="far fa-arrow-alt-circle-down icon-size primary-font-color"></i>
             </ng-template>
           </button>
 
