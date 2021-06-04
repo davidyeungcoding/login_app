@@ -99,7 +99,7 @@ router.get('/search', (req, res, next) => {
   user.loadMoreSearchResults(term, start, (err, doc) => {
     if (err) throw err;
     return doc ? res.json({ success: true, msg: doc })
-    : res.json({ success: false, msg: 'No results found' });
+    : res.json({ success: false, msg: 'Unable to retrieve data' });
   });
 });
 

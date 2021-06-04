@@ -58,6 +58,9 @@ export class NavbarComponent implements OnInit {
         this.searchService.changeEndOfResults(false);
         this.profileService.updateListImage(data.msg);
         this.searchService.changeSearchResults(data.msg);
+      } else if (data.success && !data.msg.length) {
+        this.searchService.changeEndOfResults(true);
+        this.searchService.changeSearchResults(data.msg);
       } else this.searchService.changeEndOfResults(true);
       
       if (this.router.url !== '/search') this.router.navigate(['/search']);

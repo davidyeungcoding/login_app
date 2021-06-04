@@ -2,6 +2,7 @@ import { AfterViewInit, Directive, ElementRef, OnDestroy, OnInit } from '@angula
 
 import { PostService } from '../services/post.service';
 import { ProfileService } from '../services/profile.service';
+
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Post } from '../interfaces/post';

@@ -3,64 +3,63 @@
     class="main-content">
     <div class="container content-box-main">
       <div class="row">
-        <div class="col-sm-auto post-image-container">
-          <img class="profile-image personal-profile-image"
-            src="../../../../assets/default_image.jpg"
-            alt="Profile Image">
-        </div>
-
-        <div class="col post-hero-detail">
-          <div class="row">
-            <h4 class="post-details">{{ profileData.name }}</h4>
+        <div class="post-hero-details">
+          <div class="post-image-container">
+            <img class="profile-image personal-profile-image"
+              src="../../../../assets/default_image.jpg"
+              alt="Profile Image">
           </div>
 
-          <div class="row">
-            <p class="post-details">@{{ profileData.username }}</p>
+          <div class="post-hero-detail">
+            <h4 class="post-details user-names">{{ profileData.name }}</h4>
+
+            <p class="post-details user-names">@{{ profileData.username }}</p>
           </div>
         </div>
       </div>
+
       <p class="post-details timestamp">{{ post.timestamp }}</p>
+      
       <p class="post-details post-content">{{ post.content }}</p>
     </div>
     
     <div class="container">
-      <div class="row justify-content-end">
-        <div>
-          <button *ngIf="currentUser && currentUser.username === profileData.username"
-            type="button"
-            class="btn opinion btn-bounce"
-            (click)="markForDeletion(post)"
-            data-toggle="modal"
-            data-target="#deleteConfirmation">
-            <i class="far fa-trash-alt icon-size primary-font-color"></i>
-          </button>
+      <div class="row post-controler">
+        <button *ngIf="currentUser && currentUser.username === profileData.username"
+          type="button"
+          class="btn opinion btn-bounce"
+          (click)="markForDeletion(post)"
+          data-toggle="modal"
+          data-target="#deleteConfirmation">
 
-          <button type="button"
-            class="btn opinion btn-bounce"
-            (click)="onOpinionVoiced(post, 1)">
-            <i *ngIf="post.opinions && post.opinions[currentUser.username] === 1; else likeNotSelected"
-              class="fas fa-arrow-alt-circle-up icon-size primary-font-color"></i>
+          <i class="far fa-trash-alt icon-size primary-font-color"></i>
+        </button>
 
-            <ng-template #likeNotSelected>
-              <i class="far fa-arrow-alt-circle-up icon-size primary-font-color"></i>
-            </ng-template>
-          </button>
+        <button type="button"
+          class="btn opinion btn-bounce"
+          (click)="onOpinionVoiced(post, 1)">
+          <i *ngIf="post.opinions && post.opinions[currentUser.username] === 1; else likeNotSelected"
+            class="fas fa-arrow-alt-circle-up icon-size primary-font-color"></i>
 
-          <p class="opinion opinion-count">{{ post.likes }}</p>
+          <ng-template #likeNotSelected>
+            <i class="far fa-arrow-alt-circle-up icon-size primary-font-color"></i>
+          </ng-template>
+        </button>
 
-          <button type="button"
-            class="btn opinion btn-bounce-reverse"
-            (click)="onOpinionVoiced(post, -1)">
-            <i *ngIf="post.opinions && post.opinions[currentUser.username] === -1; else dislikeNotSelected"
-              class="fas fa-arrow-alt-circle-down icon-size primary-font-color"></i>
+        <p class="opinion opinion-count">{{ post.likes }}</p>
 
-            <ng-template #dislikeNotSelected>
-              <i class="far fa-arrow-alt-circle-down icon-size primary-font-color"></i>
-            </ng-template>
-          </button>
+        <button type="button"
+          class="btn opinion btn-bounce-reverse"
+          (click)="onOpinionVoiced(post, -1)">
+          <i *ngIf="post.opinions && post.opinions[currentUser.username] === -1; else dislikeNotSelected"
+            class="fas fa-arrow-alt-circle-down icon-size primary-font-color"></i>
 
-          <p class="opinion opinion-count">{{ post.dislikes }}</p>
-        </div>
+          <ng-template #dislikeNotSelected>
+            <i class="far fa-arrow-alt-circle-down icon-size primary-font-color"></i>
+          </ng-template>
+        </button>
+
+        <p class="opinion opinion-count">{{ post.dislikes }}</p>
       </div>
     </div>
   </div>
@@ -94,15 +93,17 @@
         <div class="container">
           <div class="row">
             <div class="col modal-center">
-              <p class="modal-text">Are you sure you want to delete this post?</p>
+              <h4 class="modal-text">Are you sure you want to delete this post?</h4>
             </div>
           </div>
+
           <div class="row d-flex justify-content-around">
             <button type="button"
-              class="btn btn-secondary modal-btn"
+              class="btn btn-style btn-outline-light modal-btn"
               (click)="deletePost()">Yes</button>
+
             <button type="button"
-              class="btn btn-secondary modal-btn"
+              class="btn btn-style btn-outline-light modal-btn"
               (click)="clearDeleteRequest()">No</button>
           </div>
         </div>

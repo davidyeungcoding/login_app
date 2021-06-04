@@ -60,8 +60,8 @@ export class ProfileContentComponent implements OnInit, OnDestroy {
           this.profileService.changeInitialFollowingLoad(false);
         };
         break;
-        case 'followerList':
-          if (this.initialFollowerLoad) {
+      case 'followerList':
+        if (this.initialFollowerLoad) {
           this.profileService.changeInitialFollowerLoad(false);
         };
     };

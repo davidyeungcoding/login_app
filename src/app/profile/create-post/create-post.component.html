@@ -2,17 +2,21 @@
   #addContentForm="ngForm"
   (ngSubmit)="onAddPost(addContentForm)">
   <div class="form-group">
-    <label for="content">Add Post:</label>
-    <textarea class="form-control"
+    <label for="content">
+      <h5>Add Post:</h5>
+    </label>
+
+    <textarea class="form-control text-area-style"
       id="content"
-      rows="5"
-      maxlength="500"
+      rows="6"
+      maxlength="250"
       name="content"
       ngModel
       required></textarea>
   </div>
+  
   <div class="align-right">
     <button type="submit"
-      class="btn btn-dark">Submit</button>
+      class="btn btn-dark btn-style btn-outline-light">Submit</button>
   </div>
 </form>

@@ -1,45 +1,67 @@
+/* ================= */
+/* || Post Actual || */
+/* ================= */
+
 .post-image-container {
   padding-right: 0;
+  margin: 0 15px;
 }
 
-.post-hero-detail {
-  padding-top: 7px;
+.post-hero-details {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.user-names {
+  margin: 0;
 }
 
 .timestamp {
   margin: 0 0 .4rem 0;
   font-size: .9em;
+  color: var(--color-text-dark);
 }
 
 .post-content {
   white-space: pre-wrap;
 }
 
-.post-details {
-  outline: 1px solid red;
-}
-
-.modal-text {
-  font-size: 20px;
-  color: black;
-}
-
-.modal-center {
-  text-align: center;
-}
-
-.modal-btn {
-  width: 30%;
-}
+/* ==================== */
+/* || Action Control || */
+/* ==================== */
 
 .icon-size {
   font-size: 1.5em;
+}
+
+.opinion {
+  display: inline-block;
 }
 
 .opinion-count {
   margin: 0 .25em;
 }
 
-.opinion {
-  display: inline-block;
+.post-controler {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* =========== */
+/* || Modal || */
+/* =========== */
+
+.modal-center {
+  text-align: center;
+}
+
+.modal-text {
+  margin-bottom: 16px;
+}
+
+.modal-btn {
+  width: 30%;
+  color: var(--color-text-light);
 }

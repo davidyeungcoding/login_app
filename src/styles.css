@@ -125,6 +125,12 @@ textarea {
   margin: 0 auto;
 }
 
+.main-content-container {
+  border-left: solid;
+  border-right: solid;
+  border-width: 1px;
+}
+
 .main-content {
   border-top: 1px solid;
   padding: 1% 2%;
@@ -132,12 +138,6 @@ textarea {
 
 .content-box-main {
   padding-top: 1em;
-}
-
-.main-content-container {
-  border-left: solid;
-  border-right: solid;
-  border-width: 1px;
 }
 
 .end-of-content {
@@ -166,6 +166,19 @@ textarea {
   margin-top: 1rem;
 }
 
+/* =========== */
+/* || Modal || */
+/* =========== */
+
+.modal-body {
+  background-color: var(--color-background-dark);
+}
+
+.close-btn,
+.close-btn:hover {
+  color: var(--color-text-light);
+}
+
 /* ============= */
 /* || Loading || */
 /* ============= */
@@ -175,7 +188,7 @@ textarea {
 }
 
 .ball {
-  background-color: white;
+  background-color: var(--color-text-light);
   border-radius: 50%;
   margin: 7px;
   height: 10px;
@@ -208,7 +221,6 @@ textarea {
 
 .profile-image {
   border-radius: 50%;
-  margin-right: 10px;
   height: 75px;
 }
 
