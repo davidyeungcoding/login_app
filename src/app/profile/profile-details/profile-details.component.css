@@ -39,7 +39,6 @@
   border: 5px solid var(--color-background-darker);
   position: relative;
   top: 100px;
-  margin: 0;
 }
 
 @media only screen and (min-width: 576px) {

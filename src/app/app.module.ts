@@ -54,13 +54,11 @@ import FilePondPluginImageCrop from 'filepond-plugin-image-crop';
 import * as FilePondPluginImageTransform from 'filepond-plugin-image-transform';
 import { ProfileMutationDirective } from './directives/profile-mutation.directive';
 import * as FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-import { FollowerMutationDirective } from './directives/follower-mutation.directive';
-import { FollowingMutationDirective } from './directives/following-mutation.directive';
-import { SearchMutationDirective } from './directives/search-mutation.directive';
 import { AdditionalSideContentComponent } from './additional-side-content/additional-side-content.component';
 import { SideContentNavigationComponent } from './additional-side-content/side-content-navigation/side-content-navigation.component';
 import { SideProfileSectionComponent } from './additional-side-content/side-profile-section/side-profile-section.component';
 import { SideVisitorViewComponent } from './additional-side-content/side-visitor-view/side-visitor-view.component';
+import { FollowIntersectionDirective } from './directives/follow-intersection.directive';
 
 registerPlugin(
   FilePondPluginImagePreview,
@@ -89,13 +87,11 @@ registerPlugin(
     ObserverVisibilityDirective,
     SearchDirectiveDirective,
     ProfileMutationDirective,
-    FollowerMutationDirective,
-    FollowingMutationDirective,
-    SearchMutationDirective,
     AdditionalSideContentComponent,
     SideContentNavigationComponent,
     SideProfileSectionComponent,
     SideVisitorViewComponent,
+    FollowIntersectionDirective,
   ],
   imports: [
     BrowserModule,

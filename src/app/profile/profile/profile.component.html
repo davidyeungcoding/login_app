@@ -10,6 +10,7 @@
         <div class="col follow-btn-holder">
           <button type="button"
             class="btn btn-outline-light btn-style"
+            id="followBtn"
             (click)="handleFollowAction()">
             <span *ngIf="isFollowing; else notFollowing"
               class="follow-btn btn-bounce">

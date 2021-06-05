@@ -79,7 +79,7 @@
       <div class="follower-count">
         <button type="button"
           class="btn profile-options-btn primary-font-color btn-bounce"
-          (click)="handleFollowAction()">
+          (click)="handleFollowAction()" appFollowIntersection>
           <i *ngIf="isFollowing; else notFollowing" class="fas fa-heart primary-font-color"></i>
         </button>
       </div>
