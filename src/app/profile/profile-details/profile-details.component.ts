@@ -30,6 +30,7 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
     this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
     this.subscriptions.add(this.profileService.isFollowing.subscribe(_following => this.isFollowing = _following));
     this.subscriptions.add(this.profileService.isEditing.subscribe(_state => this.isEditing = _state));
+    this.subscriptions.add(this.profileService.followErrorMsg.subscribe(_msg => this.followErrorMsg = _msg));
   }
   
   ngAfterViewInit(): void {
@@ -125,57 +126,15 @@ export class ProfileDetailsComponent implements OnInit, AfterViewInit, OnDestroy
 // || Following ||
 // ===============
 
-  errorFollow(msg: string, redirect: boolean): void {
-    this.followErrorMsg = msg;
-    $('#followErrorMsg').css('display', 'inline');
-
-    setTimeout(() => {
-      $('#followErrorMsg').css('display', 'none');
-      if (redirect) this.authService.handleRedirectProfile(this.currentUser.username, this.isEditing);
-    }, 3000);
-  };
-
-  followerPayload(): any {
-    return {
-      followerId: this.currentUser.id,
-      followerName: this.currentUser.name,
-      followerUsername: this.currentUser.username,
-      profileId: this.profileData._id,
-      profileName: this.profileData.name,
-      profileUsername: this.profileData.username
-    };
-  };
-
-  onFollow(payload: any): void {
-    this.authService.followUser(payload).subscribe(_user => {
-      if (_user.success) {
-        this.profileData.followerCount++;
-        this.profileService.changeIsFollowing(true);
-      } else {
-        this.errorFollow(_user.msg, true);
-      };
-    });
-  };
-
-  onUnfollow(payload: any): void {
-    this.authService.unfollow(payload).subscribe(_user => {
-      if (_user.success) {
-        this.profileData.followerCount--;
-        this.profileService.changeIsFollowing(false);
-      } else {
-        this.errorFollow(_user.msg, true);
-      };
-    });
-  };
-
-  handleFollowAction() {
+  handleFollowAction(): void {
     if (this.authService.visitingProfile(this.currentUser, this.profileData) && !this.authService.isExpired()) {
-      const payload = this.followerPayload();
-      this.isFollowing ? this.onUnfollow(payload) : this.onFollow(payload);
+      const payload = this.authService.followerPayload(this.currentUser, this.profileData);
+      this.isFollowing ? this.authService.onUnfollow(payload, this.profileData, this.isEditing)
+      : this.authService.onFollow(payload, this.profileData, this.isEditing);
     } else if (!!localStorage.getItem('id_token') && this.authService.isExpired()) {
       this.authService.redirectDump('/session-timed-out', 'session');
     } else if (!localStorage.getItem('id_token')) {
-      this.errorFollow('You must be logged in before following.', false);
+      this.authService.followError('You must be logged in before following.', false, this.currentUser.username, this.isEditing);
     };
   };
 }

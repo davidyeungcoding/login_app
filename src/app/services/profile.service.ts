@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 
-// import { PostService } from './post.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { ProfilePreview } from '../interfaces/profile-preview';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -59,10 +58,11 @@ export class ProfileService {
   followingCount = this.followingCountSource.asObservable();
   private isFollowingSource = new BehaviorSubject<boolean>(false);
   isFollowing = this.isFollowingSource.asObservable();
+  private followErrorMsgSource = new BehaviorSubject<string>('');
+  followErrorMsg = this.followErrorMsgSource.asObservable();
 
   constructor(
-    private http: HttpClient,
-    // private postService: PostService
+    private http: HttpClient
   ) { }
 
 // =================
@@ -89,11 +89,6 @@ export class ProfileService {
     $('.pond-image-control').css('display', 'none');
     $('.resolveEdit').css('display', 'none');
   };
-
-  // resetDefaultProfileImage(): void {
-  //   $('#profileImage').attr('src', '../../../assets/default_image.jpg');
-  //   $('#profileImagePreview').attr('src', '../../../assets/default_image.jpg');
-  // };
 
 // ===================
 // || Profile Image ||
@@ -189,5 +184,9 @@ export class ProfileService {
 
   changeInitialFollowerLoad(state: boolean): void {
     this.initialFollowerLoadSource.next(state);
+  };
+
+  changeFollowErrorMsg(msg: string): void {
+    this.followErrorMsgSource.next(msg);
   };
 }

@@ -126,7 +126,99 @@ export class AuthService {
 
     if (redirect) this.router.navigate([`/profile/${username}`]);
   };
+  
+// ====================
+// || Verify Profile ||
+// ====================
+  
+  visitingProfile(currentUser, profileUser): boolean {
+    return currentUser.id && !this.isExpired()
+    && currentUser.username !== profileUser.username ? true : false;
+  };
+  
+// =======================
+// || Logout & Redirect ||
+// =======================
+  
+  logout(activeTab: string, activeList: string, isEditing: boolean): void {
+    if (isEditing) this.profileService.resetEditState();
+    this.profileService.resetActiveTab(activeTab);
+    this.profileService.resetVisible(activeList);
+    this.authToken = null;
+    this.changeUser(null);
+    localStorage.clear();
+  };
+  
+  handleRedirectProfile(username: string, isEditing: boolean, redirect: boolean = true): void {
+    const localUser = !!localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))
+    : this.emptyUser;
+    if (isEditing) this.profileService.resetEditState();
+    if (username !== localUser.username) {
+      this.profileService.changeInitialFollowingLoad(true);
+      this.profileService.changeInitialFollowerLoad(true);
+    };
+    
+    this.getProfile(username, localUser.username, localUser.id).subscribe(_user => {
+      if (_user.success) {
+        this.changeProfileInfo(username, _user.user, redirect);
+        this.profileService.changeIsFollowing(_user.follower);
+      } else this.redirectDump('/profile-not-found', 'profile');
+    });
+  };
 
+  redirectDump(route: string, term: string): void {
+    // needs more work
+    // redirect to profile not found then timeout follow up with logout
+    // needs to be tested
+    this.profileService.changeDumpMessage(term);
+    this.router.navigate([route]);
+  };
+
+// ===================
+// || Follow Action ||
+// ===================
+
+  followerPayload(user: any, profile: User): any {
+    return {
+      followerId: user.id,
+      followerName: user.name,
+      followerUsername: user.username,
+      profileId: profile._id,
+      profileName: profile.name,
+      profileUsername: profile.username
+    };
+  };
+
+  followError(msg: string, redirect: boolean, username: string, isEditing: boolean): void {
+    this.profileService.changeFollowErrorMsg(msg);
+    $('#followErrorMsg').css('display', 'inline');
+
+    setTimeout(() => {
+      $('#followErrorMsg').css('display', 'none');
+      if (redirect) this.handleRedirectProfile(username, isEditing);
+    }, 3000);
+  };
+
+  onFollow(payload: any, profile: User, isEditing: boolean): void {
+    this.followUser(payload).subscribe(_user => {
+      if (_user.success) {
+        profile.followerCount++;
+        this.profileService.changeIsFollowing(true);
+        this.changeProfileData(profile);
+      } else this.followError(_user.msg, true, payload.followerUsername, isEditing);
+    });
+  };
+
+  onUnfollow(payload: any, profile: User, isEditing: boolean): void {
+    this.unfollow(payload).subscribe(_user => {
+      if (_user.success) {
+        profile.followerCount--;
+        this.profileService.changeIsFollowing(false);
+        this.changeProfileData(profile);
+      } else this.followError(_user.msg, true, payload.followerUsername, isEditing);
+    });
+  };
+  
 // ============================
 // || Change Observable Data ||
 // ============================
@@ -142,53 +234,5 @@ export class AuthService {
 
   changeProfileData(user: any): void {
     this.profileDataSource.next(user);
-  };
-
-// ====================
-// || Verify Profile ||
-// ====================
-
-  visitingProfile(currentUser, profileUser): boolean {
-    return currentUser.id && !this.isExpired()
-    && currentUser.username !== profileUser.username ? true : false;
-  };
-
-// =======================
-// || Logout & Redirect ||
-// =======================
-
-  logout(activeTab: string, activeList: string, isEditing: boolean): void {
-    if (isEditing) this.profileService.resetEditState();
-    this.profileService.resetActiveTab(activeTab);
-    this.profileService.resetVisible(activeList);
-    this.authToken = null;
-    this.changeUser(null);
-    localStorage.clear();
-  };
-
-  handleRedirectProfile(username: string, isEditing: boolean, redirect: boolean = true): void {
-    const localUser = !!localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))
-    : this.emptyUser;
-    if (isEditing) this.profileService.resetEditState();
-    if (username !== localUser.username) {
-      this.profileService.changeInitialFollowingLoad(true);
-      this.profileService.changeInitialFollowerLoad(true);
-    };
-    // this.profileService.resetDefaultProfileImage();
-
-    this.getProfile(username, localUser.username, localUser.id).subscribe(_user => {
-      if (_user.success) {
-        this.changeProfileInfo(username, _user.user, redirect);
-        this.profileService.changeIsFollowing(_user.follower);
-      } else this.redirectDump('/profile-not-found', 'profile');
-    });
-  };
-
-  redirectDump(route: string, term: string): void {
-    // needs more work
-    // redirect to profile not found then timeout follow up with logout
-    // needs to be tested
-    this.profileService.changeDumpMessage(term);
-    this.router.navigate([route]);
   };
 }

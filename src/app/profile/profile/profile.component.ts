@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 export class ProfileComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
   private isEditing: boolean;
+  private currentUser: any;
   isFollowing: boolean;
   profileData: User;
 
@@ -29,6 +30,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.profileService.changeActiveList('postList'));
     this.subscriptions.add(this.profileService.isEditing.subscribe(_state => this.isEditing = _state));
     this.subscriptions.add(this.profileService.isFollowing.subscribe(_state => this.isFollowing = _state));
+    this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
 
     if (!this.profileData.username
       || this.profileData.username !== this.route.snapshot.paramMap.get('username')) this.getProfileData();
@@ -45,5 +47,21 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   onMoveToTop(): void {
     document.documentElement.scrollTop = 0;
+  };
+
+// ===============
+// || Following ||
+// ===============
+
+  handleFollowAction(): void {
+    if (this.authService.visitingProfile(this.currentUser, this.profileData) && !this.authService.isExpired()) {
+      const payload = this.authService.followerPayload(this.currentUser, this.profileData);
+      this.isFollowing ? this.authService.onUnfollow(payload, this.profileData, this.isEditing)
+      : this.authService.onFollow(payload, this.profileData, this.isEditing);
+    } else if (!!localStorage.getItem('id_token') && this.authService.isExpired()) {
+      this.authService.redirectDump('/session-timed-out', 'session');
+    } else if (!localStorage.getItem('id_token')) {
+      this.authService.followError('You must be logged in before following.', false, this.currentUser.username, this.isEditing);
+    };
   };
 }

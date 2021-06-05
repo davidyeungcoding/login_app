@@ -9,7 +9,8 @@
   
         <div class="col follow-btn-holder">
           <button type="button"
-            class="btn btn-outline-light btn-style">
+            class="btn btn-outline-light btn-style"
+            (click)="handleFollowAction()">
             <span *ngIf="isFollowing; else notFollowing"
               class="follow-btn btn-bounce">
               <i class="fas fa-heart primary-font-color"></i>
