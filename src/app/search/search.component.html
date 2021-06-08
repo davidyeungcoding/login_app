@@ -4,21 +4,17 @@
       class="main-content pointer"
       (click)="changeProfileData(result.username)">
       <div class="container content-box-main">
-        <div class="row">
-          <div class="col-sm-auto search-profile-image-container">
+        <div class="row profile-preview-group">
+          <div class="profile-preview-image-container">
             <img class="profile-image search-profile-image"
               src="{{ result.profileImage }}"
               alt="Profile Image">
           </div>
 
-          <div class="col profile-preview-hero-details">
-            <div class="row">
-              <h4 class="profile-preview-details">{{ result.name }}</h4>
-            </div>
+          <div class="profile-preview-details">
+            <h4 class="profile-preview-details">{{ result.name }}</h4>
 
-            <div class="row">
-              <p class="profile-preview-details">@{{ result.username }}</p>
-            </div>
+            <p class="profile-preview-details">@{{ result.username }}</p>
           </div>
         </div>
 

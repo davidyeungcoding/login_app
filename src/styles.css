@@ -16,32 +16,39 @@
 /* || Form Styling || */
 /* ================== */
 
-.form-style-box {
-  display: inline-block;
+textarea {
+  resize: none;
+}
+
+.text-area-style, .text-area-style:focus {
+  background-color: var(--color-background-light);
+  color: var(--color-text-light);
 }
 
 .form-btn-container {
+  display: block;
   margin: 0 auto;
-  display: inline-block;
-}
-
-.form-btn-style {
-  width: 100%;
+  width: 85%;
 }
 
 .form-style {
   margin: 5% 10%;
 }
 
-textarea {
-  resize: none;
+.form-btn-style {
+  width: 100%;
+  margin: 10px 0;
 }
 
-/* new stuff below */
+@media only screen and (min-width: 768px) {
+  .form-btn-container {
+    display: flex;
+    justify-content: space-between;
+  }
 
-.text-area-style, .text-area-style:focus {
-  background-color: var(--color-background-light);
-  color: var(--color-text-light);
+  .form-btn-style {
+    width: 47%;
+  }
 }
 
 /* =================== */
@@ -215,8 +222,10 @@ textarea {
 /* || Profile Preview || */
 /* ===================== */
 
-.profile-preview-container {
-  padding-right: 0;
+.profile-preview-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
 }
 
 .profile-image {
@@ -224,12 +233,12 @@ textarea {
   height: 75px;
 }
 
-.profile-preview-hero-details {
-  padding-top: 7px;
+.profile-preview-image-container {
+  margin: 0 15px;
 }
 
 .profile-preview-details {
-  outline: 1px solid red;
+  margin: 0;
 }
 
 /* =========== */
@@ -240,20 +249,16 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Oswald', sans-serif;
 }
 
-p, button, a {
+p, button, a, label, .text-area-style {
   font-family: 'Noto Sans KR', sans-serif;
 }
 
-/* =========== */
-/* || Other || */
-/* =========== */
+/* ============ */
+/* || Global || */
+/* ============ */
 
 html {
   scroll-behavior: smooth;
-}
-
-.align-right {
-  text-align: right;
 }
 
 .visible {
@@ -266,11 +271,11 @@ html {
 
 body {
   background-color: var(--color-background-darker);
-  color: white;
+  color: var(--color-text-light);
 }
 
 .primary-font-color {
-  color: white;
+  color: var(--color-text-light);
 }
 
 @media only screen and (min-width: 1005px) {

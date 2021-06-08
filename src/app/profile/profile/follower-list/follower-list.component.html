@@ -3,21 +3,17 @@
     class="main-content pointer"
     (click)="changeProfileData(user.username)">
     <div class="container content-box-main">
-      <div class="row">
-        <div class="col-sm-auto profile-preview-container">
+      <div class="row profile-preview-group">
+        <div class="profile-preview-image-container">
           <img class="profile-image follower-profile-image"
             src="{{ user.profileImage }}"
             alt="Profile Image">
         </div>
   
-        <div class="col profile-preview-hero-details">
-          <div class="row">
-            <h4 class="profile-preview-details">{{ user.name }}</h4>
-          </div>
+        <div class="profile-preview-hero-details">
+          <h4 class="profile-preview-details">{{ user.name }}</h4>
 
-          <div class="row">
-            <p class="profile-preview-details">@{{ user.username }}</p>
-          </div>
+          <p class="profile-preview-details">@{{ user.username }}</p>
         </div>
       </div>
     </div>
