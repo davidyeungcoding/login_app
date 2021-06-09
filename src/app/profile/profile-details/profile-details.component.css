@@ -16,6 +16,7 @@
 .image-container {
   align-items: flex-end;
   padding-bottom: 100px;
+  position: relative;
 }
 
 .banner-container {
@@ -41,7 +42,7 @@
   top: 100px;
 }
 
-@media only screen and (min-width: 576px) {
+@media screen and (min-width: 576px) {
   .pond-image-container {
     margin: 0;
     left: 5%;
@@ -68,7 +69,7 @@
   padding-top: 10px;
 }
 
-@media only screen and (min-width: 576px) {
+@media screen and (min-width: 576px) {
   .error-msg-container {
     justify-content: flex-start;
     text-align: left;
@@ -94,7 +95,7 @@
   padding: 0 10px;
 }
 
-@media only screen and (min-width: 576px) {
+@media screen and (min-width: 576px) {
   .profile-hero-detail {
     justify-content: flex-start;
   }
@@ -144,7 +145,7 @@
   margin: 0;
 }
 
-@media only screen and (min-width: 576px) {
+@media screen and (min-width: 576px) {
   .follow-container {
     justify-content: flex-start;
   }

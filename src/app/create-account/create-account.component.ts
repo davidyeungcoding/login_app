@@ -22,11 +22,9 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    $('.side-content-container').css('display', 'none');
   }
 
   ngOnDestroy(): void {
-    $('.side-content-container').css('display', 'inline');
   }
 
   onRegisterSubmit(createAccount: NgForm) {

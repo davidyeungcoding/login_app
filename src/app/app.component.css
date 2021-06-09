@@ -1,9 +1,1 @@
-.side-content-container {
-  display: none;
-}
 
-@media only screen and (min-width: 1005px) {
-  .side-content-container {
-    display: inline;
-  }
-}

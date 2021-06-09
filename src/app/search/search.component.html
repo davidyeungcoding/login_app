@@ -1,48 +1,58 @@
-<div class="main-content-container">
-  <div *ngIf="searchResults.length; else no_results">
-    <div *ngFor="let result of searchResults"
-      class="main-content pointer"
-      (click)="changeProfileData(result.username)">
-      <div class="container content-box-main">
-        <div class="row profile-preview-group">
-          <div class="profile-preview-image-container">
-            <img class="profile-image search-profile-image"
-              src="{{ result.profileImage }}"
-              alt="Profile Image">
+<div class="container">
+  <div class="row">
+    <div class="col main-view">
+      <div class="main-content-container">
+        <div *ngIf="searchResults.length; else no_results">
+          <div *ngFor="let result of searchResults"
+            class="main-content pointer"
+            (click)="changeProfileData(result.username)">
+            <div class="container content-box-main">
+              <div class="row profile-preview-group">
+                <div class="profile-preview-image-container">
+                  <img class="profile-image search-profile-image"
+                    src="{{ result.profileImage }}"
+                    alt="Profile Image">
+                </div>
+
+                <div class="profile-preview-details">
+                  <h4 class="profile-preview-details">{{ result.name }}</h4>
+
+                  <p class="profile-preview-details">@{{ result.username }}</p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col profile-preview-additional-info">
+                  <div class="row">
+                    <p class="profile-preview-details">{{ result.followerCount }} Followers</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <div class="profile-preview-details">
-            <h4 class="profile-preview-details">{{ result.name }}</h4>
-
-            <p class="profile-preview-details">@{{ result.username }}</p>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col profile-preview-additional-info">
-            <div class="row">
-              <p class="profile-preview-details">{{ result.followerCount }} Followers</p>
+        
+          <div class="end-of-content">
+            <div *ngIf="!endOfResults"
+              class="loading" appSearchDirective>
+              <div class="ball"></div>
+              <div class="ball"></div>
+              <div class="ball"></div>
             </div>
           </div>
         </div>
+        
+        <ng-template #no_results>
+          <div class="main-content">
+            <div class="container content-box-main">
+              <h5>No results found matching: "{{ searchTerm }}"</h5>
+            </div>
+          </div>
+        </ng-template>
       </div>
     </div>
-  
-    <div class="end-of-content">
-      <div *ngIf="!endOfResults"
-        class="loading" appSearchDirective>
-        <div class="ball"></div>
-        <div class="ball"></div>
-        <div class="ball"></div>
-      </div>
+    
+    <div class="col-sm-4 side-content-container">
+      <app-additional-side-content></app-additional-side-content>
     </div>
   </div>
-  
-  <ng-template #no_results>
-    <div class="main-content">
-      <div class="container content-box-main">
-        <h5>No results found matching: "{{ searchTerm }}"</h5>
-      </div>
-    </div>
-  </ng-template>
 </div>

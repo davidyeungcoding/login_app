@@ -1,77 +1,88 @@
-<div class="main-content-container">
-  <div *ngIf='!!profileData.username; else profileNotFound'>
-    <div class="container jump-holder">
-      <div class="row jump-row">
-        <div class="col">
-          <h4 class="jump-content-name"
-            (click)="onMoveToTop()">{{ profileData.name }}</h4>
-        </div>
-  
-        <div class="col follow-btn-holder">
-          <button type="button"
-            class="btn btn-outline-light btn-style"
-            id="followBtn"
-            (click)="handleFollowAction()">
-            <span *ngIf="isFollowing; else notFollowing"
-              class="follow-btn btn-bounce">
-              <i class="fas fa-heart primary-font-color"></i>
-              &nbsp;Unfollow
-            </span>
-              
-            <ng-template #notFollowing>
-              <span class="follow-btn btn-bounce">
-                <i class="far fa-heart primary-font-color"></i>
-                &nbsp;Follow
-              </span>
-            </ng-template>
-          </button>
-        </div>
-      </div>
-    </div>
+<div class="container">
+  <div class="row">
+    <div class="col main-view">
+      <div class="main-content-container">
+        <div *ngIf='!!profileData.username; else profileNotFound'>
+          <div class="container jump-holder">
+            <div class="row jump-row">
+              <div class="col">
+                <h4 class="jump-content-name"
+                  (click)="onMoveToTop()">{{ profileData.name }}</h4>
+              </div>
+        
+              <div class="col follow-btn-holder">
+                <button type="button"
+                  class="btn btn-outline-light btn-style"
+                  id="followBtn"
+                  (click)="handleFollowAction()">
+                  <span *ngIf="isFollowing; else notFollowing"
+                    class="follow-btn btn-bounce">
+                    <i class="fas fa-heart primary-font-color"></i>
+                    &nbsp;Unfollow
+                  </span>
+                    
+                  <ng-template #notFollowing>
+                    <span class="follow-btn btn-bounce">
+                      <i class="far fa-heart primary-font-color"></i>
+                      &nbsp;Follow
+                    </span>
+                  </ng-template>
+                </button>
+              </div>
+            </div>
+          </div>
 
-    <div class="container" *ngIf="profileData">
-      <app-profile-details></app-profile-details>
-      <app-profile-content></app-profile-content>
-    </div>
-  
-    <div class="modal fade"
-      id="postModal"
-      tabindex="-1"
-      aria-labelledby="postModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-body">
-            <button type="button"
-              class="close close-btn"
-              data-dismiss="modal"
-              aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <app-create-post></app-create-post>
+          <div class="container" *ngIf="profileData">
+            <app-profile-details></app-profile-details>
+            <app-profile-content></app-profile-content>
+          </div>
+        
+          <div class="modal fade"
+            id="postModal"
+            tabindex="-1"
+            aria-labelledby="postModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <button type="button"
+                    class="close close-btn"
+                    data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <app-create-post></app-create-post>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div id="postList">
+            <app-display-post appProfileMutation></app-display-post>
+          </div>
+          <div class="visible"
+            id="followingList">
+            <app-following-list></app-following-list>
+          </div>
+          <div class="visible"
+            id="followerList">
+            <app-follower-list></app-follower-list>
+          </div>
+          <div class="visible"
+            id="mentionsList">
+            <p>Mentions List</p>
           </div>
         </div>
+        
+        <ng-template #profileNotFound>
+          <h3>No profile data found</h3>
+        </ng-template>
       </div>
+
     </div>
-  
-    <div id="postList">
-      <app-display-post appProfileMutation></app-display-post>
-    </div>
-    <div class="visible"
-      id="followingList">
-      <app-following-list></app-following-list>
-    </div>
-    <div class="visible"
-      id="followerList">
-      <app-follower-list></app-follower-list>
-    </div>
-    <div class="visible"
-      id="mentionsList">
-      <p>Mentions List</p>
+    
+    <div class="col-sm-4 side-content-container">
+      <app-additional-side-content></app-additional-side-content>
     </div>
   </div>
-  
-  <ng-template #profileNotFound>
-    <h3>No profile data found</h3>
-  </ng-template>
 </div>

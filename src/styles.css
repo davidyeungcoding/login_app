@@ -40,7 +40,7 @@ textarea {
   margin: 10px 0;
 }
 
-@media only screen and (min-width: 768px) {
+@media screen and (min-width: 768px) {
   .form-btn-container {
     display: flex;
     justify-content: space-between;
@@ -132,6 +132,12 @@ textarea {
   margin: 0 auto;
 }
 
+@media screen and (min-width: 1005px) {
+  .main-view {
+    padding: 0 15px;
+  }
+}
+
 .main-content-container {
   border-left: solid;
   border-right: solid;
@@ -156,6 +162,17 @@ textarea {
 /* ================== */
 /* || Side Content || */
 /* ================== */
+
+.side-content-container {
+  display: none;
+  max-width: 380px;
+}
+
+@media screen and (min-width: 1005px) {
+  .side-content-container {
+    display: inline;
+  }
+}
 
 .side-content-segment {
   background-color: var(--color-background-dark);
@@ -278,25 +295,19 @@ body {
   color: var(--color-text-light);
 }
 
-@media only screen and (min-width: 1005px) {
-  .main-view {
-    padding: 0 15px;
-  }
-}
-
-/* @media only screen and (min-width: 541px) {
+/* @media screen and (min-width: 541px) {
   .main-content-container {
     margin: 0 10%;
   }
 }
 
-@media only screen and (min-width: 720px) {
+@media screen and (min-width: 720px) {
   .main-content-container {
     margin: 0 20%;
   }
 }
 
-@media only screen and (min-width: 992px) {
+@media screen and (min-width: 992px) {
   .main-content-container {
     margin: 0 30%;
   }

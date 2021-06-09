@@ -83,10 +83,12 @@ export class AuthService {
 // ========================
 
   storeUserData(token, user): void {
+    console.log('Starting to Store Data')
     localStorage.setItem('id_token', token);
     localStorage.setItem('user', JSON.stringify(user));
     this.authToken = token;
     this.changeUser(user);
+    console.log('Store Data Complete')
   };
 
   // loadToken() {
@@ -99,6 +101,8 @@ export class AuthService {
   };
 
   changeProfileInfo(username: string, user: User, redirect: boolean): void {
+    console.time('changeProfileInfo()')
+    console.log('changeProfileInfo')
     this.changeProfileData(user);
     this.postService.changePost(user.posts);
     this.postService.changePostCount(user.postCount);
@@ -106,11 +110,13 @@ export class AuthService {
     this.profileService.changeFollowingCount(user.followingCount);
     this.profileService.changeFollowerList(user.followers);
     this.profileService.changeFollowerCount(user.followerCount);
+    console.log('Complete Profile Info Change')
 
     // =================
     // || Image Setup ||
     // =================
 
+    console.log('Image Setup')
     user.bannerImage = user.bannerImage ? this.profileService.convertBufferToString(user.bannerImage.data)
     : '../assets/default_banner.jpg';
     user.profileImage = user.profileImage ? this.profileService.convertBufferToString(user.profileImage.data)
@@ -119,12 +125,16 @@ export class AuthService {
       && user.following.length) this.profileService.updateListImage(user.following);
     if (this.profileService.initialFollowerLoad && user.followers
       && user.followers.length) this.profileService.updateListImage(user.followers);
+    console.log('Image Setup End')
 
     // ===================
     // || Redirect User ||
     // ===================
 
+    console.log('Redirect')
     if (redirect) this.router.navigate([`/profile/${username}`]);
+    console.log('Redirect End')
+    console.timeEnd('changeProfileInfo()')
   };
   
 // ====================
