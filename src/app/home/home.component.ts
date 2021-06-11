@@ -35,20 +35,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   onLoginSubmit(loginForm: NgForm) {
-    console.log('onLoginSubmit()')
-    console.time('authenticateUser()')
     this.authService.authenticateUser(loginForm.value).subscribe(data => {
       if (data.success) {
-        console.log('Successfully authenticated user login with DB data')
         this.authService.storeUserData(data.token, data.user);
-        console.log('Retrieving user form DB => getProfile()')
-        console.timeEnd('authenticateUser()')
-        console.time('getProfile()')
-        this.authService.getProfile(data.user.username, data.user.username, data.user.id).subscribe(_user => {
-          this.authService.changeProfileInfo(_user.user.username, _user.user, true);
-        });
-        console.timeEnd('getProfile()')
-        console.log('Completed profile retrieval')
+        this.authService.changeProfileInfo(data.user.username, data.profile, true);
+        // this.authService.getProfile(data.user.username, data.user.username, data.user.id).subscribe(_user => {
+        //   console.log('inside thing')
+        //   console.log(_user.user)
+        //   this.authService.changeProfileInfo(_user.user.username, _user.user, true);
+        // });
       } else {
         // remove and implement your own personal version of the error message below
         this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 3000 });

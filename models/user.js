@@ -92,7 +92,18 @@ module.exports.getUserById = function(id, callback) {
 }
 
 module.exports.getUserForLogin = function(username, callback) {
-  User.findOne({ username: username }, callback);
+  const selection = {
+    posts: {
+      $slice: [0, 25]
+    },
+    followers: {
+      $slice: [0, 25]
+    },
+    following: {
+      $slice: [0, 25]
+    }
+  };
+  User.findOne({ username: username }, selection, callback);
 }
 
 module.exports.getUserByUsername = function(username, callback) {
