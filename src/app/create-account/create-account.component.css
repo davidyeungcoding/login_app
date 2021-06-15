@@ -1,10 +1,14 @@
 .container-style {
   background-color: var(--color-background-dark);
   padding: 10px 0;
-  border-radius: 5%;
-  /* display: flex; */
-  /* position: absolute; */
-  /* top: 50%; */
+  margin-top: 100px;
+  border-radius: 20px;
+}
+
+@media screen and (min-width: 768px) {
+  .container-style {
+    max-width: 720px;
+  }
 }
 
 /* ================== */
@@ -25,10 +29,29 @@
 /* || Submit Message || */
 /* ==================== */
 
-#successMsg {
+.submit-msg {
   text-align: center;
+  padding: 10px 15px;
+  margin: 0 15px 5px;
+  border-radius: 5px;
+  display: none;
+}
+
+#successMsg {
   color: var(--success);
-  background-color: var(--color-background-success);
+  background-color: var(--success-background);
+}
+
+#failureMsg {
+  color: var(--failure);
+  background-color: var(--failure-background);
+}
+
+@media screen and (min-width: 768px) {
+  .submit-msg {
+    width: 250px;
+    margin: 0 auto 5px;
+  }
 }
 
 /* =================== */
@@ -36,12 +59,11 @@
 /* =================== */
 
 .create-err-msg {
-  /* visibility: visible; */
   visibility: hidden;
   display: block;
 }
 
-@media screen and (min-width: 425px) {
+@media screen and (min-width: 433px) {
   .create-err-msg {
     display: inline;
   }

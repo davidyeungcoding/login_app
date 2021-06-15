@@ -5,7 +5,6 @@ import { ValidateService } from '../services/validate.service';
 
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FlashMessagesService } from 'angular2-flash-messages';
 
 @Component({
   selector: 'app-create-account',
@@ -17,7 +16,6 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private validateService: ValidateService,
-    private flashMessages: FlashMessagesService,
     private router: Router
   ) { }
 
@@ -32,14 +30,13 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
       if (_status) {
         this.authService.registerUser(createAccount.value).subscribe(data => {
           if (data.success) {
+            $('#successMsg').css('display', 'block');
 
             setTimeout(() => {
               this.router.navigate(['/home']);
-            }, 3000)
-            // this.flashMessages.show(data.msg, { cssClass: 'alert-success', timeout: 3000});
+            }, 2500);
           } else {
-            this.flashMessages.show(data.msg, { cssClass: 'alert-danger', timeout: 3000});
-            this.router.navigate(['/create-account']);
+            $('#failureMsg').css('display', 'block');
           };
         });
       };
