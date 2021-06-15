@@ -10,6 +10,7 @@
   --color-text-light: hsl(var(--hue), 0%, 100%);
   --color-secondary: hsl(var(--secondary-hue), 100%, 50%);
   --warning: hsl(0, 100%, 50%);
+  --success: hsl(100, 60%, 50%);
 }
 
 /* ================== */

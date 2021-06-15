@@ -17,7 +17,7 @@ const config = require('../config/database');
 // || Models ||
 // ============
 
-// const User = require('../models/user');
+const UserModel = require('../models/user');
 const user = require('../models/user');
 
 module.exports = router;
@@ -41,7 +41,7 @@ const buildRegExp = userArray => {
 // ====================
 
 router.post('/register', (req, res, next) => {
-  let newUser = new User({
+  let newUser = new UserModel({
     username: req.body.username,
     name: req.body.name,
     email: req.body.email,
@@ -146,6 +146,15 @@ router.post('/authenticate', (req, res, next) => {
     });
   });
 })
+
+router.get('/unique', (req, res, next) => {
+  const username = req.query.username;
+
+  user.getUserByUsername(username, (err, _user) => {
+    if (err) throw err;
+    return _user ? res.json(false) : res.json(true);
+  });
+});
 
 // ================
 // || Search Bar ||

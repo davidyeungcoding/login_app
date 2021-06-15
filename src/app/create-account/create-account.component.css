@@ -6,3 +6,43 @@
   /* position: absolute; */
   /* top: 50%; */
 }
+
+/* ================== */
+/* || Form Styling || */
+/* ================== */
+
+.form-style {
+  margin: 5%;
+}
+
+@media screen and (min-width: 341px) {
+  .form-style {
+    margin: 5% 10%;
+  }
+}
+
+/* ==================== */
+/* || Submit Message || */
+/* ==================== */
+
+#successMsg {
+  text-align: center;
+  color: var(--success);
+  background-color: var(--color-background-success);
+}
+
+/* =================== */
+/* || Error Message || */
+/* =================== */
+
+.create-err-msg {
+  /* visibility: visible; */
+  visibility: hidden;
+  display: block;
+}
+
+@media screen and (min-width: 425px) {
+  .create-err-msg {
+    display: inline;
+  }
+}

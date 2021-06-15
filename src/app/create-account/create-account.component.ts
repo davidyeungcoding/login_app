@@ -28,23 +28,20 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
   }
 
   onRegisterSubmit(createAccount: NgForm) {
-    // rework flash messages so I don't need to have the library in my project
-    if (!this.validateService.validateRegister(createAccount.value)) {
-      this.flashMessages.show('Please fill in all fields.', { cssClass: 'alert-danger', timeout: 3000});
-      return;
-    } else if (!this.validateService.validateEmail(createAccount.value.email)) {
-      this.flashMessages.show('Please enter a valid email address.', { cssClass: 'alert-danger', timeout: 3000});
-      return;
-    };
-    // add check for unique username
+    this.validateService.validateRegister(createAccount.value).then(_status => {
+      if (_status) {
+        this.authService.registerUser(createAccount.value).subscribe(data => {
+          if (data.success) {
 
-    this.authService.registerUser(createAccount.value).subscribe(data => {
-      if (data.success) {
-        this.flashMessages.show(data.msg, { cssClass: 'alert-success', timeout: 3000});
-        this.router.navigate(['/home']);
-      } else {
-        this.flashMessages.show(data.msg, { cssClass: 'alert-danger', timeout: 3000});
-        this.router.navigate(['/create-account']);
+            setTimeout(() => {
+              this.router.navigate(['/home']);
+            }, 3000)
+            // this.flashMessages.show(data.msg, { cssClass: 'alert-success', timeout: 3000});
+          } else {
+            this.flashMessages.show(data.msg, { cssClass: 'alert-danger', timeout: 3000});
+            this.router.navigate(['/create-account']);
+          };
+        });
       };
     });
   };

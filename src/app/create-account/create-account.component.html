@@ -6,7 +6,11 @@
     <h4>Create an Account</h4>
 
     <div class="form-group col-sm-12">
-      <label for="registerEmail">Email:</label>
+      <label for="registerEmail">Email:&nbsp;
+        <span class="error-msg create-err-msg"
+          id="emailError">Please enter a vaild email address</span>
+      </label>
+      
 
       <input type="email"
         class="form-control text-area-style"
@@ -16,7 +20,10 @@
     </div>
 
     <div class="form-group col-sm-12">
-      <label for="registerUsername">Username:</label>
+      <label for="registerUsername">Username:&nbsp;
+        <span class="error-msg create-err-msg"
+          id="usernameError">Please enter a unique username</span>
+      </label>
 
       <input type="text"
         class="form-control text-area-style"
@@ -26,7 +33,10 @@
     </div>
 
     <div class="form-group col-sm-12">
-      <label for="registerName">Name:</label>
+      <label for="registerName">Name:&nbsp;
+        <span class="error-msg create-err-msg"
+          id="nameError">Please enter a name</span>
+      </label>
 
       <input type="text"
         class="form-control text-area-style"
@@ -36,13 +46,20 @@
     </div>
 
     <div class="form-group col-sm-12">
-      <label for="registerPassword">Password:</label>
+      <label for="registerPassword">Password:&nbsp;
+        <span class="error-msg create-err-msg"
+          id="passwordError">Please enter a password</span>
+      </label>
 
       <input type="password"
         class="form-control text-area-style"
         id="registerPassword"
         name="password"
         ngModel>
+    </div>
+
+    <div class="summit-msg">
+      <p id="successMsg">New user registered!</p>
     </div>
 
     <div class="btn-container-holder">
