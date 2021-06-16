@@ -111,21 +111,16 @@ router.post('/authenticate', (req, res, next) => {
 
       const response = { success: true, token: `JWT ${token}`, user: resUser, profile: profileData };
       
-      // ====================
-      // || Follower Setup ||
-      // ====================
+      // ===========================
+      // || Profile Preview Setup ||
+      // ===========================
 
-      const following = profileData.following;
-      const followingRegex = new RegExp(buildRegExp(following));
       const followers = profileData.followers;
+      const following = profileData.following;
       const followersRegex = new RegExp(buildRegExp(followers));
-
-      if (following && following.length) {
-        response.profile.following = await setProfileImage(followingRegex);
-      } if (followers && followers.length) {
-        response.profile.followers = await setProfileImage(followersRegex);
-      };
-
+      const followingRegex = new RegExp(buildRegExp(following));
+      if (followers && followers.length) response.profile.followers = await setProfileImage(followersRegex);
+      if (following && following.length) response.profile.following = await setProfileImage(followingRegex);
       return res.json(response);
     });
   });
@@ -163,37 +158,24 @@ router.get('/profile/:username', (req, res, next) => {
   const currentUsername = req.query.currentUsername;
   const currentId = req.query.currentId;
 
-  user.getUserByUsername(profileUsername, (err, profile) => {
+  user.getUserByUsername(profileUsername, async (err, profile) => {
     if (err) throw err;
     if (profile) {
 
-      // ====================
-      // || Follower Setup ||
-      // ====================
+      // ===========================
+      // || Profile Preview Setup ||
+      // ===========================
 
-      let followers = profile.followers;
+      const followers = profile.followers;
+      const following = profile.following;
       const followersRegex = new RegExp(buildRegExp(followers));
-      
-      if (followers && followers.length) {
-        user.getProfilePreview(followersRegex, (err, _followers) => {
-          if (err) throw err;
-          profile.followers = _followers;
-        });
-      };
-      
-      // =====================
-      // || Following Setup ||
-      // =====================
-
-      let following = profile.following;
       const followingRegex = new RegExp(buildRegExp(following));
+      if (followers && followers.length) profile.followers = await setProfileImage(followersRegex);
+      if (following && following.length) profile.following = await setProfileImage(followingRegex);
       
-      if (following && following.length) {
-        user.getProfilePreview(followingRegex, (err, _following) => {
-          if (err) throw err;
-          profile.following = _following;
-        });
-      };
+      // ========================
+      // || Check if Following ||
+      // ========================
 
       user.isFollowing(currentUsername, currentId, profileUsername, (err, doc) => {
         if (err) throw err;

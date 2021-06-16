@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 
 import { AuthService } from '../../services/auth.service';
 import { ProfileService } from 'src/app/services/profile.service';
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
   private isEditing: boolean;
   private currentUser: any;
@@ -31,9 +31,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.profileService.isEditing.subscribe(_state => this.isEditing = _state));
     this.subscriptions.add(this.profileService.isFollowing.subscribe(_state => this.isFollowing = _state));
     this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
-
+    
     if (!this.profileData.username
       || this.profileData.username !== this.route.snapshot.paramMap.get('username')) this.getProfileData();
+    }
+    
+  ngAfterViewInit(): void {
   }
 
   ngOnDestroy(): void {
