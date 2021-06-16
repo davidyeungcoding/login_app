@@ -32,29 +32,33 @@ export class ValidateService {
   };
 
   async validateRegister(form: any) {
-    let res: any = true;
+    try {
+      let res: any = true;
 
-    if (!form.email || !this.validateEmail(form.email)) {
-      $('#emailError').css('visibility', 'visible');
-      res = false;
-    } else $('#emailError').css('visibility', 'hidden');
+      if (!form.email || !this.validateEmail(form.email)) {
+        $('#emailError').css('visibility', 'visible');
+        res = false;
+      } else $('#emailError').css('visibility', 'hidden');
+  
+      if (!form.username) {
+        $('#usernameError').css('visibility', 'visible');
+        res = false;
+      } else res = await this.assignUnique(form.username);
+  
+      if (!form.name) {
+        $('#nameError').css('visibility', 'visible');
+        res = false;
+      } else $('#nameError').css('visibility', 'hidden');
+  
+      if (!form.password) {
+        $('#passwordError').css('visibility', 'visible');
+        res = false;
+      } else $('#passwordError').css('visibility', 'hidden');
 
-    if (!form.username) {
-      $('#usernameError').css('visibility', 'visible');
-      res = false;
-    } else res = await this.assignUnique(form.username);
-
-    if (!form.name) {
-      $('#nameError').css('visibility', 'visible');
-      res = false;
-    } else $('#nameError').css('visibility', 'hidden');
-
-    if (!form.password) {
-      $('#passwordError').css('visibility', 'visible');
-      res = false;
-    } else $('#passwordError').css('visibility', 'hidden');
-
-    return res;
+      return res;
+    } catch {
+      $('#failureMsg').css('display', 'block');
+    };
   };
 
   validateEmail(email) {

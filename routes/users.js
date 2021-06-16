@@ -36,6 +36,21 @@ const buildRegExp = userArray => {
   return regex;
 };
 
+const setProfileImage = async regex => {
+  const res = await new Promise(resolve => {
+    user.getProfilePreview(regex, (err, _userArray) => {
+      if (err) throw err;
+
+      _userArray.forEach(preview => {
+        if (preview.profileImage) preview.profileImage = preview.profileImage.buffer;
+      });
+
+      resolve(_userArray);
+    });
+  });
+  return res;
+};
+
 // ====================
 // || Create Account ||
 // ====================
@@ -67,82 +82,51 @@ router.post('/authenticate', (req, res, next) => {
     if (err) throw err;
     if (!_user) return res.json({success: false, msg: `User not found`});
     
-    user.comparePassword(password, _user.password, (err, isMatch) => {
+    user.comparePassword(password, _user.password, async (err, isMatch) => {
       if (err) throw err;
-      if (isMatch) {
-        const token = jwt.sign(_user.toJSON(), config.secret, {expiresIn: '7d'});
+      if (!isMatch) return res.json({success: false, msg: 'Username and password do not match.'});
+      const token = jwt.sign(_user.toJSON(), config.secret, {expiresIn: '7d'});
 
-        const resUser = {
-          id: _user._id,
-          username: _user.username,
-          name: _user.name,
-          email: _user.email
-        };
-
-        const profileData = {
-          _id: _user._id,
-          name: _user.name,
-          username: _user.username,
-          email: _user.email,
-          bannerImage: _user.bannerImage,
-          profileImage: _user.profileImage,
-          followerCount: _user.followerCount,
-          followers: _user.followers,
-          followingCount: _user.followingCount,
-          following: _user.following,
-          postCount: _user.postCount,
-          posts: _user.posts
-        };
-
-        const response = { success: true, token: `JWT ${token}`, user: resUser, profile: profileData };
-        
-        // ====================
-        // || Follower Setup ||
-        // ====================
-
-        const following = profileData.following;
-        const followingRegex = new RegExp(buildRegExp(following));
-        const followers = profileData.followers;
-        const followersRegex = new RegExp(buildRegExp(followers));
-
-        if (following && following.length) {
-          user.getProfilePreview(followingRegex, (err, _following) => {
-            if (err) throw err;
-
-            _following.forEach(preview => {
-              if (preview.profileImage) preview.profileImage = preview.profileImage.buffer;
-            });
-
-            response.profile.following = _following;
-
-            if (followers && followers.length) {
-              user.getProfilePreview(followersRegex, (err, _followers) => {
-                if (err) throw err;
-
-                _followers.forEach(preview => {
-                  if (preview.profileImage) preview.profileImage = preview.profileImage.buffer;
-                });
-
-                response.profile.followers = _followers;
-                return res.json(response);
-              });
-            } else return res.json(response)
-          })
-        } else if (followers && followers.length) {
-          user.getProfilePreview(followersRegex, (err, _followers) => {
-            if (err) throw err;
-
-            _followers.forEach(preview => {
-              if (preview.profileImage) preview.profileImage = preview.profileImage.buffer;
-            });
-
-            response.profile.followers = _followers;
-            return res.json(response);
-          })
-        } else return res.json(response);
-      } else {
-        return res.json({success: false, msg: 'Username and password do not match.'});
+      const resUser = {
+        id: _user._id,
+        username: _user.username,
+        name: _user.name,
+        email: _user.email
       };
+
+      const profileData = {
+        _id: _user._id,
+        name: _user.name,
+        username: _user.username,
+        email: _user.email,
+        bannerImage: _user.bannerImage,
+        profileImage: _user.profileImage,
+        followerCount: _user.followerCount,
+        followers: _user.followers,
+        followingCount: _user.followingCount,
+        following: _user.following,
+        postCount: _user.postCount,
+        posts: _user.posts
+      };
+
+      const response = { success: true, token: `JWT ${token}`, user: resUser, profile: profileData };
+      
+      // ====================
+      // || Follower Setup ||
+      // ====================
+
+      const following = profileData.following;
+      const followingRegex = new RegExp(buildRegExp(following));
+      const followers = profileData.followers;
+      const followersRegex = new RegExp(buildRegExp(followers));
+
+      if (following && following.length) {
+        response.profile.following = await setProfileImage(followingRegex);
+      } if (followers && followers.length) {
+        response.profile.followers = await setProfileImage(followersRegex);
+      };
+
+      return res.json(response);
     });
   });
 })

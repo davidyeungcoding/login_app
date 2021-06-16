@@ -39,11 +39,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (data.success) {
         this.authService.storeUserData(data.token, data.user);
         this.authService.changeProfileInfo(data.user.username, data.profile, true);
-        // this.authService.getProfile(data.user.username, data.user.username, data.user.id).subscribe(_user => {
-        //   console.log('inside thing')
-        //   console.log(_user.user)
-        //   this.authService.changeProfileInfo(_user.user.username, _user.user, true);
-        // });
       } else {
         // remove and implement your own personal version of the error message below
         this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 3000 });
