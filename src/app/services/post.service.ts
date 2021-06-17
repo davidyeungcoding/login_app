@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { NgForm } from '@angular/forms';
 import { BehaviorSubject, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Post } from '../interfaces/post';
@@ -31,16 +30,8 @@ export class PostService {
 // || Router Requests ||
 // =====================
 
-  addPost(form: NgForm) {
-    const localUser = JSON.parse(localStorage.getItem('user'));
-    const post = {
-      userId: localUser.id,
-      content: {
-        timestamp: new Date().toLocaleString(),
-        content: form.value.content.trim()
-      }
-    };
-    return this.http.put(`${this.api}/profile/${localUser.username}/post`, post, httpOptions).pipe(
+  addPost(payload: any) {
+    return this.http.put(`${this.api}/profile/${payload.username}/post`, payload, httpOptions).pipe(
       catchError(err => of(err))
     );
   };

@@ -255,9 +255,24 @@ router.get('/profile/:username/post', (req, res, next) => {
 });
 
 router.put('/profile/:username/post', (req, res, next) => {
-  user.addPost(req.body, (err, doc) => {
+  user.addPost(req.body, (err, _posts) => {
     if (err) throw err;
-    return doc ? res.json({success: true, msg: doc})
+    const postId = _posts.posts[0]._id;
+
+    if (req.body.followerCount) {
+      user.retrieveFollowersList(req.body.username, (err, _followers) => {
+        if (err) throw err;
+        const regex = new RegExp(buildRegExp(_followers[0].followers));
+        const payload = req.body.content;
+        payload.postId = postId;
+        
+        user.updateRecentActivity(regex, payload, (err, doc) => {
+          if (err) throw err;
+        });
+      });
+    };
+
+    return _posts ? res.json({success: true, msg: _posts})
     : res.json({success: false, msg: "Faild to add post"})
   });
 });

@@ -40,6 +40,29 @@ const Post = mongoose.Schema({
   opinions: {}
 })
 
+const ActivityPost = mongoose.Schema({
+  postId: {
+    type: String,
+    required: true
+  },
+  userId: {
+    type: String,
+    required: true
+  },
+  username: {
+    type: String,
+    required: true
+  },
+  timestamp: {
+    type: String,
+    required: true
+  },
+  content: {
+    type: String,
+    required: true
+  }
+})
+
 const UserSchema = mongoose.Schema({
   username: {
     type: String,
@@ -69,6 +92,7 @@ const UserSchema = mongoose.Schema({
     default: 0
   },
   posts: [Post],
+  recentActivity: [ActivityPost],
   followerCount: {
     type: Number,
     default: 0
@@ -143,7 +167,7 @@ module.exports.getProfilePreview = function(regex, callback) {
     username: 1,
     profileImage: 1
   };
-  User.aggregate([{$match: {username: regex}}, {$project: selection}], callback)
+  User.aggregate([{$match: {username: regex}}, {$project: selection}], callback);
 }
 
 // =======================
@@ -344,6 +368,24 @@ module.exports.removeFollowing = function(user, profile, callback) {
     }
   };
   User.findOneAndUpdate(filter, query, callback);
+}
+
+module.exports.retrieveFollowersList = (username, callback) => {
+  User.find({username: username}, {_id: 0, 'followers.username': 1}, callback);
+}
+
+module.exports.updateRecentActivity = (regex, content, callback) => {
+  // run update to all users found by regex here
+  const update = {
+    $push: {
+      recentActivity: {
+        $each: [content],
+        $position: 0
+      }
+    }
+  }
+  User.updateMany({username: regex}, update, callback);
+  // User.find({username: regex}, {_id: 0, username: 1}, callback);
 }
 
 // ============

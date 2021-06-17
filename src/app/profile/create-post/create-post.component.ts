@@ -28,20 +28,39 @@ export class CreatePostComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  onAddPost(form: NgForm) {
-    if (form.value.content) {
-      this.postService.addPost(form).subscribe(data => {
-        if (data.success) {
-          this.postService.changePost(data.msg.posts);
-          this.postService.changePostCount(data.msg.postCount);
-          this.profileData.postCount++;
-        } else {
-          // handle error
-        }
-      });
-      $('#content').val('');
-      form.value.content = '';
-    };
+  clearPost(form: NgForm): void {
+    $('#content').val('');
+    form.value.content = '';
     $('#postModal').modal('hide');
+  };
+
+  onAddPost(form: NgForm) {
+    const postContent = form.value.content.trim();
+
+    if (!postContent) {
+      this.clearPost(form);
+      return;
+    };
+
+    const payload = {
+      userId: this.profileData._id,
+      username: this.profileData.username,
+      followerCount: this.profileData.followerCount,
+      content: {
+        timestamp: new Date().toLocaleString(),
+        content: postContent
+      }
+    }
+    
+    this.postService.addPost(payload).subscribe(data => {
+      if (data.success) {
+        this.postService.changePost(data.msg.posts);
+        this.postService.changePostCount(data.msg.postCount);
+        this.profileData.postCount++;
+      } else {
+        // handle error
+      }
+    });
+    this.clearPost(form);
   };
 }
