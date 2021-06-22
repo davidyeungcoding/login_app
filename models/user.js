@@ -237,6 +237,18 @@ module.exports.removePost = function(post, callback) {
   User.findOneAndUpdate({username: post.username}, query, options, callback).select('posts postCount');
 }
 
+module.exports.removeRecentActivity = (payload, callback) => {
+  const query = {
+    $pull: {
+      recentActivity: {
+        postId: payload.id
+      }
+    }
+  };
+
+  User.updateMany({"recentActivity.postId": payload.id}, query, callback)
+}
+
 module.exports.postOpinion = function(post, callback) {
   const filter = {
     username: post.profileUsername,
