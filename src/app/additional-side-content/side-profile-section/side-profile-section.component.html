@@ -13,5 +13,37 @@
           (click)="onLogout()"><i class="fas fa-door-open"></i> Logout</button>
       </div>
     </div>
+
+    <div class="container recent-activity-container">
+      <div class="row">
+        <h4>Recent Activity:</h4>
+      </div>
+
+      <div class="row">
+        <div *ngFor="let post of recentActivity"
+          class="recent-activity-post col-sm-12">
+          <div class="recent-activity-hero"
+            (click)="onProfileSwitch(post.username)">
+            <div class="recent-activity-img-container">
+              <img class="profile-image"
+                src="{{ post.profileImage }}"
+                alt="Profile Image">
+            </div>
+
+            <div>
+              <h4 class="recent-activity-user-names">{{ post.name }}</h4>
+    
+              <h5 class="recent-activity-user-names">@{{ post.username }}</h5>
+            </div>
+          </div>
+
+          <div class="container">
+            <p class="timestamp">{{ post.timestamp }}</p>
+  
+            <p class="content">{{ post.content }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

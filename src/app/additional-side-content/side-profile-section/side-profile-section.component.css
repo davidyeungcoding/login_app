@@ -5,3 +5,54 @@
 .side-nav:nth-of-type(1) {
   padding-right: 0;
 }
+
+.recent-activity-container {
+  margin-top: 20px;
+}
+
+/* ========== */
+/* || Post || */
+/* ========== */
+
+.recent-activity-post {
+  padding: 10px 15px;
+  margin-bottom: 22px;
+  background-color: var(--color-background-light);
+  border-radius: 5px;
+}
+
+.recent-activity-post:nth-of-type(1) {
+  margin-top: 7px;
+}
+
+.recent-activity-post:last-of-type {
+  margin-bottom: 0;
+}
+
+.recent-activity-hero {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.recent-activity-user-names {
+  margin: 0;
+}
+
+.timestamp {
+  margin: 0 0 2px;
+  font-size: .8rem;
+}
+
+.content {
+  margin: 0;
+  font-size: .9rem;
+  white-space: pre-wrap;
+}
+
+.profile-image {
+  height: 60px;
+  margin-right: 10px;
+  border: solid 2px var(--color-background-dark);
+}

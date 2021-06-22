@@ -53,6 +53,10 @@ const ActivityPost = mongoose.Schema({
     type: String,
     required: true
   },
+  name: {
+    type: String,
+    retuired: true
+  },
   timestamp: {
     type: String,
     required: true
@@ -60,8 +64,11 @@ const ActivityPost = mongoose.Schema({
   content: {
     type: String,
     required: true
+  },
+  profileImage: {
+    type: Buffer
   }
-})
+}, {_id: false})
 
 const UserSchema = mongoose.Schema({
   username: {
@@ -375,17 +382,16 @@ module.exports.retrieveFollowersList = (username, callback) => {
 }
 
 module.exports.updateRecentActivity = (regex, content, callback) => {
-  // run update to all users found by regex here
   const update = {
     $push: {
       recentActivity: {
         $each: [content],
-        $position: 0
+        $position: 0,
+        $slice: 10
       }
     }
   }
   User.updateMany({username: regex}, update, callback);
-  // User.find({username: regex}, {_id: 0, username: 1}, callback);
 }
 
 // ============

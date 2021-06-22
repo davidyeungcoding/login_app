@@ -45,12 +45,13 @@ export class CreatePostComponent implements OnInit, OnDestroy {
     const payload = {
       userId: this.profileData._id,
       username: this.profileData.username,
+      name: this.profileData.name,
       followerCount: this.profileData.followerCount,
       content: {
         timestamp: new Date().toLocaleString(),
         content: postContent
       }
-    }
+    };
     
     this.postService.addPost(payload).subscribe(data => {
       if (data.success) {

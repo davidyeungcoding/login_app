@@ -51,6 +51,20 @@ const setProfileImage = async regex => {
   return res;
 };
 
+const assignRecentActivityImages = (list, images) => {
+  let temp = {};
+
+  images.forEach(profile => {
+    if (profile.profileImage) temp[profile.username] = profile.profileImage;
+  });
+
+  list.forEach(profile => {
+    if (temp[profile.username]) profile.profileImage = temp[profile.username];
+  });
+
+  return list;
+};
+
 // ====================
 // || Create Account ||
 // ====================
@@ -68,7 +82,7 @@ router.post('/register', (req, res, next) => {
     err ? res.json({success: false, msg: `Failed to register user.`, err: err})
     : res.json({success: true, msg: `New user registered.`});
   });
-})
+});
 
 // =============================
 // || Authenticate Login Info ||
@@ -86,12 +100,13 @@ router.post('/authenticate', (req, res, next) => {
       if (err) throw err;
       if (!isMatch) return res.json({success: false, msg: 'Username and password do not match.'});
       const token = jwt.sign(_user.toJSON(), config.secret, {expiresIn: '7d'});
-
+      
       const resUser = {
         id: _user._id,
         username: _user.username,
         name: _user.name,
-        email: _user.email
+        email: _user.email,
+        recentActivity: _user.recentActivity
       };
 
       const profileData = {
@@ -117,14 +132,22 @@ router.post('/authenticate', (req, res, next) => {
 
       const followers = profileData.followers;
       const following = profileData.following;
+      const recentActivity = resUser.recentActivity;
       const followersRegex = new RegExp(buildRegExp(followers));
       const followingRegex = new RegExp(buildRegExp(following));
+      const recentActivityRegex = new RegExp(buildRegExp(recentActivity));
       if (followers && followers.length) response.profile.followers = await setProfileImage(followersRegex);
       if (following && following.length) response.profile.following = await setProfileImage(followingRegex);
+
+      if (recentActivity && recentActivity.length) {
+        recentActivityImages = await setProfileImage(recentActivityRegex);
+        response.user.recentActivity = assignRecentActivityImages(recentActivity, recentActivityImages);
+      };
+
       return res.json(response);
     });
   });
-})
+});
 
 router.get('/unique', (req, res, next) => {
   const username = req.query.username;
@@ -257,14 +280,16 @@ router.get('/profile/:username/post', (req, res, next) => {
 router.put('/profile/:username/post', (req, res, next) => {
   user.addPost(req.body, (err, _posts) => {
     if (err) throw err;
-    const postId = _posts.posts[0]._id;
 
     if (req.body.followerCount) {
       user.retrieveFollowersList(req.body.username, (err, _followers) => {
         if (err) throw err;
         const regex = new RegExp(buildRegExp(_followers[0].followers));
         const payload = req.body.content;
-        payload.postId = postId;
+        payload.userId = req.body.userId;
+        payload.username = req.body.username;
+        payload.name = req.body.name;
+        payload.postId = _posts.posts[0]._id;
         
         user.updateRecentActivity(regex, payload, (err, doc) => {
           if (err) throw err;

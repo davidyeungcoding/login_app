@@ -144,6 +144,7 @@ export class AuthService {
     if (isEditing) this.profileService.resetEditState();
     this.profileService.resetActiveTab(activeTab);
     this.profileService.resetVisible(activeList);
+    this.profileService.changeRecentActivity([]);
     this.authToken = null;
     this.changeUser(null);
     localStorage.clear();

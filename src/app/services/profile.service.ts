@@ -25,6 +25,8 @@ export class ProfileService {
   activeList = this.activeListSource.asObservable();
   private activeTabSource = new BehaviorSubject<string>('postTab');
   activeTab = this.activeTabSource.asObservable();
+  private recentActivitySource = new BehaviorSubject<any>([]);
+  recentActivity = this.recentActivitySource.asObservable();
 
 // ==========================
 // || Handle Error Message ||
@@ -100,7 +102,7 @@ export class ProfileService {
     return res;
   };
 
-  updateListImage(list: ProfilePreview[]): void {
+  updateListImage(list: any): void {
     list.forEach(_profile => {
       _profile.profileImage = _profile.profileImage ? this.convertBufferToString(_profile.profileImage.data)
       : '../../../../assets/default_image.jpg';
@@ -188,5 +190,9 @@ export class ProfileService {
 
   changeFollowErrorMsg(msg: string): void {
     this.followErrorMsgSource.next(msg);
+  };
+
+  changeRecentActivity(activity: any): void {
+    this.recentActivitySource.next(activity);
   };
 }
