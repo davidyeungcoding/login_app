@@ -14,7 +14,8 @@
       </div>
     </div>
 
-    <div class="container recent-activity-container">
+    <div *ngIf="recentActivity.length"
+      class="container recent-activity-container">
       <div class="row">
         <h4>Recent Activity:</h4>
       </div>

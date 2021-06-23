@@ -55,6 +55,8 @@ export class SideProfileSectionComponent implements OnInit, AfterViewInit, OnDes
   };
 
   onProfileSwitch(username: string): void {
+    this.profileService.resetVisible(this.activeList);
+    this.profileService.resetActiveTab(this.activeTab);
     this.authService.handleRedirectProfile(username, this.isEditing);
   };
 }
