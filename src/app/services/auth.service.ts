@@ -99,6 +99,7 @@ export class AuthService {
   };
 
   changeProfileInfo(username: string, user: User, redirect: boolean): void {
+    console.log(user);
     this.changeProfileData(user);
     this.postService.changePost(user.posts);
     this.postService.changePostCount(user.postCount);

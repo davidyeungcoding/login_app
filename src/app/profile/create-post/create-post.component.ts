@@ -78,7 +78,6 @@ export class CreatePostComponent implements OnInit, OnDestroy {
       followerCount: this.profileData.followerCount,
       content: {
         timestamp: new Date().toLocaleString(),
-        // content: postContent
         content: parsedPostInfo.post
       },
       taggedUsers: parsedPostInfo.taggedUsers
@@ -93,7 +92,6 @@ export class CreatePostComponent implements OnInit, OnDestroy {
         // handle error
       }
     });
-    // testing post list mutation check for adding links to users tagged: <a class="on-click" value="deleteme">@deleteme</a>
     this.clearPost(form);
   };
 }

@@ -55,7 +55,6 @@ export class ProfileMutationDirective implements OnInit, AfterViewInit, OnDestro
 
   checkForChanges(): void {
     this.profileMutation = new MutationObserver(entry => {
-      console.log(entry)
       if (entry) this.addClickEvent();
       if (entry && this.profileData.profileImage) this.assignProfileImage();
     });

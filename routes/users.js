@@ -30,7 +30,8 @@ const buildRegExp = userArray => {
   let regex = '';
 
   for (let i = 0; i < userArray.length; i++) {
-    regex += i === 0 ? `^${userArray[i].username}$` : `|^${userArray[i].username}$`;
+    let username = typeof(userArray[i]) === "string" ? userArray[i] : userArray[i].username;
+    regex += i === 0 ? `^${username}$` : `|^${username}$`;
   };
 
   return regex;
@@ -280,16 +281,32 @@ router.get('/profile/:username/post', (req, res, next) => {
 router.put('/profile/:username/post', (req, res, next) => {
   user.addPost(req.body, (err, _posts) => {
     if (err) throw err;
+    const payload = req.body.content;
+    payload.userId = req.body.userId;
+    payload.username = req.body.username;
+    payload.name = req.body.name;
+    payload.postId = _posts.posts[0]._id;
+  
+    // ==============================
+    // || Add Post to Tagged Users ||
+    // ==============================
+
+    if (req.body.taggedUsers.length) {
+      const usersRegex = new RegExp(buildRegExp(req.body.taggedUsers));
+    
+      user.addToMentions(usersRegex, payload, (err, doc) => {
+        if (err) throw err;
+      });
+    };
+
+    // =========================================
+    // || Update recentActivity for Followers ||
+    // =========================================
 
     if (req.body.followerCount) {
       user.retrieveFollowersList(req.body.username, (err, _followers) => {
         if (err) throw err;
         const regex = new RegExp(buildRegExp(_followers[0].followers));
-        const payload = req.body.content;
-        payload.userId = req.body.userId;
-        payload.username = req.body.username;
-        payload.name = req.body.name;
-        payload.postId = _posts.posts[0]._id;
         
         user.updateRecentActivity(regex, payload, (err, doc) => {
           if (err) throw err;

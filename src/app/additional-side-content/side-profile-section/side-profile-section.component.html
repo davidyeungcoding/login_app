@@ -41,7 +41,8 @@
           <div class="container">
             <p class="timestamp">{{ post.timestamp }}</p>
   
-            <p class="content">{{ post.content }}</p>
+            <p class="content"
+              [innerHTML]="post.content"></p>
           </div>
         </div>
       </div>

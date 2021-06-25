@@ -100,6 +100,7 @@ const UserSchema = mongoose.Schema({
   },
   posts: [Post],
   recentActivity: [ActivityPost],
+  mentions: [ActivityPost],
   followerCount: {
     type: Number,
     default: 0
@@ -235,6 +236,32 @@ module.exports.removePost = function(post, callback) {
   };
   const options = {new: true};
   User.findOneAndUpdate({username: post.username}, query, options, callback).select('posts postCount');
+}
+
+module.exports.addToMentions = (usersRegex, payload, callback) => {
+  const query = {
+    $push: {
+      mentions: {
+        $each: [payload],
+        $position: 0
+      }
+    }
+  };
+
+  User.updateMany({username: usersRegex}, query, callback);
+}
+
+module.exports.updateRecentActivity = (regex, content, callback) => {
+  const update = {
+    $push: {
+      recentActivity: {
+        $each: [content],
+        $position: 0,
+        $slice: 10
+      }
+    }
+  }
+  User.updateMany({username: regex}, update, callback);
 }
 
 module.exports.removeRecentActivity = (payload, callback) => {
@@ -391,19 +418,6 @@ module.exports.removeFollowing = function(user, profile, callback) {
 
 module.exports.retrieveFollowersList = (username, callback) => {
   User.find({username: username}, {_id: 0, 'followers.username': 1}, callback);
-}
-
-module.exports.updateRecentActivity = (regex, content, callback) => {
-  const update = {
-    $push: {
-      recentActivity: {
-        $each: [content],
-        $position: 0,
-        $slice: 10
-      }
-    }
-  }
-  User.updateMany({username: regex}, update, callback);
 }
 
 // ============
