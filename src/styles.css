@@ -126,6 +126,10 @@ textarea {
   color: var(--color-text-light);
 } */
 
+.on-click {
+  cursor: pointer;
+}
+
 /* ================== */
 /* || main-content || */
 /* ================== */

@@ -18,7 +18,7 @@ export class ProfileMutationDirective implements OnInit, AfterViewInit, OnDestro
   constructor(
     private element: ElementRef,
     private profileService: ProfileService,
-    private authService: AuthService
+    private authService: AuthService,
   ) { }
 
   ngOnInit(): void {
@@ -28,6 +28,7 @@ export class ProfileMutationDirective implements OnInit, AfterViewInit, OnDestro
 
   ngAfterViewInit(): void {
     this.profileMutation.observe(this.element.nativeElement, this.config);
+    this.addClickEvent();
   }
 
   ngOnDestroy(): void {
@@ -43,8 +44,19 @@ export class ProfileMutationDirective implements OnInit, AfterViewInit, OnDestro
     this.profileService.assignProfileImage(image, $('.personal-profile-image'));
   };
 
+  addClickEvent(): void {
+    const elements = document.getElementsByClassName('on-click');
+    
+    Array.from(elements).forEach(elem => {
+      const username = elem.attributes[1].value;
+      elem.addEventListener('click', () => {this.authService.handleRedirectProfile(username, true)});
+    });
+  };
+
   checkForChanges(): void {
     this.profileMutation = new MutationObserver(entry => {
+      console.log(entry)
+      if (entry) this.addClickEvent();
       if (entry && this.profileData.profileImage) this.assignProfileImage();
     });
   };

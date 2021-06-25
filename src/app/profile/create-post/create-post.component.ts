@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 
 import { PostService } from '../../services/post.service';
 import { AuthService } from '../../services/auth.service';
+
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/interfaces/user';
 
@@ -17,7 +18,7 @@ export class CreatePostComponent implements OnInit, OnDestroy {
 
   constructor(
     private postService: PostService,
-    private authService: AuthService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -28,19 +29,47 @@ export class CreatePostComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
+// ===============================
+// || Post Parsing for Mentions ||
+// ===============================
+
+  parsePost(post: string): any {
+    const usernames = [];
+
+    const resPost = post.split(' ').map(elem => {
+      const userCheck = elem.match(/@\w+/g);
+      
+      if (userCheck) {
+        userCheck.forEach(user => {
+          usernames.push(user.substring(1));
+          const target = `<a class="on-click" value="${user.substring(1)}">${user}</a>`;
+          elem = elem.replace(user, target);
+        });
+      };
+      return elem;
+    });
+    return { taggedUsers: usernames, post: resPost.join(' ') };
+  };
+
+// ==========================
+// || Normal Post Handling ||
+// ==========================
+
   clearPost(form: NgForm): void {
     $('#content').val('');
     form.value.content = '';
     $('#postModal').modal('hide');
   };
 
-  onAddPost(form: NgForm) {
+  async onAddPost(form: NgForm) {
     const postContent = form.value.content.trim();
 
     if (!postContent) {
       this.clearPost(form);
       return;
     };
+
+    const parsedPostInfo = this.parsePost(postContent);
 
     const payload = {
       userId: this.profileData._id,
@@ -49,8 +78,10 @@ export class CreatePostComponent implements OnInit, OnDestroy {
       followerCount: this.profileData.followerCount,
       content: {
         timestamp: new Date().toLocaleString(),
-        content: postContent
-      }
+        // content: postContent
+        content: parsedPostInfo.post
+      },
+      taggedUsers: parsedPostInfo.taggedUsers
     };
     
     this.postService.addPost(payload).subscribe(data => {
@@ -62,6 +93,7 @@ export class CreatePostComponent implements OnInit, OnDestroy {
         // handle error
       }
     });
+    // testing post list mutation check for adding links to users tagged: <a class="on-click" value="deleteme">@deleteme</a>
     this.clearPost(form);
   };
 }

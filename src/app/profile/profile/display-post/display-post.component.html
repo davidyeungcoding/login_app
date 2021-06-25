@@ -20,7 +20,9 @@
 
       <p class="post-details timestamp">{{ post.timestamp }}</p>
       
-      <p class="post-details post-content">{{ post.content }}</p>
+      <!-- <p class="post-details post-content">{{ post.content }}</p> -->
+      <p [innerHTML]="post.content"
+        class="post-details post-content"></p>
     </div>
     
     <div class="container">
