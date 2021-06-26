@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const config = require('../config/database');
 
+// =====================
+// || Global Variable ||
+// =====================
+const step = 25;
+
 const MiniUser = mongoose.Schema({
   userId: {
     type: String,
@@ -126,13 +131,13 @@ module.exports.getUserById = function(id, callback) {
 module.exports.getUserForLogin = function(username, callback) {
   const selection = {
     posts: {
-      $slice: [0, 25]
+      $slice: [0, step]
     },
     followers: {
-      $slice: [0, 25]
+      $slice: [0, step]
     },
     following: {
-      $slice: [0, 25]
+      $slice: [0, step]
     }
   };
   User.findOne({ username: username }, selection, callback);
@@ -141,13 +146,13 @@ module.exports.getUserForLogin = function(username, callback) {
 module.exports.getUserByUsername = function(username, callback) {
   const selection = {
     posts: {
-      $slice: [0, 25]
+      $slice: [0, step]
     },
     followers: {
-      $slice: [0, 25]
+      $slice: [0, step]
     },
     following: {
-      $slice: [0, 25]
+      $slice: [0, step]
     },
     password: 0
   };
@@ -165,7 +170,7 @@ module.exports.loadMoreSearchResults = function(term, start, callback) {
     followerCount: 1,
     profileImage: 1
   };
-  User.find({username: term}, selection, callback).skip(start).limit(25);
+  User.find({username: term}, selection, callback).skip(start).limit(step);
 }
 
 module.exports.getProfilePreview = function(regex, callback) {
@@ -219,8 +224,20 @@ module.exports.addPost = function(newPost, callback) {
       }
     }
   };
-  const options = {new: true};
-  User.findByIdAndUpdate(newPost.userId, query, options, callback).select('posts postCount');
+
+  const options = {
+    new: true,
+    useFindAndModify: false,
+    projection: {
+      postCount: 1,
+      posts: {
+        $slice: [0, step]
+      },
+      _id: 0
+    }
+  };
+
+  User.findByIdAndUpdate(newPost.userId, query, options, callback);
 }
 
 module.exports.removePost = function(post, callback) {
@@ -234,8 +251,20 @@ module.exports.removePost = function(post, callback) {
       }
     }
   };
-  const options = {new: true};
-  User.findOneAndUpdate({username: post.username}, query, options, callback).select('posts postCount');
+
+  const options = {
+    new: true,
+    useFindAndModify: false,
+    projection: {
+      postCount: 1,
+      posts: {
+        $slice: [0, step]
+      },
+      _id: 0
+    }
+  };
+
+  User.findOneAndUpdate({username: post.username}, query, options, callback);
 }
 
 module.exports.addToMentions = (usersRegex, payload, callback) => {
@@ -298,7 +327,7 @@ module.exports.postOpinion = function(post, callback) {
 module.exports.loadMorePosts = function(username, start, callback) {
   const selection = {
     posts: {
-      $slice: [start, 25]
+      $slice: [start, step]
     }
   };
   User.findOne({username: username}, selection, callback);
@@ -307,7 +336,7 @@ module.exports.loadMorePosts = function(username, start, callback) {
 module.exports.loadMore = function(username, start, target, callback) {
   const selection = {
     [`${target}`]: {
-      $slice: [start, 25]
+      $slice: [start, step]
     }
   };
   User.findOne({username: username}, selection, callback);
