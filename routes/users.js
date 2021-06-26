@@ -322,6 +322,18 @@ router.put('/profile/:username/post', (req, res, next) => {
 router.put("/profile/:username/post/remove", (req, res, next) => {
   user.removePost(req.body, (err, doc) => {
     if (err) throw err;
+  
+    // ==============================
+    // || Add Post to Tagged Users ||
+    // ==============================
+
+    user.removeFromMentions(req.body, (err, doc) => {
+      if (err) throw err;
+    });
+
+    // =========================================
+    // || Update recentActivity for Followers ||
+    // =========================================
 
     user.removeRecentActivity(req.body, (err, doc) => {
       if (err) throw err;

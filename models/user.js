@@ -268,7 +268,7 @@ module.exports.removePost = function(post, callback) {
 }
 
 module.exports.addToMentions = (usersRegex, payload, callback) => {
-  const query = {
+  const update = {
     $push: {
       mentions: {
         $each: [payload],
@@ -277,7 +277,19 @@ module.exports.addToMentions = (usersRegex, payload, callback) => {
     }
   };
 
-  User.updateMany({username: usersRegex}, query, callback);
+  User.updateMany({username: usersRegex}, update, callback);
+}
+
+module.exports.removeFromMentions = (payload, callback) => {
+  const update = {
+    $pull: {
+      mentions: {
+        postId: payload.id
+      }
+    }
+  };
+
+  User.updateMany({"mentions.postId": payload.id}, update, callback);
 }
 
 module.exports.updateRecentActivity = (regex, content, callback) => {
@@ -294,7 +306,7 @@ module.exports.updateRecentActivity = (regex, content, callback) => {
 }
 
 module.exports.removeRecentActivity = (payload, callback) => {
-  const query = {
+  const update = {
     $pull: {
       recentActivity: {
         postId: payload.id
@@ -302,7 +314,7 @@ module.exports.removeRecentActivity = (payload, callback) => {
     }
   };
 
-  User.updateMany({"recentActivity.postId": payload.id}, query, callback)
+  User.updateMany({"recentActivity.postId": payload.id}, update, callback);
 }
 
 module.exports.postOpinion = function(post, callback) {
