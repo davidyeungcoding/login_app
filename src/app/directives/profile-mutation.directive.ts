@@ -50,6 +50,8 @@ export class ProfileMutationDirective implements OnInit, AfterViewInit, OnDestro
     Array.from(elements).forEach(elem => {
       const username = elem.attributes[1].value;
       elem.addEventListener('click', () => {this.authService.handleRedirectProfile(username, true)});
+      elem.classList.add('on-click-parse');
+      elem.classList.remove('on-click');
     });
   };
 

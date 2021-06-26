@@ -126,8 +126,13 @@ textarea {
   color: var(--color-text-light);
 } */
 
-.on-click {
+.on-click, .on-click-parse {
   cursor: pointer;
+}
+
+.recent-activity-content .on-click {
+  color: hsl(210 90% 60%);
+  text-shadow: 1px 1px hsl(0 0% 0%);
 }
 
 /* ================== */

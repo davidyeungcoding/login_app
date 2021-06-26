@@ -33,6 +33,7 @@ export class SideProfileSectionComponent implements OnInit, AfterViewInit, OnDes
   }
   
   ngAfterViewInit(): void {
+    this.addClickEvent();
   }
 
   ngOnDestroy(): void {
@@ -58,5 +59,16 @@ export class SideProfileSectionComponent implements OnInit, AfterViewInit, OnDes
     this.profileService.resetVisible(this.activeList);
     this.profileService.resetActiveTab(this.activeTab);
     this.authService.handleRedirectProfile(username, this.isEditing);
+  };
+
+  addClickEvent(): void {
+    const elements = document.getElementsByClassName('on-click');
+
+    Array.from(elements).forEach(elem => {
+      const username = elem.attributes[1].value;
+      elem.addEventListener('click', () => {this.authService.handleRedirectProfile(username, true)});
+      elem.classList.add('on-click-parse');
+      elem.classList.remove('on-click');
+    });
   };
 }
