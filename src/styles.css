@@ -130,7 +130,7 @@ textarea {
   cursor: pointer;
 }
 
-.recent-activity-content .on-click {
+.recent-activity-content .on-click, .recent-activity-content .on-click-parse {
   color: hsl(210 90% 60%);
   text-shadow: 1px 1px hsl(0 0% 0%);
 }

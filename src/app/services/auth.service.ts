@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
-import { of, BehaviorSubject } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { User } from '../interfaces/user';
-import { PostService } from './post.service';
-import { Router } from '@angular/router';
 
+import { PostService } from './post.service';
 import { ProfileService } from './profile.service';
+
+import { User } from '../interfaces/user';
+import { Router } from '@angular/router';
+import { of, BehaviorSubject } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -35,6 +36,8 @@ export class AuthService {
   currentUser = this.userSource.asObservable();
   private profileDataSource = new BehaviorSubject<any>({});
   profileData = this.profileDataSource.asObservable();
+  private lastVisitedSource = new BehaviorSubject<string>('');
+  lastVisited = this.lastVisitedSource.asObservable();
 
   constructor(
     private postService: PostService,
@@ -160,6 +163,8 @@ export class AuthService {
     };
     
     this.getProfile(username, localUser.username, localUser.id).subscribe(_user => {
+      this.changeLastVisited(username);
+
       if (_user.success) {
         this.changeProfileInfo(username, _user.user, redirect);
         this.profileService.changeIsFollowing(_user.follower);
@@ -168,9 +173,6 @@ export class AuthService {
   };
 
   redirectDump(route: string, term: string): void {
-    // needs more work
-    // redirect to profile not found then timeout follow up with logout
-    // needs to be tested
     this.profileService.changeDumpMessage(term);
     this.router.navigate([route]);
   };
@@ -235,5 +237,9 @@ export class AuthService {
 
   changeProfileData(user: any): void {
     this.profileDataSource.next(user);
+  };
+
+  changeLastVisited(location: string): void {
+    this.lastVisitedSource.next(location);
   };
 }

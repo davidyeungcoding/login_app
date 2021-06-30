@@ -6,6 +6,7 @@ import { ProfileService } from 'src/app/services/profile.service';
 import { User } from 'src/app/interfaces/user';
 import { ProfilePreview } from 'src/app/interfaces/profile-preview';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-following-list',
@@ -20,7 +21,8 @@ export class FollowingListComponent implements OnInit, AfterViewInit, OnDestroy 
 
   constructor(
     private authService: AuthService,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {

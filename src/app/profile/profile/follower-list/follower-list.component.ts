@@ -6,6 +6,7 @@ import { ProfileService } from '../../../services/profile.service';
 import { User } from 'src/app/interfaces/user';
 import { ProfilePreview } from 'src/app/interfaces/profile-preview';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-follower-list',
@@ -20,7 +21,8 @@ export class FollowerListComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -34,8 +36,8 @@ export class FollowerListComponent implements OnInit, OnDestroy {
   }
 
   changeProfileData(username: string): void {
-    this.authService.handleRedirectProfile(username, this.isEditing);
     this.profileService.resetVisible('followerList');
     this.profileService.resetActiveTab('followerTab');
+    this.authService.handleRedirectProfile(username, this.isEditing);
   };
 }

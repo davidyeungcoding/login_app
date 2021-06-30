@@ -16,6 +16,7 @@ export class DumpScreenComponent implements OnInit, OnDestroy {
   private activeTab: string;
   private activeList: string;
   private isEditing: boolean;
+  private lastVisited: string;
   displayMessage: string;
 
   constructor(
@@ -29,6 +30,7 @@ export class DumpScreenComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab));
     this.subscriptions.add(this.profileService.activeList.subscribe(_list => this.activeList = _list));
     this.subscriptions.add(this.profileService.isEditing.subscribe(_state => this.isEditing = _state));
+    this.subscriptions.add(this.authService.lastVisited.subscribe(_location => this.lastVisited = _location));
     this.displaySwitch();
   }
 
@@ -36,26 +38,30 @@ export class DumpScreenComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  handleTimedLogout(time: number): void {
+  handleTimedLogout(time: number, logged: boolean): void {
     setTimeout(() => {
-      this.authService.logout(this.activeTab, this.activeList, this.isEditing);
+      if (logged) this.authService.logout(this.activeTab, this.activeList, this.isEditing);
       this.router.navigate(['/home']);
     }, time);
   };
-
+  
   displaySwitch(): void {
+    const logged = !!localStorage.getItem('id_token');
+    const personalError = logged && this.lastVisited === JSON.parse(localStorage.getItem('user')).username;
+    
     switch (this.dumpTerm) {
       case 'profile':
-        this.displayMessage = 'Unable to load your profile. Logging you out and redirecting you to the homepage shortly.';
-        this.handleTimedLogout(7000);
+        this.displayMessage = personalError ? 'Unable to load profile. Logging you out and redirecting to Home.'
+        : 'Unable to load profile. Returning to you to Home Screen.';
+        this.handleTimedLogout(3000, personalError);
         break;
       case 'session':
         this.displayMessage = 'Session timed out. Logging you out and redirecting you to the homepage shortly. If you\'d like to avoid this in the futrue, please be sure to logout when you\'re done.';
-        this.handleTimedLogout(12000);
+        this.handleTimedLogout(5000, logged);
         break;
       default:
         this.displayMessage = 'Something went wrong, redirecting you to the homepage.'
-        this.handleTimedLogout(3000);
+        this.handleTimedLogout(3000, logged);
     };
   };
 }

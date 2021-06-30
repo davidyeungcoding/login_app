@@ -5,6 +5,7 @@ import { AuthService } from '../services/auth.service';
 
 import { Subscription } from 'rxjs';
 import { User } from '../interfaces/user';
+import { ActivatedRoute } from '@angular/router';
 
 @Directive({
   selector: '[appProfileMutation]'
@@ -19,6 +20,7 @@ export class ProfileMutationDirective implements OnInit, AfterViewInit, OnDestro
     private element: ElementRef,
     private profileService: ProfileService,
     private authService: AuthService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -49,7 +51,9 @@ export class ProfileMutationDirective implements OnInit, AfterViewInit, OnDestro
     
     Array.from(elements).forEach(elem => {
       const username = elem.attributes[1].value;
-      elem.addEventListener('click', () => {this.authService.handleRedirectProfile(username, true)});
+      elem.addEventListener('click', () => {
+        this.authService.handleRedirectProfile(username, true);
+      });
       elem.classList.add('on-click-parse');
       elem.classList.remove('on-click');
     });

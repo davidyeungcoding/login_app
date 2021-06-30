@@ -4,7 +4,7 @@ import { ProfileService } from 'src/app/services/profile.service';
 import { AuthService } from 'src/app/services/auth.service';
 
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-side-profile-section',
@@ -21,7 +21,8 @@ export class SideProfileSectionComponent implements OnInit, AfterViewInit, OnDes
   constructor(
     private profileService: ProfileService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -66,7 +67,9 @@ export class SideProfileSectionComponent implements OnInit, AfterViewInit, OnDes
 
     Array.from(elements).forEach(elem => {
       const username = elem.attributes[1].value;
-      elem.addEventListener('click', () => {this.authService.handleRedirectProfile(username, true)});
+      elem.addEventListener('click', () => {
+        this.authService.handleRedirectProfile(username, true);
+      });
       elem.classList.add('on-click-parse');
       elem.classList.remove('on-click');
     });
