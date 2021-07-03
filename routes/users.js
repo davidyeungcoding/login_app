@@ -215,8 +215,8 @@ router.get('/profile/:username', (req, res, next) => {
   });
 });
 
-router.get('/user/recentactivity', (req, res, next) => {
-  const username = req.query.username;
+router.get('/profile/:username/recentactivity', (req, res, next) => {
+  const username = req.params.username;
 
   user.getRecentActivity(username, async (err, _list) => {
     if (err) throw err;

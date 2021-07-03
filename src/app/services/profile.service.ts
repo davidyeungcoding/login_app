@@ -141,7 +141,7 @@ export class ProfileService {
   };
 
   getRecentActivity(username: string) {
-    return this.http.get(`${this.api}/user/recentactivity?username=${username}`).pipe(
+    return this.http.get(`${this.api}/profile/${username}/recentactivity`).pipe(
       catchError(err => of(err))
     );
   };

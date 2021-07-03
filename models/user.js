@@ -7,6 +7,46 @@ const config = require('../config/database');
 // =====================
 const step = 25;
 
+const fullProfile = {
+  username: 1,
+  name: 1,
+  password: 1,
+  bannerImage: 1,
+  profileImage: 1,
+  email: 1,
+  postCount: 1,
+  posts: {
+    $slice: ["$posts", 0, step]
+  },
+  followerCount: 1,
+  followers: {
+    $slice: ["$followers", 0, step]
+  },
+  followingCount: 1,
+  following: {
+    $slice: ["$following", 0, step]
+  },
+  recentActivity: 1,
+  mentions: {
+    $slice: ["$mentions", 0, step]
+  },
+  mentionsCount: {
+    $cond: {
+      if: {
+        $isArray: "$mentions"
+      },
+      then: {
+        $size: "$mentions"
+      },
+      else: 0
+    }
+  }
+};
+
+// =============
+// || Schemas ||
+// =============
+
 const MiniUser = mongoose.Schema({
   userId: {
     type: String,
@@ -138,42 +178,7 @@ module.exports.getUserForLogin = function(username, callback) {
 }
 
 module.exports.getUserProfile = (username, callback) => {
-  const selection = {
-    username: 1,
-    name: 1,
-    password: 1,
-    bannerImage: 1,
-    profileImage: 1,
-    email: 1,
-    postCount: 1,
-    posts: {
-      $slice: ["$posts", 0, step]
-    },
-    followerCount: 1,
-    followers: {
-      $slice: ["$followers", 0, step]
-    },
-    followingCount: 1,
-    following: {
-      $slice: ["$following", 0, step]
-    },
-    recentActivity: 1,
-    mentions: {
-      $slice: ["$mentions", 0, step]
-    },
-    mentionsCount: {
-      $cond: {
-        if: {
-          $isArray: "$mentions"
-        },
-        then: {
-          $size: "$mentions"
-        },
-        else: 0
-      }
-    }
-  };
-  User.aggregate([{$match: {username: username}}, {$project: selection}], callback);
+  User.aggregate([{$match: {username: username}}, {$project: fullProfile}], callback);
 }
 
 module.exports.getUserByUsername = function(username, callback) {
