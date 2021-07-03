@@ -1,0 +1,44 @@
+<div *ngIf="!!mentions && mentions.length; else noMentions">
+  <div *ngFor="let mention of mentions"
+    class="main-content">
+    <div class="container content-box-main">
+      <div class="row">
+        <div class="post-hero-details">
+          <div class="post-image-container">
+            <img class="profile-image"
+              src="{{ mention.profileImage }}"
+              alt="Profile Image">
+          </div>
+
+          <div>
+            <h4 class="post-user-names">{{ mention.name }}</h4>
+
+            <p class="post-user-names">@{{ mention.username }}</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="timestamp">{{ mention.timestamp }}</p>
+
+      <p class="post-content"
+        [innerHTML]="mention.content"></p>
+    </div>
+  </div>
+
+  <div class="end-of-content">
+    <div *ngIf="profileData.mentionsCount > mentions.length"
+      class="loading" appObserverVisibility>
+      <div class="ball"></div>
+      <div class="ball"></div>
+      <div class="ball"></div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noMentions>
+  <div class="main-content">
+    <div class="container content-box-main">
+      <h4>No Mentions Found</h4>
+    </div>
+  </div>
+</ng-template>

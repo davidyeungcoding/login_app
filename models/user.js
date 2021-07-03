@@ -130,17 +130,50 @@ module.exports.getUserById = function(id, callback) {
 
 module.exports.getUserForLogin = function(username, callback) {
   const selection = {
-    posts: {
-      $slice: [0, step]
-    },
-    followers: {
-      $slice: [0, step]
-    },
-    following: {
-      $slice: [0, step]
-    }
+    _id: 0,
+    username: 1,
+    password: 1
   };
   User.findOne({ username: username }, selection, callback);
+}
+
+module.exports.getUserProfile = (username, callback) => {
+  const selection = {
+    username: 1,
+    name: 1,
+    password: 1,
+    bannerImage: 1,
+    profileImage: 1,
+    email: 1,
+    postCount: 1,
+    posts: {
+      $slice: ["$posts", 0, step]
+    },
+    followerCount: 1,
+    followers: {
+      $slice: ["$followers", 0, step]
+    },
+    followingCount: 1,
+    following: {
+      $slice: ["$following", 0, step]
+    },
+    recentActivity: 1,
+    mentions: {
+      $slice: ["$mentions", 0, step]
+    },
+    mentionsCount: {
+      $cond: {
+        if: {
+          $isArray: "$mentions"
+        },
+        then: {
+          $size: "$mentions"
+        },
+        else: 0
+      }
+    }
+  };
+  User.aggregate([{$match: {username: username}}, {$project: selection}], callback);
 }
 
 module.exports.getUserByUsername = function(username, callback) {
@@ -352,6 +385,10 @@ module.exports.loadMore = function(username, start, target, callback) {
     }
   };
   User.findOne({username: username}, selection, callback);
+}
+
+module.exports.getRecentActivity = (username, callback) => {
+  User.findOne({username: username}, {_id: 0, recentActivity: 1}, callback);
 }
 
 // ==========================

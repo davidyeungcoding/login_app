@@ -105,6 +105,7 @@ export class AuthService {
     this.changeProfileData(user);
     this.postService.changePost(user.posts);
     this.postService.changePostCount(user.postCount);
+    this.postService.changeMentions(user.mentions);
     this.profileService.changeFollowingList(user.following);
     this.profileService.changeFollowingCount(user.followingCount);
     this.profileService.changeFollowerList(user.followers);

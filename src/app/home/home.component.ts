@@ -37,9 +37,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   onLoginSubmit(loginForm: NgForm) {
     this.authService.authenticateUser(loginForm.value).subscribe(data => {
       if (data.success) {
-        this.profileService.updateListImage(data.user.recentActivity);
-        this.authService.storeUserData(data.token, data.user);
+        this.profileService.updateListImage(data.profile.recentActivity);
         this.profileService.changeRecentActivity(data.profile.recentActivity);
+        this.authService.storeUserData(data.token, data.user);
         this.authService.changeProfileInfo(data.user.username, data.profile, true);
       } else {
         // remove and implement your own personal version of the error message below

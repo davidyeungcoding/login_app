@@ -4,7 +4,7 @@ import { ProfileService } from 'src/app/services/profile.service';
 import { AuthService } from 'src/app/services/auth.service';
 
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-side-profile-section',
@@ -22,7 +22,6 @@ export class SideProfileSectionComponent implements OnInit, AfterViewInit, OnDes
     private profileService: ProfileService,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -30,7 +29,13 @@ export class SideProfileSectionComponent implements OnInit, AfterViewInit, OnDes
     this.subscriptions.add(this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab));
     this.subscriptions.add(this.profileService.isEditing.subscribe(_state => this.isEditing = _state));
     this.subscriptions.add(this.profileService.recentActivity.subscribe(_activity => this.recentActivity = _activity));
-    this.profileService.changeRecentActivity(JSON.parse(localStorage.getItem('user')).recentActivity);
+
+    if (localStorage.getItem('id_token') && !this.authService.isExpired() && !this.recentActivity.length) {
+      this.profileService.getRecentActivity(JSON.parse(localStorage.getItem('user')).username).subscribe(_list => {
+        this.profileService.updateListImage(_list.msg);
+        this.profileService.changeRecentActivity(_list.msg);
+      });
+    };
   }
   
   ngAfterViewInit(): void {

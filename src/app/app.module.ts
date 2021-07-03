@@ -59,6 +59,7 @@ import { SideContentNavigationComponent } from './additional-side-content/side-c
 import { SideProfileSectionComponent } from './additional-side-content/side-profile-section/side-profile-section.component';
 import { SideVisitorViewComponent } from './additional-side-content/side-visitor-view/side-visitor-view.component';
 import { FollowIntersectionDirective } from './directives/follow-intersection.directive';
+import { MentionsComponent } from './profile/profile/mentions/mentions.component';
 
 registerPlugin(
   FilePondPluginImagePreview,
@@ -92,6 +93,7 @@ registerPlugin(
     SideProfileSectionComponent,
     SideVisitorViewComponent,
     FollowIntersectionDirective,
+    MentionsComponent,
   ],
   imports: [
     BrowserModule,

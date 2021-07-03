@@ -13,5 +13,7 @@ export interface User {
   followerCount: number,
   followers: ProfilePreview[],
   followingCount: number,
-  following: ProfilePreview[]
+  following: ProfilePreview[],
+  mentions: Post[],
+  mentionsCount: number
 }

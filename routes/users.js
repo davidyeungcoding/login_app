@@ -95,57 +95,63 @@ router.post('/authenticate', (req, res, next) => {
 
   user.getUserForLogin(username, (err, _user) => {
     if (err) throw err;
-    if (!_user) return res.json({success: false, msg: `User not found`});
+    if (!_user) return res.json({success: false, msg: `User not found.`});
     
-    user.comparePassword(password, _user.password, async (err, isMatch) => {
+    user.comparePassword(password, _user.password, (err, isMatch) => {
       if (err) throw err;
       if (!isMatch) return res.json({success: false, msg: 'Username and password do not match.'});
       const token = jwt.sign(_user.toJSON(), config.secret, {expiresIn: '7d'});
       
-      const resUser = {
-        id: _user._id,
-        username: _user.username,
-        name: _user.name,
-        email: _user.email,
-        recentActivity: _user.recentActivity
-      };
-
-      const profileData = {
-        _id: _user._id,
-        name: _user.name,
-        username: _user.username,
-        email: _user.email,
-        bannerImage: _user.bannerImage,
-        profileImage: _user.profileImage,
-        followerCount: _user.followerCount,
-        followers: _user.followers,
-        followingCount: _user.followingCount,
-        following: _user.following,
-        postCount: _user.postCount,
-        posts: _user.posts
-      };
-
-      const response = { success: true, token: `JWT ${token}`, user: resUser, profile: profileData };
-      
-      // ===========================
-      // || Profile Preview Setup ||
-      // ===========================
-
-      const followers = profileData.followers;
-      const following = profileData.following;
-      const recentActivity = resUser.recentActivity;
-      const followersRegex = new RegExp(buildRegExp(followers));
-      const followingRegex = new RegExp(buildRegExp(following));
-      const recentActivityRegex = new RegExp(buildRegExp(recentActivity));
-      if (followers && followers.length) response.profile.followers = await setProfileImage(followersRegex);
-      if (following && following.length) response.profile.following = await setProfileImage(followingRegex);
-
-      if (recentActivity && recentActivity.length) {
-        recentActivityImages = await setProfileImage(recentActivityRegex);
-        response.user.recentActivity = assignRecentActivityImages(recentActivity, recentActivityImages);
-      };
-
-      return res.json(response);
+      user.getUserProfile(_user.username, async (err, _profile) => {
+        if (err) throw err;
+        
+        const resUser = {
+          id: _profile[0]._id,
+          username: _profile[0].username,
+          name: _profile[0].name,
+          email: _profile[0].email,
+        };
+        
+        const profileData = {
+          _id: _profile[0]._id,
+          name: _profile[0].name,
+          username: _profile[0].username,
+          email: _profile[0].email,
+          followerCount: _profile[0].followerCount,
+          followers: _profile[0].followers,
+          followingCount: _profile[0].followingCount,
+          following: _profile[0].following,
+          postCount: _profile[0].postCount,
+          posts: _profile[0].posts,
+          mentions: _profile[0].mentions,
+          mentinosCount: _profile[0].mentionsCount,
+          recentActivity: _profile[0].recentActivity
+        };
+        
+        if (_profile[0].bannerImage) profileData.bannerImage = _profile[0].bannerImage.buffer;
+        if (_profile[0].profileImage) profileData.profileImage = _profile[0].profileImage.buffer;
+        const response = { success: true, token: `JWT ${token}`, user: resUser, profile: profileData };
+        
+        // ===========================
+        // || Profile Preview Setup ||
+        // ===========================
+        
+        const followers = profileData.followers;
+        const following = profileData.following;
+        const recentActivity = profileData.recentActivity;
+        const followersRegex = new RegExp(buildRegExp(followers));
+        const followingRegex = new RegExp(buildRegExp(following));
+        const recentActivityRegex = new RegExp(buildRegExp(recentActivity));
+        if (followers && followers.length) response.profile.followers = await setProfileImage(followersRegex);
+        if (following && following.length) response.profile.following = await setProfileImage(followingRegex);
+  
+        if (recentActivity && recentActivity.length) {
+          recentActivityImages = await setProfileImage(recentActivityRegex);
+          response.profile.recentActivity = assignRecentActivityImages(recentActivity, recentActivityImages);
+        };
+  
+        return res.json(response);
+      });
     });
   });
 });
@@ -184,31 +190,47 @@ router.get('/profile/:username', (req, res, next) => {
 
   user.getUserByUsername(profileUsername, async (err, profile) => {
     if (err) throw err;
-    if (profile) {
+    if (!profile) res.json({ success: false, msg: `Unable to retrieve user profile for ${profileUsername}`});
 
-      // ===========================
-      // || Profile Preview Setup ||
-      // ===========================
+    // ===========================
+    // || Profile Preview Setup ||
+    // ===========================
 
-      const followers = profile.followers;
-      const following = profile.following;
-      const followersRegex = new RegExp(buildRegExp(followers));
-      const followingRegex = new RegExp(buildRegExp(following));
-      if (followers && followers.length) profile.followers = await setProfileImage(followersRegex);
-      if (following && following.length) profile.following = await setProfileImage(followingRegex);
-      
-      // ========================
-      // || Check if Following ||
-      // ========================
+    const followers = profile.followers;
+    const following = profile.following;
+    const followersRegex = new RegExp(buildRegExp(followers));
+    const followingRegex = new RegExp(buildRegExp(following));
+    if (followers && followers.length) profile.followers = await setProfileImage(followersRegex);
+    if (following && following.length) profile.following = await setProfileImage(followingRegex);
+    
+    // ========================
+    // || Check if Following ||
+    // ========================
 
-      user.isFollowing(currentUsername, currentId, profileUsername, (err, doc) => {
-        if (err) throw err;
-        return doc ? res.json({ success: true, user: profile, follower: true })
-        : res.json({ success: true, user: profile, follower: false });
-      });
-    } else {
-      res.json({ success: false, msg: `Unable to retrieve user profile for ${profileUsername}`});
+    user.isFollowing(currentUsername, currentId, profileUsername, (err, doc) => {
+      if (err) throw err;
+      return doc ? res.json({ success: true, user: profile, follower: true })
+      : res.json({ success: true, user: profile, follower: false });
+    });
+  });
+});
+
+router.get('/user/recentactivity', (req, res, next) => {
+  const username = req.query.username;
+
+  user.getRecentActivity(username, async (err, _list) => {
+    if (err) throw err;
+    if (!_list) res.json({ success: false, msg: "No activity found." });
+    const list = _list.recentActivity;
+    const regex = new RegExp(buildRegExp(list));
+    let recentActivity = [];
+
+    if (list.length) {
+      const recentActivityImages = await setProfileImage(regex);
+      recentActivity = assignRecentActivityImages(list, recentActivityImages);
     };
+
+    res.json({ success: true, msg: recentActivity });
   });
 });
 

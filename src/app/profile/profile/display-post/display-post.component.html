@@ -10,17 +10,17 @@
               alt="Profile Image">
           </div>
 
-          <div class="post-hero-detail">
-            <h4 class="post-details user-names">{{ profileData.name }}</h4>
+          <div>
+            <h4 class="post-user-names">{{ profileData.name }}</h4>
 
-            <p class="post-details user-names">@{{ profileData.username }}</p>
+            <p class="post-user-names">@{{ profileData.username }}</p>
           </div>
         </div>
       </div>
 
-      <p class="post-details timestamp">{{ post.timestamp }}</p>
+      <p class="timestamp">{{ post.timestamp }}</p>
       
-      <p class="post-details post-content"
+      <p class="post-content"
         [innerHTML]="post.content"></p>
     </div>
     

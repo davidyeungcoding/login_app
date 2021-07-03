@@ -21,6 +21,8 @@ export class PostService {
   currentPosts = this.postsSource.asObservable();
   private postCountSource = new BehaviorSubject<number>(0);
   postCount = this.postCountSource.asObservable();
+  private mentionsSource = new BehaviorSubject<Post[]>([]);
+  mentions = this.mentionsSource.asObservable();
 
   constructor(
     private http: HttpClient
@@ -64,5 +66,9 @@ export class PostService {
 
   changePostCount(count: number): void {
     this.postCountSource.next(count);
+  };
+
+  changeMentions(list: Post[]): void {
+    this.mentionsSource.next(list);
   };
 }

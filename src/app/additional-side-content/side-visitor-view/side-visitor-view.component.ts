@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from '../../services/auth.service';
-import { ProfileService } from 'src/app/services/profile.service';
 
 import { NgForm } from '@angular/forms';
 
@@ -13,8 +12,7 @@ import { NgForm } from '@angular/forms';
 export class SideVisitorViewComponent implements OnInit {
 
   constructor(
-    private authService: AuthService,
-    private profileService: ProfileService
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -23,7 +21,6 @@ export class SideVisitorViewComponent implements OnInit {
   onLoginSubmit(form: NgForm): void {
     this.authService.authenticateUser(form.value).subscribe(_data => {
       if (_data.success) {
-        this.profileService.updateListImage(_data.user.recentActivity);
         this.authService.storeUserData(_data.token, _data.user);
         location.reload();
       } else {
