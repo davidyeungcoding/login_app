@@ -3,7 +3,8 @@
     class="main-content">
     <div class="container content-box-main">
       <div class="row">
-        <div class="post-hero-details">
+        <div class="post-hero-details pointer"
+          (click)="changeProfileData(mention.username)">
           <div class="post-image-container">
             <img class="profile-image"
               src="{{ mention.profileImage }}"

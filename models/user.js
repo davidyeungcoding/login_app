@@ -5,7 +5,7 @@ const config = require('../config/database');
 // =====================
 // || Global Variable ||
 // =====================
-const step = 25;
+const step = 1;
 
 const fullProfile = {
   username: 1,
@@ -385,11 +385,23 @@ module.exports.loadMorePosts = function(username, start, callback) {
 
 module.exports.loadMore = function(username, start, target, callback) {
   const selection = {
+    _id: 0,
     [`${target}`]: {
-      $slice: [start, step]
+      $slice: [`$${target}`, start, step]
+    },
+    count: {
+      $cond: {
+        if: {
+          $isArray: `$${target}`
+        },
+        then: {
+          $size: `$${target}`
+        },
+        else: 0
+      }
     }
   };
-  User.findOne({username: username}, selection, callback);
+  User.aggregate([{$match: {username: username}}, {$project: selection}], callback);
 }
 
 module.exports.getRecentActivity = (username, callback) => {

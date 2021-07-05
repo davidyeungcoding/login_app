@@ -39,6 +39,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (data.success) {
         this.profileService.updateListImage(data.profile.recentActivity);
         this.profileService.changeRecentActivity(data.profile.recentActivity);
+        this.profileService.updateListImage(data.profile.mentions);
         this.authService.storeUserData(data.token, data.user);
         this.authService.changeProfileInfo(data.user.username, data.profile, true);
       } else {

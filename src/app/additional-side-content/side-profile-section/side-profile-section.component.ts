@@ -29,13 +29,7 @@ export class SideProfileSectionComponent implements OnInit, AfterViewInit, OnDes
     this.subscriptions.add(this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab));
     this.subscriptions.add(this.profileService.isEditing.subscribe(_state => this.isEditing = _state));
     this.subscriptions.add(this.profileService.recentActivity.subscribe(_activity => this.recentActivity = _activity));
-
-    if (localStorage.getItem('id_token') && !this.authService.isExpired() && !this.recentActivity.length) {
-      this.profileService.getRecentActivity(JSON.parse(localStorage.getItem('user')).username).subscribe(_list => {
-        this.profileService.updateListImage(_list.msg);
-        this.profileService.changeRecentActivity(_list.msg);
-      });
-    };
+    this.recentActivitySetup();
   }
   
   ngAfterViewInit(): void {
@@ -45,6 +39,15 @@ export class SideProfileSectionComponent implements OnInit, AfterViewInit, OnDes
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
+
+  recentActivitySetup(): void {
+    if (localStorage.getItem('id_token') && !this.authService.isExpired() && !this.recentActivity.length) {
+      this.profileService.getRecentActivity(JSON.parse(localStorage.getItem('user')).username).subscribe(_list => {
+        this.profileService.updateListImage(_list.msg);
+        this.profileService.changeRecentActivity(_list.msg);
+      });
+    };
+  };
 
   onLoadProfile(): void {
     const username = JSON.parse(localStorage.getItem('user')).username;

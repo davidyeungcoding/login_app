@@ -138,15 +138,28 @@ router.post('/authenticate', (req, res, next) => {
         
         const followers = profileData.followers;
         const following = profileData.following;
+        const mentions = profileData.mentions;
         const recentActivity = profileData.recentActivity;
-        const followersRegex = new RegExp(buildRegExp(followers));
-        const followingRegex = new RegExp(buildRegExp(following));
-        const recentActivityRegex = new RegExp(buildRegExp(recentActivity));
-        if (followers && followers.length) response.profile.followers = await setProfileImage(followersRegex);
-        if (following && following.length) response.profile.following = await setProfileImage(followingRegex);
-  
+        
+        if (followers && followers.length) {
+          const followersRegex = new RegExp(buildRegExp(followers));
+          response.profile.followers = await setProfileImage(followersRegex);
+        };
+        
+        if (following && following.length) {
+          const followingRegex = new RegExp(buildRegExp(following));
+          response.profile.following = await setProfileImage(followingRegex);
+        };
+        
+        if (mentions && mentions.length) {
+          const mentionsRegex = new RegExp(buildRegExp(mentions));
+          const mentionsImages = await setProfileImage(mentionsRegex);
+          response.profile.mentions = assignRecentActivityImages(mentions, mentionsImages);
+        };
+        
         if (recentActivity && recentActivity.length) {
-          recentActivityImages = await setProfileImage(recentActivityRegex);
+          const recentActivityRegex = new RegExp(buildRegExp(recentActivity));
+          const recentActivityImages = await setProfileImage(recentActivityRegex);
           response.profile.recentActivity = assignRecentActivityImages(recentActivity, recentActivityImages);
         };
   
@@ -198,10 +211,23 @@ router.get('/profile/:username', (req, res, next) => {
 
     const followers = profile.followers;
     const following = profile.following;
-    const followersRegex = new RegExp(buildRegExp(followers));
-    const followingRegex = new RegExp(buildRegExp(following));
-    if (followers && followers.length) profile.followers = await setProfileImage(followersRegex);
-    if (following && following.length) profile.following = await setProfileImage(followingRegex);
+    const mentions = profile.mentions;
+    
+    if (followers && followers.length) {
+      const followersRegex = new RegExp(buildRegExp(followers));
+      profile.followers = await setProfileImage(followersRegex);
+    };
+    
+    if (following && following.length) {
+      const followingRegex = new RegExp(buildRegExp(following));
+      profile.following = await setProfileImage(followingRegex);
+    };
+    
+    if (mentions && mentions.length) {
+      const mentionsRegex = new RegExp(buildRegExp(mentions));
+      const mentionsImages = await setProfileImage(mentionsRegex);
+      profile.mentions = assignRecentActivityImages(mentions, mentionsImages);
+    };
     
     // ========================
     // || Check if Following ||
@@ -249,24 +275,11 @@ router.get('/profile/:username/loadmore', (req, res, next) => {
   const start = Number(req.query.start);
   const target = req.query.list;
 
-  user.loadMore(username, start, target, (err, doc) => {
+  user.loadMore(username, start, target, async (err, doc) => {
     if (err) throw err;
-    const list = target === 'followers' ? doc.followers : doc.following;
-    const count = target === 'followers' ? doc.followerCount : doc.followingCount;
-
-    if (doc && list && list.length) {
-      const regex = new RegExp(buildRegExp(list));
-
-      user.getProfilePreview(regex, (err, _list) => {
-        if (err) throw err;
-
-        for (let i = 0; i < _list.length; i++) {
-          if (_list[i].profileImage) _list[i].profileImage = _list[i].profileImage.buffer;
-        };
-
-        return res.json({ success: true, msg: _list, count: count});
-      });
-    } else res.json({ success: false, msg: 'end of list'});
+    const regex = new RegExp(buildRegExp(doc[0][target]));
+    doc[0][target] = await setProfileImage(regex);
+    return res.json({ success: true, msg: doc[0][target], count: doc[0].count });
   });
 });
 
