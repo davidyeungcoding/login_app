@@ -32,7 +32,6 @@ export class MentionsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    console.log(this.profileData)
   }
 
   ngOnDestroy(): void {

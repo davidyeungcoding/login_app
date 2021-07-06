@@ -65,8 +65,6 @@ export class ObserverVisibilityDirective
       const targetList = target === 'following' ? this.followingList
       : target === 'followers' ? this.followerList
       : this.mentions;
-      console.log('===============================')
-      console.log(_list);
 
       if (_list.success) {
         this.profileService.updateListImage(_list.msg);

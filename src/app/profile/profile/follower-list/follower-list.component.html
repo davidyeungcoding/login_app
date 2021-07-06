@@ -1,19 +1,21 @@
 <div *ngIf="!!profileData.followerCount; else noFollowers">
   <div *ngFor="let user of profileData.followers"
-    class="main-content pointer"
-    (click)="changeProfileData(user.username)">
+    class="main-content">
     <div class="container content-box-main">
-      <div class="row profile-preview-group">
-        <div class="profile-preview-image-container">
-          <img class="profile-image follower-profile-image"
-            src="{{ user.profileImage }}"
-            alt="Profile Image">
-        </div>
+      <div class="row">
+        <div class="profile-preview-group pointer"
+          (click)="changeProfileData(user.username)">
+          <div class="profile-preview-image-container">
+            <img class="profile-image follower-profile-image"
+              src="{{ user.profileImage }}"
+              alt="Profile Image">
+          </div>
+    
+          <div>
+            <h4 class="profile-preview-details">{{ user.name }}</h4>
   
-        <div>
-          <h4 class="profile-preview-details">{{ user.name }}</h4>
-
-          <p class="profile-preview-details">@{{ user.username }}</p>
+            <p class="profile-preview-details">@{{ user.username }}</p>
+          </div>
         </div>
       </div>
     </div>

@@ -143,7 +143,10 @@ const UserSchema = mongoose.Schema({
     default: 0
   },
   posts: [Post],
-  recentActivity: [ActivityPost],
+  recentActivity: {
+    type: [ActivityPost],
+    default: []
+  },
   mentions: {
     type: [ActivityPost],
     default: []
@@ -152,12 +155,18 @@ const UserSchema = mongoose.Schema({
     type: Number,
     default: 0
   },
-  followers: [MiniUser],
+  followers: {
+    type: [MiniUser],
+    default: []
+  },
   followingCount: {
     type: Number,
     default: 0
   },
-  following: [MiniUser]
+  following: {
+    type: [MiniUser],
+    default: []
+  }
 })
 
 const User = module.exports = mongoose.model('User', UserSchema);

@@ -14,13 +14,31 @@ export class ValidateService {
     private http: HttpClient
   ) { }
 
+  // ============
+  // || Routes ||
+  // ============
+
   checkUniqueUsername(username: string): any {
     return this.http.get(`${this.api}/unique?username=${username}`).pipe(
       catchError(err => of(err))
     );
   };
 
-  async assignUnique(username: string) {
+  // =================
+  // || Validations ||
+  // =================
+
+  validateEmail(email: string): boolean {
+    const regex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+    return regex.test(email);
+  };
+
+  validateUsername(username: string): boolean {
+    const regex = /^\w+$/;
+    return regex.test(username);
+  };
+
+  async checkUnique(username: string) {
     const unique = await new Promise(resolve => {
       this.checkUniqueUsername(username).subscribe(_status => {
         !_status ? $('#usernameError').css('visibility', 'visible')
@@ -40,10 +58,10 @@ export class ValidateService {
         res = false;
       } else $('#emailError').css('visibility', 'hidden');
   
-      if (!form.username) {
+      if (!form.username || !this.validateUsername(form.username)) {
         $('#usernameError').css('visibility', 'visible');
         res = false;
-      } else res = await this.assignUnique(form.username);
+      } else res = await this.checkUnique(form.username);
   
       if (!form.name) {
         $('#nameError').css('visibility', 'visible');
@@ -59,10 +77,5 @@ export class ValidateService {
     } catch {
       $('#failureMsg').css('display', 'block');
     };
-  };
-
-  validateEmail(email) {
-    const regex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
-    return regex.test(email);
   };
 }

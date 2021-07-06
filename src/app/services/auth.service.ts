@@ -38,6 +38,8 @@ export class AuthService {
   profileData = this.profileDataSource.asObservable();
   private lastVisitedSource = new BehaviorSubject<string>('');
   lastVisited = this.lastVisitedSource.asObservable();
+  private isVisitingSource = new BehaviorSubject<boolean>(true);
+  isVisiting = this.isVisitingSource.asObservable();
 
   constructor(
     private postService: PostService,
@@ -110,7 +112,9 @@ export class AuthService {
     this.profileService.changeFollowingCount(user.followingCount);
     this.profileService.changeFollowerList(user.followers);
     this.profileService.changeFollowerCount(user.followerCount);
-
+    const localUser = JSON.parse(localStorage.getItem('user'));
+    this.changeIsVisiting(localUser ? localUser.username !== username : true);
+    
     // =================
     // || Image Setup ||
     // =================
@@ -165,7 +169,11 @@ export class AuthService {
     
     this.getProfile(username, localUser.username, localUser.id).subscribe(_user => {
       this.changeLastVisited(username);
-      if (!_user.success) this.redirectDump('/profile-not-found', 'profile');
+      
+      if (!_user.success) {
+        this.redirectDump('/profile-not-found', 'profile');
+        return;
+      };
 
       if (username === localUser.username && _user.user.mentions) {
         this.profileService.updateListImage(_user.user.mentions);
@@ -245,5 +253,9 @@ export class AuthService {
 
   changeLastVisited(location: string): void {
     this.lastVisitedSource.next(location);
+  };
+
+  changeIsVisiting(state: boolean): void {
+    this.isVisitingSource.next(state);
   };
 }

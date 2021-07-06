@@ -18,6 +18,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   private currentUser: any;
   isFollowing: boolean;
   profileData: User;
+  isVisiting: boolean;
 
   constructor(
     private authService: AuthService,
@@ -31,6 +32,7 @@ export class ProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.add(this.profileService.isEditing.subscribe(_state => this.isEditing = _state));
     this.subscriptions.add(this.profileService.isFollowing.subscribe(_state => this.isFollowing = _state));
     this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
+    this.subscriptions.add(this.authService.isVisiting.subscribe(_state => this.isVisiting = _state));
     
     if (!this.profileData.username
       || this.profileData.username !== this.route.snapshot.paramMap.get('username')) this.getProfileData();

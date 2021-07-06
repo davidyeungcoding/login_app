@@ -158,7 +158,7 @@ router.get('/unique', (req, res, next) => {
 
   user.getUserByUsername(username, (err, _user) => {
     if (err) throw err;
-    return _user ? res.json(false) : res.json(true);
+    return _user.length ? res.json(false) : res.json(true);
   });
 });
 
@@ -187,9 +187,9 @@ router.get('/profile/:username', (req, res, next) => {
 
   user.getUserByUsername(profileUsername, async (err, profile) => {
     if (err) throw err;
-    if (!profile) res.json({ success: false, msg: `Unable to retrieve user profile for ${profileUsername}`});
-    if (profile[0].bannerImage) profile[0].bannerImage = profile[0].bannerImage.buffer;
-    if (profile[0].profileImage) profile[0].profileImage = profile[0].profileImage.buffer;
+    if (!profile[0]) return res.json({ success: false, msg: `Unable to retrieve user profile for ${profileUsername}`});
+    if (!!profile[0].bannerImage) profile[0].bannerImage = profile[0].bannerImage.buffer;
+    if (!!profile[0].profileImage) profile[0].profileImage = profile[0].profileImage.buffer;
 
     // ===========================
     // || Profile Preview Setup ||

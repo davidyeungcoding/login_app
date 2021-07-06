@@ -60,17 +60,22 @@
           <div id="postList">
             <app-display-post appProfileMutation></app-display-post>
           </div>
-          <div class="visible"
-            id="followingList">
-            <app-following-list></app-following-list>
-          </div>
-          <div class="visible"
-            id="followerList">
-            <app-follower-list></app-follower-list>
-          </div>
-          <div class="visible"
-            id="mentionsList">
-            <app-mentions></app-mentions>
+
+          <div *ngIf="!isVisiting">
+            <div class="visible"
+              id="followingList">
+              <app-following-list></app-following-list>
+            </div>
+
+            <div class="visible"
+              id="followerList">
+              <app-follower-list></app-follower-list>
+            </div>
+            
+            <div class="visible"
+              id="mentionsList">
+              <app-mentions></app-mentions>
+            </div>
           </div>
         </div>
         
