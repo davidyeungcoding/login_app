@@ -112,34 +112,18 @@ router.post('/authenticate', (req, res, next) => {
           email: _profile[0].email,
         };
         
-        const profileData = {
-          _id: _profile[0]._id,
-          name: _profile[0].name,
-          username: _profile[0].username,
-          email: _profile[0].email,
-          followerCount: _profile[0].followerCount,
-          followers: _profile[0].followers,
-          followingCount: _profile[0].followingCount,
-          following: _profile[0].following,
-          postCount: _profile[0].postCount,
-          posts: _profile[0].posts,
-          mentions: _profile[0].mentions,
-          mentinosCount: _profile[0].mentionsCount,
-          recentActivity: _profile[0].recentActivity
-        };
-        
-        if (_profile[0].bannerImage) profileData.bannerImage = _profile[0].bannerImage.buffer;
-        if (_profile[0].profileImage) profileData.profileImage = _profile[0].profileImage.buffer;
-        const response = { success: true, token: `JWT ${token}`, user: resUser, profile: profileData };
+        if (_profile[0].bannerImage) _profile[0].bannerImage = _profile[0].bannerImage.buffer;
+        if (_profile[0].profileImage) _profile[0].profileImage = _profile[0].profileImage.buffer;
+        const response = { success: true, token: `JWT ${token}`, user: resUser, profile: _profile[0] };
         
         // ===========================
         // || Profile Preview Setup ||
         // ===========================
         
-        const followers = profileData.followers;
-        const following = profileData.following;
-        const mentions = profileData.mentions;
-        const recentActivity = profileData.recentActivity;
+        const followers = _profile[0].followers;
+        const following = _profile[0].following;
+        const mentions = _profile[0].mentions;
+        const recentActivity = _profile[0].recentActivity;
         
         if (followers && followers.length) {
           const followersRegex = new RegExp(buildRegExp(followers));
@@ -204,29 +188,31 @@ router.get('/profile/:username', (req, res, next) => {
   user.getUserByUsername(profileUsername, async (err, profile) => {
     if (err) throw err;
     if (!profile) res.json({ success: false, msg: `Unable to retrieve user profile for ${profileUsername}`});
+    if (profile[0].bannerImage) profile[0].bannerImage = profile[0].bannerImage.buffer;
+    if (profile[0].profileImage) profile[0].profileImage = profile[0].profileImage.buffer;
 
     // ===========================
     // || Profile Preview Setup ||
     // ===========================
 
-    const followers = profile.followers;
-    const following = profile.following;
-    const mentions = profile.mentions;
+    const followers = profile[0].followers;
+    const following = profile[0].following;
+    const mentions = profile[0].mentions;
     
     if (followers && followers.length) {
       const followersRegex = new RegExp(buildRegExp(followers));
-      profile.followers = await setProfileImage(followersRegex);
+      profile[0].followers = await setProfileImage(followersRegex);
     };
     
     if (following && following.length) {
       const followingRegex = new RegExp(buildRegExp(following));
-      profile.following = await setProfileImage(followingRegex);
+      profile[0].following = await setProfileImage(followingRegex);
     };
     
     if (mentions && mentions.length) {
       const mentionsRegex = new RegExp(buildRegExp(mentions));
       const mentionsImages = await setProfileImage(mentionsRegex);
-      profile.mentions = assignRecentActivityImages(mentions, mentionsImages);
+      profile[0].mentions = assignRecentActivityImages(mentions, mentionsImages);
     };
     
     // ========================
@@ -235,8 +221,8 @@ router.get('/profile/:username', (req, res, next) => {
 
     user.isFollowing(currentUsername, currentId, profileUsername, (err, doc) => {
       if (err) throw err;
-      return doc ? res.json({ success: true, user: profile, follower: true })
-      : res.json({ success: true, user: profile, follower: false });
+      return doc ? res.json({ success: true, user: profile[0], follower: true })
+      : res.json({ success: true, user: profile[0], follower: false });
     });
   });
 });
@@ -277,8 +263,14 @@ router.get('/profile/:username/loadmore', (req, res, next) => {
 
   user.loadMore(username, start, target, async (err, doc) => {
     if (err) throw err;
+    if (!doc[0][target].length) return;
     const regex = new RegExp(buildRegExp(doc[0][target]));
-    doc[0][target] = await setProfileImage(regex);
+
+    if (target === 'mentions') {
+      const mentionsImages = await setProfileImage(regex);
+      doc[0][target] = assignRecentActivityImages(doc[0][target], mentionsImages);
+    } else doc[0][target] = await setProfileImage(regex);
+
     return res.json({ success: true, msg: doc[0][target], count: doc[0].count });
   });
 });

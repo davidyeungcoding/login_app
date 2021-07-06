@@ -128,8 +128,8 @@ export class ProfileService {
 // || Get More Data ||
 // ===================
 
-  loadMore(username: string, target: string, followingCount: number) {
-    return this.http.get(`${this.api}/profile/${username}/loadmore?list=${target}&start=${followingCount}`).pipe(
+  loadMore(username: string, target: string, listCount: number) {
+    return this.http.get(`${this.api}/profile/${username}/loadmore?list=${target}&start=${listCount}`).pipe(
       catchError(err => of(err))
     );
   };

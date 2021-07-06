@@ -18,6 +18,7 @@ export class ObserverVisibilityDirective
   private posts: Post[];
   private followerList: ProfilePreview[];
   private followingList: ProfilePreview[];
+  private mentions: Post[];
   private activeTab: string;
 
   constructor(
@@ -33,6 +34,7 @@ export class ObserverVisibilityDirective
     this.subscriptions.add(this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab));
     this.subscriptions.add(this.profileService.followingList.subscribe(_list => this.followingList = _list));
     this.subscriptions.add(this.profileService.followerList.subscribe(_list => this.followerList = _list));
+    this.subscriptions.add(this.postService.mentions.subscribe(_list => this.mentions = _list));
   }
   
   ngAfterViewInit() {
@@ -60,9 +62,16 @@ export class ObserverVisibilityDirective
 
   loadMore(username: string, target: string, length: number): void {
     this.profileService.loadMore(username, target, length).subscribe(_list => {
-      const targetList = target === 'following' ? this.followingList : this.followerList;
-      this.profileService.updateListImage(_list.msg);
-      if (_list.success) targetList.push(..._list.msg);
+      const targetList = target === 'following' ? this.followingList
+      : target === 'followers' ? this.followerList
+      : this.mentions;
+      console.log('===============================')
+      console.log(_list);
+
+      if (_list.success) {
+        this.profileService.updateListImage(_list.msg);
+        targetList.push(..._list.msg);
+      };
     });
   };
 
@@ -85,6 +94,8 @@ export class ObserverVisibilityDirective
           case 'followerTab':
             this.loadMore(username, 'followers', this.followerList.length);
             break;
+          case 'mentionsTab':
+            this.loadMore(username, 'mentions', this.mentions.length);
         };
       };
     });

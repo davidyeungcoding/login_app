@@ -166,7 +166,11 @@ export class AuthService {
     this.getProfile(username, localUser.username, localUser.id).subscribe(_user => {
       this.changeLastVisited(username);
       if (!_user.success) this.redirectDump('/profile-not-found', 'profile');
-      if (username === localUser.username) this.profileService.updateListImage(_user.user.mentions);
+
+      if (username === localUser.username && _user.user.mentions) {
+        this.profileService.updateListImage(_user.user.mentions);
+      };
+      
       this.changeProfileInfo(username, _user.user, redirect);
       this.profileService.changeIsFollowing(_user.follower);
     });

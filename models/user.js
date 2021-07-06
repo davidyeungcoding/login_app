@@ -5,12 +5,11 @@ const config = require('../config/database');
 // =====================
 // || Global Variable ||
 // =====================
-const step = 1;
+const step = 25;
 
 const fullProfile = {
   username: 1,
   name: 1,
-  password: 1,
   bannerImage: 1,
   profileImage: 1,
   email: 1,
@@ -145,7 +144,10 @@ const UserSchema = mongoose.Schema({
   },
   posts: [Post],
   recentActivity: [ActivityPost],
-  mentions: [ActivityPost],
+  mentions: {
+    type: [ActivityPost],
+    default: []
+  },
   followerCount: {
     type: Number,
     default: 0
@@ -182,19 +184,7 @@ module.exports.getUserProfile = (username, callback) => {
 }
 
 module.exports.getUserByUsername = function(username, callback) {
-  const selection = {
-    posts: {
-      $slice: [0, step]
-    },
-    followers: {
-      $slice: [0, step]
-    },
-    following: {
-      $slice: [0, step]
-    },
-    password: 0
-  };
-  User.findOne({ username: username }, selection, callback);
+  User.aggregate([{ $match: {username: username } }, { $project: fullProfile }], callback);
 }
 
 module.exports.getSpecific = function(query, selection, callback) {
