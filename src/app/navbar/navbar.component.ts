@@ -29,10 +29,10 @@ export class NavbarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.profileService.activeList.subscribe(_list => this.activeList = _list);
-    // this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab);
-    // this.profileService.isEditing.subscribe(_state => this.isEditing = _state);
-    // this.authService.currentUser.subscribe(_user => this.currentUser = _user);
+    this.subscriptions.add(this.profileService.activeList.subscribe(_list => this.activeList = _list));
+    this.subscriptions.add(this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab));
+    this.subscriptions.add(this.profileService.isEditing.subscribe(_state => this.isEditing = _state));
+    this.subscriptions.add(this.authService.currentUser.subscribe(_user => this.currentUser = _user));
     this.subscriptions.add(this.searchService.step.subscribe(_count => this.step = _count));
   }
 
@@ -57,39 +57,23 @@ export class NavbarComponent implements OnInit {
     this.searchService.clearSearchBar('navSearchInput', form);
   };
 
-  // onLogoutClick() {
-  //   this.authService.logout(this.activeTab, this.activeList, this.isEditing);
-  // };
+  // =======================
+  // || Logged In Actions ||
+  // =======================
 
-  // expiredToken() {
-  //   return this.authService.isExpired();
-  // };
+  onGoHome(): void {
+    this.authService.handleRedirectProfile(this.currentUser.username, this.isEditing);
+  };
 
-  // onLoadProfile(): void {
-  //   let username = JSON.parse(localStorage.getItem('user')).username;
-  //   this.profileService.resetActiveTab(this.activeTab);
-  //   this.profileService.resetVisible(this.activeList);
-  //   if (this.router.url !== `/profile/${username}`) this.authService.handleRedirectProfile(username, this.isEditing);
-  // };
+  onLogout(): void {
+    this.authService.logout(this.activeTab, this.activeList, this.isEditing);
+  };
 
-  // onSubmitSearch(searchForm: NgForm, searchBar: string) {
-  //   this.searchService.resetSearch();
-  //   const term = searchForm.value.searchTerm.trim();
-  //   this.searchService.changeSearchTerm(term);
-  //   if (!term.length) return;
+  // =====================
+  // || Visitor Actions ||
+  // =====================
 
-  //   this.searchService.getUsers(term, 0).subscribe(data => {
-  //     if (data.success && data.msg.length) {
-  //       this.searchService.changeEndOfResults(false);
-  //       this.profileService.updateListImage(data.msg);
-  //       this.searchService.changeSearchResults(data.msg);
-  //     } else if (data.success && !data.msg.length) {
-  //       this.searchService.changeEndOfResults(true);
-  //       this.searchService.changeSearchResults(data.msg);
-  //     } else this.searchService.changeEndOfResults(true);
-      
-  //     if (this.router.url !== '/search') this.router.navigate(['/search']);
-  //     this.searchService.clearSearchBar(searchBar, searchForm);
-  //   });
-  // };
+  onCreateAccount(): void {
+    
+  }
 }

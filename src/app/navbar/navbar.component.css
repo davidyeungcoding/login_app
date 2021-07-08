@@ -2,12 +2,34 @@
 /* || Searchbar || */
 /* =============== */
 
+.nav-control {
+  padding: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
 .nav-search-form {
   display: flex;
-  padding: 10px 0;
+  flex-grow: 2;
+  padding: 0 15px;
+  margin-bottom: 10px;
+}
+
+.nav-btn {
+  margin-right: 15px;
+}
+
+.nav-btn:last-of-type {
+  margin-right: 0px;
 }
 
 #navSearchInput {
-  width: 50%;
   border-radius: 5px 0 0 5px;
+}
+
+@media screen and (min-width: 504px) {
+  .nav-btn:last-of-type {
+    margin-right: 15px;
+  }
 }

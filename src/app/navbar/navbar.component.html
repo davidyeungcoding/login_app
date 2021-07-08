@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col main-view">
       <div class="main-content-container">
-        <div class="container">
+        <div class="container nav-control">
           <form #navSearchForm="ngForm"
             class="nav-search-form"
             (ngSubmit)="onSubmitSearch(navSearchForm)">
@@ -17,93 +17,27 @@
             <button type="submit"
               class="btn btn-outline-light search-btn btn-style"><i class="fas fa-search"></i></button>
           </form>
+
+          <div *ngIf="!!currentUser.username; else notLoggedIn"
+            class="logged-control">
+            <button type="button"
+              class="btn btn-outline-light btn-style nav-btn"
+              (click)="onGoHome()">
+              <i class="fas fa-home"></i> Home
+            </button>
+  
+            <button type="button"
+              class="btn btn-outline-light btn-style nav-btn"
+              (click)="onLogout()">
+              <i class="fas fa-door-open"></i> Logout
+            </button>
+          </div>
+
+          <ng-template #notLoggedIn>
+
+          </ng-template>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<!-- <nav class="navbar navbar-style navbar-expand-lg navbar-dark bg-dark d-flex justify-content-around">
-  <div>
-    <a class="navbar-brand"
-    routerLink="/home">Temp Name</a>
-  </div>
-
-  <div class="searchMain">
-    <form class="form-inline"
-      #searchFormMain="ngForm"
-      (ngSubmit)="onSubmitSearch(searchFormMain, 'navSearchMain')">
-      <input type="search"
-        class="form-control"
-        id="navSearchMain"
-        placeholder="Search"
-        aria-label="Search"
-        name="searchTerm"
-        ngModel>
-      <button type="submit"
-        class="btn btn-outline-light nav-search-button"
-        id="navSearchMainBtn"><i class="fas fa-search"></i></button>
-    </form>
-  </div>
-
-  <div>
-    <button type="button"
-      class="navbar-toggler"
-      data-toggle="collapse"
-      data-target="#navbarCollapseMenu"
-      aria-controls="navbarCollapseMenu"
-      aria-expanded="false"
-      aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    
-    <div class="collapse navbar-collapse text-right"
-      id="navbarCollapseMenu">
-      <ul class="navbar-nav">
-        <li class="nav-item nav-search searchSecondary">
-          <form class="form-inline"
-            #searchForm="ngForm"
-            (ngSubmit)="onSubmitSearch(searchForm, 'navSearch')">
-            <input type="search"
-              class="form-control"
-              id="navSearch"
-              placeholder="Search"
-              aria-label="Search"
-              name="searchTerm"
-              ngModel>
-            <button type="submit"
-              class="btn btn-outline-light nav-search-button"
-              id="navSearchBtn"><i class="fas fa-search"></i></button>
-          </form>
-        </li>
-
-        <li class="nav-item"
-          routerLinkActive="active">
-          <a class="nav-link"
-            routerLink="/home">Home</a>
-        </li>
-
-        <li *ngIf="this.currentUser.id"
-          class="nav-item"
-          routerLinkActive="active">
-          <a class="nav-link pointer"
-            (click)="onLoadProfile()">My Profile</a>
-        </li>
-
-        <li *ngIf="!this.currentUser.id"
-          class="nav-item"
-          routerLinkActive="active">
-          <a class="nav-link"
-            routerLink="/create-account">Create Account</a>
-        </li>
-
-        <li *ngIf="this.currentUser.id"
-          class="nav-item">
-          <a class="nav-link"
-          (click)="onLogoutClick()"
-          routerLink="/home">Logout</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav> -->
