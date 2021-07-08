@@ -6,6 +6,7 @@ import { ProfileService } from '../services/profile.service';
 
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -13,9 +14,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  private subscriptions: Subscription = new Subscription();
   private activeList: string;
   private activeTab: string;
   private isEditing: boolean;
+  private step: number;
   currentUser: any;
 
   constructor(
@@ -26,45 +29,67 @@ export class NavbarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.profileService.activeList.subscribe(_list => this.activeList = _list);
-    this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab);
-    this.authService.currentUser.subscribe(_user => this.currentUser = _user);
-    this.profileService.isEditing.subscribe(_state => this.isEditing = _state);
+    // this.profileService.activeList.subscribe(_list => this.activeList = _list);
+    // this.profileService.activeTab.subscribe(_tab => this.activeTab = _tab);
+    // this.profileService.isEditing.subscribe(_state => this.isEditing = _state);
+    // this.authService.currentUser.subscribe(_user => this.currentUser = _user);
+    this.subscriptions.add(this.searchService.step.subscribe(_count => this.step = _count));
   }
 
-  onLogoutClick() {
-    this.authService.logout(this.activeTab, this.activeList, this.isEditing);
-  };
-
-  expiredToken() {
-    return this.authService.isExpired();
-  };
-
-  onLoadProfile(): void {
-    let username = JSON.parse(localStorage.getItem('user')).username;
-    this.profileService.resetActiveTab(this.activeTab);
-    this.profileService.resetVisible(this.activeList);
-    if (this.router.url !== `/profile/${username}`) this.authService.handleRedirectProfile(username, this.isEditing);
-  };
-
-  onSubmitSearch(searchForm: NgForm, searchBar: string) {
-    this.searchService.resetSearch();
-    const term = searchForm.value.searchTerm.trim();
-    this.searchService.changeSearchTerm(term);
+  onSubmitSearch(form: NgForm): void {
+    const term = form.value.searchTerm.trim();
     if (!term.length) return;
+    this.searchService.changeSearchTerm(term);
+    this.searchService.resetSearch();
 
-    this.searchService.getUsers(term, 0).subscribe(data => {
-      if (data.success && data.msg.length) {
-        this.searchService.changeEndOfResults(false);
-        this.profileService.updateListImage(data.msg);
-        this.searchService.changeSearchResults(data.msg);
-      } else if (data.success && !data.msg.length) {
+    this.searchService.getUsers(term, 0).subscribe(_res => {
+      if (_res.success && _res.msg.length) {
+        this.searchService.changeEndOfResults(_res.msg.length < this.step ? true : false);
+        this.profileService.updateListImage(_res.msg);
+        this.searchService.changeSearchResults(_res.msg);
+      } else {
         this.searchService.changeEndOfResults(true);
-        this.searchService.changeSearchResults(data.msg);
-      } else this.searchService.changeEndOfResults(true);
-      
-      if (this.router.url !== '/search') this.router.navigate(['/search']);
-      this.searchService.clearSearchBar(searchBar, searchForm);
+        this.searchService.changeSearchResults(_res.msg);
+      };
     });
+    
+    if (this.router.url !== '/search') this.router.navigate(['/search']);
+    this.searchService.clearSearchBar('navSearchInput', form);
   };
+
+  // onLogoutClick() {
+  //   this.authService.logout(this.activeTab, this.activeList, this.isEditing);
+  // };
+
+  // expiredToken() {
+  //   return this.authService.isExpired();
+  // };
+
+  // onLoadProfile(): void {
+  //   let username = JSON.parse(localStorage.getItem('user')).username;
+  //   this.profileService.resetActiveTab(this.activeTab);
+  //   this.profileService.resetVisible(this.activeList);
+  //   if (this.router.url !== `/profile/${username}`) this.authService.handleRedirectProfile(username, this.isEditing);
+  // };
+
+  // onSubmitSearch(searchForm: NgForm, searchBar: string) {
+  //   this.searchService.resetSearch();
+  //   const term = searchForm.value.searchTerm.trim();
+  //   this.searchService.changeSearchTerm(term);
+  //   if (!term.length) return;
+
+  //   this.searchService.getUsers(term, 0).subscribe(data => {
+  //     if (data.success && data.msg.length) {
+  //       this.searchService.changeEndOfResults(false);
+  //       this.profileService.updateListImage(data.msg);
+  //       this.searchService.changeSearchResults(data.msg);
+  //     } else if (data.success && !data.msg.length) {
+  //       this.searchService.changeEndOfResults(true);
+  //       this.searchService.changeSearchResults(data.msg);
+  //     } else this.searchService.changeEndOfResults(true);
+      
+  //     if (this.router.url !== '/search') this.router.navigate(['/search']);
+  //     this.searchService.clearSearchBar(searchBar, searchForm);
+  //   });
+  // };
 }

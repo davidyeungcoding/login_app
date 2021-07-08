@@ -1,78 +1,13 @@
-.navbar-style {
-  background-color: #e0e0e0;
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2), 0 0 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.navbar-toggler {
-  position: absolute;
-  top: 8px;
-  right: 20px;
-}
-
-#searchGroupMain {
-  visibility: hidden;
-}
-
-.navbar-brand {
-  position: absolute;
-  top: 8px;
-  left: 20px;
-}
-
-.navbar {
-  min-height: 56px;
-}
-
 /* =============== */
 /* || Searchbar || */
 /* =============== */
 
-.nav-search {
-  padding: 53px 0 8px;
+.nav-search-form {
+  display: flex;
+  padding: 10px 0;
 }
 
-.searchMain {
-  display: none;
-}
-
-#navSearchMain {
-  width: 30vw;
+#navSearchInput {
+  width: 50%;
   border-radius: 5px 0 0 5px;
-}
-
-#navSearch {
-  width: 70vw;
-  border-radius: 5px 0 0 5px;
-}
-
-#navSearchBtn, #navSearchMainBtn {
-  border-radius: 0 5px 5px 0;
-}
-
-@media screen and (min-width: 540px) {
-  #navSearch {
-    width: 50vw;
-  }
-}
-
-@media screen and (min-width: 992px) {
-  .nav-search {
-    padding: 1px 0 0;
-  }
-
-  .navbar-brand {
-    position: static;
-  }
-
-  .searchMain {
-    display: inline;
-  }
-
-  .searchSecondary {
-    display: none;
-  }
-
-  #navSearch {
-    width: 30vw;
-  }
 }

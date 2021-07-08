@@ -121,11 +121,6 @@ textarea {
 /* || Links || */
 /* =========== */
 
-/* .clear-link, .clear-link:hover {
-  text-decoration: none;
-  color: var(--color-text-light);
-} */
-
 .on-click, .on-click-parse {
   cursor: pointer;
 }
@@ -170,6 +165,16 @@ textarea {
   border-top: solid;
   border-width: 1px;
   text-align: center;
+}
+
+/* ============ */
+/* || Navbar || */
+/* ============ */
+
+@media screen and (min-width: 1005px) {
+  .nav-section {
+    display: none;
+  }
 }
 
 /* ================== */
@@ -337,21 +342,3 @@ body {
 .primary-font-color {
   color: var(--color-text-light);
 }
-
-/* @media screen and (min-width: 541px) {
-  .main-content-container {
-    margin: 0 10%;
-  }
-}
-
-@media screen and (min-width: 720px) {
-  .main-content-container {
-    margin: 0 20%;
-  }
-}
-
-@media screen and (min-width: 992px) {
-  .main-content-container {
-    margin: 0 30%;
-  }
-} */

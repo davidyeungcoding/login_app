@@ -1,4 +1,29 @@
-<nav class="navbar navbar-style navbar-expand-lg navbar-dark bg-dark d-flex justify-content-around">
+<div class="container nav-section">
+  <div class="row">
+    <div class="col main-view">
+      <div class="main-content-container">
+        <div class="container">
+          <form #navSearchForm="ngForm"
+            class="nav-search-form"
+            (ngSubmit)="onSubmitSearch(navSearchForm)">
+            <input type="search"
+              class="form-control text-area-style"
+              id="navSearchInput"
+              placeholder="Search by Username"
+              aria-label="Search"
+              name="searchTerm"
+              ngModel>
+    
+            <button type="submit"
+              class="btn btn-outline-light search-btn btn-style"><i class="fas fa-search"></i></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <nav class="navbar navbar-style navbar-expand-lg navbar-dark bg-dark d-flex justify-content-around">
   <div>
     <a class="navbar-brand"
     routerLink="/home">Temp Name</a>
@@ -81,4 +106,4 @@
       </ul>
     </div>
   </div>
-</nav>
+</nav> -->
