@@ -6,15 +6,26 @@
   padding: 10px 0;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 
 .nav-search-form {
   display: flex;
-  flex-grow: 2;
+  flex: 2 1 100%;
   padding: 0 15px;
   margin-bottom: 10px;
 }
+
+@media screen and (min-width: 531px) {
+  .nav-search-form {
+    margin-bottom: 0;
+    flex-basis: auto;
+  }
+}
+
+/* ================= */
+/* || Nav Buttons || */
+/* ================= */
 
 .nav-btn {
   margin-right: 15px;
@@ -28,7 +39,7 @@
   border-radius: 5px 0 0 5px;
 }
 
-@media screen and (min-width: 504px) {
+@media screen and (min-width: 531px) {
   .nav-btn:last-of-type {
     margin-right: 15px;
   }

@@ -34,7 +34,13 @@
           </div>
 
           <ng-template #notLoggedIn>
+            <button type="button"
+              class="btn btn-outline-light btn-style nav-btn"
+              (click)="onLogIn()">Log In</button>
 
+            <button type="button"
+              class="btn btn-outline-light btn-style nav-btn"
+              routerLink="/create-account">Create Account</button>
           </ng-template>
         </div>
       </div>
