@@ -146,11 +146,14 @@ textarea {
   }
 }
 
-.main-content-container {
-  border-left: solid;
-  border-right: solid;
-  border-width: 1px;
+@media screen and (min-width: 576px) {
+  .main-content-container {
+    border-left: solid;
+    border-right: solid;
+    border-width: 1px;
+  }
 }
+
 
 .main-content {
   border-top: 1px solid;
@@ -162,9 +165,14 @@ textarea {
 }
 
 .end-of-content {
-  border-top: solid;
-  border-width: 1px;
   text-align: center;
+}
+
+@media screen and (min-width: 576px) {
+  .end-of-content {
+    border-top: solid;
+    border-width: 1px;
+  }
 }
 
 /* ============ */

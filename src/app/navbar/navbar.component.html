@@ -36,13 +36,72 @@
           <ng-template #notLoggedIn>
             <button type="button"
               class="btn btn-outline-light btn-style nav-btn"
-              (click)="onLogIn()">Log In</button>
+              data-toggle="modal"
+              data-target="#navLogIn">Log In</button>
 
             <button type="button"
               class="btn btn-outline-light btn-style nav-btn"
               routerLink="/create-account">Create Account</button>
           </ng-template>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade"
+  id="navLogIn"
+  tabindex="-1"
+  aria-labelledby="navLogInLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button"
+          class="close close-btn"
+          data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <form #navLogInForm="ngForm"
+          class="nav-login-form"
+          (ngSubmit)="onNavSignIn(navLogInForm)">
+          <div class="form-group">
+            <br>
+            <label for="navUsername"><h5>Username:</h5></label>
+
+            <input type="text"
+              class="form-control text-area-style"
+              id="navUsername"
+              name="username"
+              ngModel>
+          </div>
+
+          <div class="form-group">
+            <label for="navPassword"><h5>Password:</h5></label>
+
+            <input type="password"
+              class="form-control text-area-style"
+              id="navPassword"
+              name="password"
+              ngModel>
+          </div>
+
+          <div class="error-msg-container"
+            id="navErrorMsg">
+            <p class="error-msg">Username and password do not match</p>
+          </div>
+
+          <div class="nav-btn-container col-sm-12 col-md-10">
+            <button type="submit"
+              class="btn btn-outline-light btn-style nav-btn-style">Sign In</button>
+
+            <button type="button"
+              class="btn btn-outline-light btn-style nav-btn-style"
+              data-dismiss="modal">Cancel</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

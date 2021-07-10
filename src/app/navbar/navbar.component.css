@@ -2,6 +2,10 @@
 /* || Searchbar || */
 /* =============== */
 
+.nav-section {
+  background-color: var(--color-background-darker);
+}
+
 .nav-control {
   padding: 10px 0;
   display: flex;
@@ -42,5 +46,53 @@
 @media screen and (min-width: 531px) {
   .nav-btn:last-of-type {
     margin-right: 15px;
+  }
+}
+
+/* =========== */
+/* || Modal || */
+/* =========== */
+
+.nav-login-form {
+  padding: 0 15px 10px;
+}
+
+.error-msg-container {
+  text-align: center;
+  display: none;
+}
+
+.nav-btn-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: auto;
+}
+
+.nav-btn-style {
+  width: 100%;
+}
+
+@media screen and (min-width: 410px) {
+  .nav-btn-style {
+    width: 70%;
+  }
+}
+
+.nav-btn-style:first-of-type {
+  margin-bottom: 16px;
+}
+
+@media screen and (min-width: 531px) {
+  .nav-btn-container {
+    flex-wrap: nowrap;
+  }
+
+  .nav-btn-style:first-of-type {
+    margin: 0 5px 0 0;
+  }
+
+  .nav-btn-style:last-of-type {
+    margin-left: 5px;
   }
 }

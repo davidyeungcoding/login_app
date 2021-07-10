@@ -67,13 +67,28 @@ export class NavbarComponent implements OnInit {
 
   onLogout(): void {
     this.authService.logout(this.activeTab, this.activeList, this.isEditing);
+    location.reload();
   };
 
   // =====================
   // || Visitor Actions ||
   // =====================
 
-  onCreateAccount(): void {
-    
-  }
+  onNavSignIn(form: NgForm): void {
+    this.authService.authenticateUser(form.value).subscribe(_data => {
+      console.log(_data)
+      if (_data.success) {
+        this.authService.storeUserData(_data.token, _data.user);
+        location.reload();
+      } else {
+        $('#navErrorMsg').css('display', 'inline');
+        $('#navPassword').val('');
+        form.value.password = '';
+
+        setTimeout(() => {
+          $('#navErrorMsg').css('display', 'none');
+        }, 3000);
+      };
+    });
+  };
 }
