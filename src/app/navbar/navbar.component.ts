@@ -76,7 +76,6 @@ export class NavbarComponent implements OnInit {
 
   onNavSignIn(form: NgForm): void {
     this.authService.authenticateUser(form.value).subscribe(_data => {
-      console.log(_data)
       if (_data.success) {
         this.authService.storeUserData(_data.token, _data.user);
         location.reload();

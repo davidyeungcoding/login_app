@@ -16,6 +16,7 @@ export class SideProfileSectionComponent implements OnInit, AfterViewInit, OnDes
   private activeTab: string;
   private activeList: string;
   private isEditing: boolean;
+  private activityInterval: any;
   recentActivity: any;
 
   constructor(
@@ -34,20 +35,55 @@ export class SideProfileSectionComponent implements OnInit, AfterViewInit, OnDes
   
   ngAfterViewInit(): void {
     this.addClickEvent();
+    this.recentActivityInterval();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+    clearInterval(this.activityInterval);
   }
+
+// ===========================
+// || Recent Activity Setup ||
+// ===========================
+
+  updateRecentActivity(): void {
+    this.profileService.getRecentActivity(JSON.parse(localStorage.getItem('user')).username).subscribe(_list => {
+      this.profileService.updateListImage(_list.msg);
+      this.profileService.changeRecentActivity(_list.msg);
+    });
+  };
 
   recentActivitySetup(): void {
     if (localStorage.getItem('id_token') && !this.authService.isExpired() && !this.recentActivity.length) {
-      this.profileService.getRecentActivity(JSON.parse(localStorage.getItem('user')).username).subscribe(_list => {
-        this.profileService.updateListImage(_list.msg);
-        this.profileService.changeRecentActivity(_list.msg);
-      });
+      this.updateRecentActivity();
     };
   };
+
+  addClickEvent(): void {
+    const elements = document.getElementsByClassName('on-click');
+
+    Array.from(elements).forEach(elem => {
+      const username = elem.attributes[1].value;
+      elem.addEventListener('click', () => {
+        this.authService.handleRedirectProfile(username, true);
+      });
+      elem.classList.add('on-click-parse');
+      elem.classList.remove('on-click');
+    });
+  };
+
+  recentActivityInterval(): void {
+    this.activityInterval = setInterval(() => {
+      if (localStorage.getItem('id_token') && !this.authService.isExpired()) {
+        this.updateRecentActivity();
+      };
+    }, 300000);
+  };
+
+// ======================
+// || Profile Controls ||
+// ======================
 
   onLoadProfile(): void {
     const username = JSON.parse(localStorage.getItem('user')).username;
@@ -68,18 +104,5 @@ export class SideProfileSectionComponent implements OnInit, AfterViewInit, OnDes
     this.profileService.resetVisible(this.activeList);
     this.profileService.resetActiveTab(this.activeTab);
     this.authService.handleRedirectProfile(username, this.isEditing);
-  };
-
-  addClickEvent(): void {
-    const elements = document.getElementsByClassName('on-click');
-
-    Array.from(elements).forEach(elem => {
-      const username = elem.attributes[1].value;
-      elem.addEventListener('click', () => {
-        this.authService.handleRedirectProfile(username, true);
-      });
-      elem.classList.add('on-click-parse');
-      elem.classList.remove('on-click');
-    });
   };
 }
