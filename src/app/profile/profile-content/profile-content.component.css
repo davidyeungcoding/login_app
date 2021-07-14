@@ -45,9 +45,11 @@
   }
 }
 
+.scroll-btn:hover, .scroll-btn:active, .scroll-btn:focus {
+  color: var(--color-secondary);
+}
+
 .tab-container {
-  height: 50px;
-  overflow: hidden;
   text-align: center;
 }
 
@@ -57,6 +59,11 @@
   scroll-behavior: smooth;
 }
 
+#profileTabs::-webkit-scrollbar {
+  display: none;
+}
+
 .tab {
   width: 100px;
+  overflow: hidden;
 }

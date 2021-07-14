@@ -1,12 +1,16 @@
-<div class="container">
+<div *ngIf="currentUser.id === profileData._id" class="container">
   <div class="row scroll-control">
     <button type="button"
-      class="btn btn-style primary-font-color"
-      (click)="scrollBtn(-150)"></button>
+      class="btn scroll-btn primary-font-color"
+      (click)="onScroll(-200)">
+      <i class="fas fa-caret-left"></i>
+    </button>
   
     <button type="button"
-      class="btn btn-style primary-font-color"
-      (click)="scrollBtn(150)"></button>
+      class="btn scroll-btn primary-font-color"
+      (click)="onScroll(200)">
+      <i class="fas fa-caret-right"></i>
+    </button>
   </div>
 </div>
 
