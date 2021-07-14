@@ -30,3 +30,33 @@
   border-bottom: 5px solid var(--color-secondary);
   transition: .2s ease-out;
 }
+
+/* =================== */
+/* || Tab Scrolling || */
+/* =================== */
+
+.scroll-control {
+  justify-content: flex-end;
+}
+
+@media screen and (min-width: 768px) {
+  .scroll-control {
+    display: none;
+  }
+}
+
+.tab-container {
+  height: 50px;
+  overflow: hidden;
+  text-align: center;
+}
+
+#profileTabs {
+  white-space: nowrap;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+}
+
+.tab {
+  width: 100px;
+}

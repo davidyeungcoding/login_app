@@ -66,4 +66,8 @@ export class ProfileContentComponent implements OnInit, OnDestroy {
         };
     };
   };
+
+  scrollBtn(amount: number): void {
+    document.getElementById('profileTabs').scrollLeft += amount;
+  };
 }

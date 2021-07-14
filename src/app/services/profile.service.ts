@@ -115,15 +115,6 @@ export class ProfileService {
     };
   };
 
-  assignProfilePreviewImage(target: any, start: number = 0): void {
-    for (let i = start; i < target.length; i++) {
-      if (target[i].attributes[3]) {
-        const image = target[i].attributes[3].value;
-        target[i].setAttribute('src', image);
-      } else target[i].setAttribute('src', '../../../../assets/default_image.jpg');
-    };
-  };
-
 // ===================
 // || Get More Data ||
 // ===================

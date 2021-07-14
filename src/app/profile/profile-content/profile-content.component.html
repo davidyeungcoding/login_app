@@ -1,27 +1,39 @@
 <div class="container">
-  <div *ngIf="currentUser.id === profileData._id" class="row">
+  <div class="row scroll-control">
     <button type="button"
-      class="btn profile-options-btn col primary-font-color"
+      class="btn btn-style primary-font-color"
+      (click)="scrollBtn(-150)"></button>
+  
+    <button type="button"
+      class="btn btn-style primary-font-color"
+      (click)="scrollBtn(150)"></button>
+  </div>
+</div>
+
+<div class="container tab-container">
+  <div *ngIf="currentUser.id === profileData._id" id="profileTabs">
+    <button type="button"
+      class="btn profile-options-btn tab primary-font-color"
       data-toggle="modal"
       data-target="#postModal">&#43;</button>
 
     <button type="button"
-      class="btn profile-options-btn col primary-font-color active-tab"
+      class="btn profile-options-btn tab primary-font-color active-tab"
       id="postTab"
       (click)="onMakeActive('postList', 'postTab')">Posts</button>
 
     <button type="button"
-      class="btn profile-options-btn col primary-font-color"
+      class="btn profile-options-btn tab primary-font-color"
       id="followingTab"
       (click)="addProfileImage('followingList', 'followingTab')">Follwing</button>
 
     <button type="button"
-      class="btn profile-options-btn col primary-font-color"
+      class="btn profile-options-btn tab primary-font-color"
       id="followerTab"
       (click)="addProfileImage('followerList', 'followerTab')">Followers</button>
       
     <button type="button"
-      class="btn profile-options-btn col primary-font-color"
+      class="btn profile-options-btn tab primary-font-color"
       id="mentionsTab"
       (click)="onMakeActive('mentionsList', 'mentionsTab')">Mentions</button>
   </div>
