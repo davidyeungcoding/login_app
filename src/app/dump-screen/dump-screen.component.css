@@ -1,0 +1,18 @@
+.dump-screen-container {
+  margin-top: 13vh;
+}
+
+.dump-msg-container {
+  max-width: 720px;
+  margin: auto;
+  justify-content: center;
+}
+
+.err-img-container {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.dump-msg {
+  text-align: center;
+}

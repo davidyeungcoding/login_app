@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { AuthService } from '../services/auth.service';
 import { ProfileService } from '../services/profile.service';
+
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -51,13 +52,13 @@ export class DumpScreenComponent implements OnInit, OnDestroy {
     
     switch (this.dumpTerm) {
       case 'profile':
-        this.displayMessage = personalError ? 'Unable to load profile. Logging you out and redirecting to Home.'
-        : 'Unable to load profile. Returning to you to Home Screen.';
+        this.displayMessage = personalError ? 'Unable to load profile. Logging you out and redirecting to the homepage.'
+        : 'Unable to load profile. Returning to you to your profile page.';
         this.handleTimedLogout(3000, personalError);
         break;
       case 'session':
-        this.displayMessage = 'Session timed out. Logging you out and redirecting you to the homepage shortly. If you\'d like to avoid this in the futrue, please be sure to logout when you\'re done.';
-        this.handleTimedLogout(5000, logged);
+        this.displayMessage = 'Session timed out. Logging you out and redirecting you to the homepage. If you\'d like to avoid this in the futrue, please be sure to logout when you\'re done.';
+        this.handleTimedLogout(7000, logged);
         break;
       default:
         this.displayMessage = 'Something went wrong, redirecting you to the homepage.'

@@ -14,8 +14,8 @@ const routes: Routes = [
   { path: 'search', component: SearchComponent },
   { path: 'session-timed-out', component: DumpScreenComponent },
   { path: 'profile-not-found', component: DumpScreenComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' }
-  // { path: '**', component: PageNotFoundComponent }
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '**', component: DumpScreenComponent }
 ];
 
 @NgModule({
