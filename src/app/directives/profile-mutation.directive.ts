@@ -48,6 +48,7 @@ export class ProfileMutationDirective implements OnInit, AfterViewInit, OnDestro
 
   addClickEvent(): void {
     const elements = document.getElementsByClassName('on-click');
+    if (!elements.length) return;
     
     Array.from(elements).forEach(elem => {
       const username = elem.attributes[1].value;

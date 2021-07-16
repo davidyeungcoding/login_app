@@ -53,7 +53,7 @@ export class DumpScreenComponent implements OnInit, OnDestroy {
     switch (this.dumpTerm) {
       case 'profile':
         this.displayMessage = personalError ? 'Unable to load profile. Logging you out and redirecting to the homepage.'
-        : 'Unable to load profile. Returning to you to your profile page.';
+        : 'Unable to load profile. Returning to you to the homepage.';
         this.handleTimedLogout(3000, personalError);
         break;
       case 'session':

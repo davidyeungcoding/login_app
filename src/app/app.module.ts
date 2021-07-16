@@ -59,6 +59,7 @@ import { SideProfileSectionComponent } from './additional-side-content/side-prof
 import { SideVisitorViewComponent } from './additional-side-content/side-visitor-view/side-visitor-view.component';
 import { FollowIntersectionDirective } from './directives/follow-intersection.directive';
 import { MentionsComponent } from './profile/profile/mentions/mentions.component';
+import { RecentActivityMutationDirective } from './directives/recent-activity-mutation.directive';
 
 registerPlugin(
   FilePondPluginImagePreview,
@@ -93,6 +94,7 @@ registerPlugin(
     SideVisitorViewComponent,
     FollowIntersectionDirective,
     MentionsComponent,
+    RecentActivityMutationDirective,
   ],
   imports: [
     BrowserModule,

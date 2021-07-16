@@ -34,7 +34,6 @@ export class SideProfileSectionComponent implements OnInit, AfterViewInit, OnDes
   }
   
   ngAfterViewInit(): void {
-    this.addClickEvent();
     this.recentActivityInterval();
   }
 
@@ -47,7 +46,7 @@ export class SideProfileSectionComponent implements OnInit, AfterViewInit, OnDes
 // || Recent Activity Setup ||
 // ===========================
 
-  updateRecentActivity(): void {
+  updateRecentActivity() {
     this.profileService.getRecentActivity(JSON.parse(localStorage.getItem('user')).username).subscribe(_list => {
       this.profileService.updateListImage(_list.msg);
       this.profileService.changeRecentActivity(_list.msg);
@@ -60,20 +59,8 @@ export class SideProfileSectionComponent implements OnInit, AfterViewInit, OnDes
     };
   };
 
-  addClickEvent(): void {
-    const elements = document.getElementsByClassName('on-click');
-
-    Array.from(elements).forEach(elem => {
-      const username = elem.attributes[1].value;
-      elem.addEventListener('click', () => {
-        this.authService.handleRedirectProfile(username, true);
-      });
-      elem.classList.add('on-click-parse');
-      elem.classList.remove('on-click');
-    });
-  };
-
   recentActivityInterval(): void {
+    console.log('recentActivityInterval()');
     this.activityInterval = setInterval(() => {
       if (localStorage.getItem('id_token') && !this.authService.isExpired()) {
         this.updateRecentActivity();
