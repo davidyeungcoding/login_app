@@ -33,7 +33,6 @@ import { SearchDirectiveDirective } from './directives/search-directive.directiv
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { FlashMessagesModule } from 'angular2-flash-messages'; // come back to delete when uninstalling later
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 
 // ===========
@@ -100,7 +99,6 @@ registerPlugin(
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    FlashMessagesModule.forRoot(),
     JwtModule.forRoot({
       config: {
         tokenGetter: () => {

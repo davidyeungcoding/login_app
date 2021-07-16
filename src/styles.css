@@ -5,8 +5,7 @@
   --color-background-dark: hsl(var(--hue), 0%, 7%);
   --color-background-light: hsl(var(--hue), 0%, 20%);
   --color-background-lighter: hsl(var(--hue), 0%, 30%);
-  --color-text-darker: hsl(var(--hue), 0%, 25%);
-  --color-text-dark: hsl(var(--hue), 0%, 40%);
+  --color-text-dark: hsl(var(--hue), 0%, 60%);
   --color-text-light: hsl(var(--hue), 0%, 100%);
   --color-secondary: hsl(var(--secondary-hue), 100%, 50%);
   --warning: hsl(0, 100%, 50%);
@@ -53,6 +52,13 @@ textarea {
   .form-btn-style {
     width: 47%;
   }
+}
+
+.submit-msg {
+  text-align: center;
+  padding: 10px 15px;
+  margin: 0 15px 5px;
+  border-radius: 5px;
 }
 
 /* =================== */

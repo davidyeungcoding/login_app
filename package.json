@@ -21,7 +21,6 @@
     "@angular/router": "^11.2.12",
     "@auth0/angular-jwt": "^5.0.2",
     "@types/bootstrap": "^5.0.13",
-    "angular2-flash-messages": "^3.0.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "buffer": "^6.0.3",

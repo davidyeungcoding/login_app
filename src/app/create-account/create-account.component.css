@@ -29,22 +29,16 @@
 /* || Submit Message || */
 /* ==================== */
 
-.submit-msg {
-  text-align: center;
-  padding: 10px 15px;
-  margin: 0 15px 5px;
-  border-radius: 5px;
-  display: none;
-}
-
 #successMsg {
   color: var(--success);
   background-color: var(--success-background);
+  display: none;
 }
 
 #failureMsg {
   color: var(--failure);
   background-color: var(--failure-background);
+  display: none;
 }
 
 @media screen and (min-width: 768px) {

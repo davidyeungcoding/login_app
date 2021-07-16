@@ -3,7 +3,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { ProfileService } from '../services/profile.service';
 
-import { FlashMessagesService } from 'angular2-flash-messages';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -19,8 +18,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private profileService: ProfileService,
-    private flashMessage: FlashMessagesService
+    private profileService: ProfileService
   ) { }
 
   ngOnInit(): void {
@@ -43,8 +41,12 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.authService.storeUserData(data.token, data.user);
         this.authService.changeProfileInfo(data.user.username, data.profile, true);
       } else {
-        // remove and implement your own personal version of the error message below
-        this.flashMessage.show(data.msg, { cssClass: 'alert-danger', timeout: 3000 });
+        $('#homeFailureMsgContainer').css('display', 'inline');
+
+        setTimeout(() => {
+          $('#homeFailureMsgContainer').css('display', 'none');
+        }, 3000);
+
         $('#loginPassword').val('');
         loginForm.value.password = '';
       };
