@@ -1,10 +1,10 @@
 :root {
   --hue: 0;
   --secondary-hue: 37;
-  --color-background-darker: hsl(var(--hue), 0%, 0%);
-  --color-background-dark: hsl(var(--hue), 0%, 7%);
-  --color-background-light: hsl(var(--hue), 0%, 20%);
-  --color-background-lighter: hsl(var(--hue), 0%, 30%);
+  --color-background-darker: hsl(var(--hue), 0%, 7%);
+  --color-background-dark: hsl(var(--hue), 0%, 14%);
+  --color-background-light: hsl(var(--hue), 0%, 25%);
+  --color-background-lighter: hsl(var(--hue), 0%, 35%);
   --color-text-dark: hsl(var(--hue), 0%, 60%);
   --color-text-light: hsl(var(--hue), 0%, 100%);
   --color-secondary: hsl(var(--secondary-hue), 100%, 50%);
@@ -131,9 +131,18 @@ textarea {
   cursor: pointer;
 }
 
-.recent-activity-content .on-click, .recent-activity-content .on-click-parse {
+/* .recent-activity-content .on-click, .recent-activity-content .on-click-parse {
   color: hsl(210 90% 60%);
   text-shadow: 1px 1px hsl(0 0% 0%);
+} */
+
+a {
+  color: hsl(210 100% 60%);
+}
+
+a:hover {
+  color: hsl(210 60% 60%);
+  text-decoration: none;
 }
 
 /* ================== */
@@ -207,7 +216,7 @@ textarea {
 }
 
 .side-content-segment {
-  background-color: var(--color-background-dark);
+  background-color: var(--color-background-darker);
   padding: 1.75rem 1rem;
   margin-top: 1.25rem;
   border: 1px solid var(--color-background-lighter);

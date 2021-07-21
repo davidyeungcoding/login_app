@@ -17,7 +17,8 @@
 .recent-activity-post {
   padding: 10px 15px;
   margin-bottom: 22px;
-  background-color: var(--color-background-light);
+  background-color: var(--color-background-dark);
+  border: 1px solid var(--color-background-lighter);
   border-radius: 5px;
 }
 
@@ -54,5 +55,5 @@
 .profile-image {
   height: 60px;
   margin-right: 10px;
-  border: solid 2px var(--color-background-dark);
+  border: solid 2px var(--color-background-darker);
 }

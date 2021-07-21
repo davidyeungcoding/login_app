@@ -1,3 +1,7 @@
+.profile-container {
+  flex-wrap: nowrap;
+}
+
 /* ============ */
 /* || Scroll || */
 /* ============ */

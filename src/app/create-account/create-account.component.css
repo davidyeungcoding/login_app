@@ -1,8 +1,15 @@
 .container-style {
   background-color: var(--color-background-dark);
-  padding: 10px 0;
-  margin-top: 100px;
-  border-radius: 20px;
+  padding: 0;
+  height: 100vh;
+}
+
+@media screen and (min-width: 576px) {
+  .container-style {
+    height: auto;
+    margin-top: 15vh;
+    border-radius: 20px;
+  }
 }
 
 @media screen and (min-width: 768px) {
@@ -11,17 +18,24 @@
   }
 }
 
+@media screen and (max-height: 642px) {
+  .container-style {
+    height: auto;
+  }
+}
+
 /* ================== */
 /* || Form Styling || */
 /* ================== */
 
 .form-style {
-  margin: 5%;
+  margin: 0;
+  padding: 7%;
 }
 
 @media screen and (min-width: 341px) {
   .form-style {
-    margin: 5% 10%;
+    padding: 7% 10%;
   }
 }
 
