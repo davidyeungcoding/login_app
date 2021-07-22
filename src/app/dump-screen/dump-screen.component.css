@@ -1,5 +1,9 @@
+/* =============== */
+/* || Container || */
+/* =============== */
+
 .dump-screen-container {
-  margin-top: 13vh;
+  padding: 0;
 }
 
 .dump-msg-container {
@@ -8,11 +12,37 @@
   justify-content: center;
 }
 
+@media screen and (min-height: 800px) {
+  .dump-screen-container {
+    margin-top: 10vh;
+  }
+}
+
+@media screen and (min-height: 1000px) {
+  .dump-screen-container {
+    margin-top: 15vh;
+  }
+}
+
+/* =========== */
+/* || Image || */
+/* =========== */
+
 .err-img-container {
   text-align: center;
   margin-bottom: 25px;
 }
 
+.err-img {
+  width: 100%;
+  max-width: 720px;
+}
+
+/* ============= */
+/* || Message || */
+/* ============= */
+
 .dump-msg {
   text-align: center;
+  padding: 0 15px;
 }
