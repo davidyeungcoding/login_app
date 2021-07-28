@@ -60,7 +60,6 @@ export class SideProfileSectionComponent implements OnInit, AfterViewInit, OnDes
   };
 
   recentActivityInterval(): void {
-    console.log('recentActivityInterval()');
     this.activityInterval = setInterval(() => {
       if (localStorage.getItem('id_token') && !this.authService.isExpired()) {
         this.updateRecentActivity();

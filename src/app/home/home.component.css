@@ -15,12 +15,48 @@
 /* || Splash Screen || */
 /* =================== */
 
+.hero-home-logo {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.logo {
+  width: 3rem;
+  margin-right: 5px;
+}
+
+.logo-title {
+  font-size: 3rem;
+  margin: 0;
+}
+
 @media screen and (min-width: 992px) {
   .home-main {
     margin: 0;
     display: flex;
-    justify-content: flex-end;
-    background-color: red;
+    background-image: url('../../assets/dim-gunger-5hCCVzElPGI-unsplash.jpg');
+    background-size: 100vh;
+    background-repeat: no-repeat;
+    background-position: left center;
+  }
+
+  .hero-home-logo {
+    flex-direction: column;
+    width: 50%;
+    margin: 0;
+  }
+
+  .logo {
+    margin: 0;
+    width: 25vw;
+    max-width: 350px;
+  }
+
+  .logo-title {
+    font-size: 8rem;
   }
 }
 
@@ -35,7 +71,7 @@
 @media screen and (min-width: 992px) {
 
   .log-in-section {
-    padding-top: 20%;
+    padding-top: 32vh;
     width: 50%;
     height: 100vh;
     background-color: var(--color-background-darker);
