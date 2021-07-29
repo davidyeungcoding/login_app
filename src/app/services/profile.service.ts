@@ -9,7 +9,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ProfileService {
-  api = 'http://localhost:3000/users';
+  api = 'users';
   
   httpOptions = {
     headers: new HttpHeaders({

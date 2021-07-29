@@ -9,7 +9,7 @@ import { ProfilePreview } from '../interfaces/profile-preview';
   providedIn: 'root'
 })
 export class SearchService {
-  api = 'http://localhost:3000/users';
+  api = 'users';
   
   private searchResultsSource = new BehaviorSubject<ProfilePreview[]>([]);
   searchResults = this.searchResultsSource.asObservable();

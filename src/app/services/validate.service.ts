@@ -8,7 +8,7 @@ import { of } from 'rxjs';
   providedIn: 'root'
 })
 export class ValidateService {
-  private api = 'http://localhost:3000/users';
+  private api = 'users';
 
   constructor(
     private http: HttpClient

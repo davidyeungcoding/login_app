@@ -15,7 +15,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class PostService {
-  api = 'http://localhost:3000/users';
+  api = 'users';
   
   private postsSource = new BehaviorSubject<Post[]>([]);
   currentPosts = this.postsSource.asObservable();

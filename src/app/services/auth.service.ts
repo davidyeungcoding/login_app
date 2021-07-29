@@ -26,7 +26,7 @@ export class AuthService {
     username: false
   };
   authToken: any;
-  api = 'http://localhost:3000/users';
+  api = 'users';
 
 // =================
 // || Observables ||
