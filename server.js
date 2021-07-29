@@ -21,7 +21,7 @@ const port = process.env.PORT || 8080;
 const users = require('./routes/users');
 
 app.use(cors());
-app.use(express.static('./dist/login-app'));
+app.use(express.static(__dirname + '/dist/login-app'));
 app.use(bodyParser.urlencoded({
   limit: '2mb',
   extended: false
@@ -34,10 +34,8 @@ require('./config/passport')(passport);
 
 app.use('/users', users);
 
-app.get('/*', (req, res) => {
-  res.sendFile('index.html', {root: 'dist/login-app/'});
+app.get('/*', (req, res, next) => {
+  res.sendFile('index.html', { root: 'dist/login-app/'});
 })
 
-app.listen(port, () => {
-  console.log(`Server started on port ${port}`);
-})
+app.listen(port)
