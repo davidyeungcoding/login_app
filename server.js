@@ -27,7 +27,7 @@ const app = express();
 const port = process.env.PORT || 8080;
 const users = require('./routes/users');
 
-app.use(requireHTTPS);
+// app.use(requireHTTPS);
 app.use(cors());
 app.use(express.static(__dirname + '/dist/login-app'));
 app.use(bodyParser.urlencoded({
